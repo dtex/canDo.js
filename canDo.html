@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>canDo.js dev page</title>
+	<script src="canDo.js"></script>
+	
+</head>
+<body>
+
+	<canvas id="test" width="480" height="960">
+		This text is displayed if your browser does not support HTML5 Canvas.
+	</canvas>
+	<script>
+		var test = canDo(document.getElementById('test'), {
+			frameRate: 200,
+			duration: 1000,
+			paint: function() {
+				test.fillStyle = "rgb(255,0,0)";
+				test.clearRect(0,0,480,960);
+				test.canDoFillRect([
+					{params: [30, 30, 50, 50], cuePoint: 0.0 },
+					{params: [100, 30, 100, 50], cuePoint: 0.2, easing: 'easeInQuad' },
+					{params: [100, 100, 100, 100], cuePoint: 0.5, easing: 'easeOutQuad' },
+					{params: [350, 650, 130, 130], cuePoint: 0.8, easing: 'easeInQuad' },
+					{params: [30, 30, 50, 50], cuePoint: 1.0, easing: 'easeOutQuad' }  
+				]);
+			}
+		});
+		test.play({speed:1.0});
+	</script>
+</body>
+</html>
+
+<!--
+RMIButton = $('#requestMoreInfoCanvas').sbCanvas({onClick: '/Default.asp?pageid=29',duration: 150,
+shapes: [ {shape: {
+segments: [{type: 'start',animate: false,point: [10,13]},{type: 'quadratic',animate: false,point: [15, 8],anchor: [10,8]},{type: 'point',animate: false,point: [113, 8]},{type: 'quadratic',animate: true,point: [118, 13, 0, -5],anchor: [118,8,0,0]},{type: 'point',animate: true,point: [118, 28, 25, -20]},{type: 'quadratic',animate: true,point: [123, 33, 25, -20],anchor: [118,33, 30, -25]},{type: 'point',animate: true,point: [143, 33, 5, 0]},{type: 'quadratic',animate: false,point: [148, 38],anchor: [148,33]},{type: 'point',animate: false,point: [148, 124]},{type: 'quadratic',animate: true,point: [143, 129, 5, 0],anchor: [148,129, 0, 0]},{type: 'point',animate: true,point: [123, 129, 25, 20]},{type: 'quadratic',animate: true,point: [118, 134, 25, 22],anchor: [118,129, 30, 27]},{type: 'point',animate: true,point: [118, 151, 0, 5]},{type: 'quadratic',animate: false,point: [113, 156],anchor: [118,156]},{type: 'point',animate: false,point: [15, 156]},{type: 'quadratic',animate: false,point: [10, 151],anchor: [10,156]}],images: [{url: 'http://173.203.65.217:9999/images/homeButtons/requestMoreInfo.jpg', origin: [5,5]}],shadow: [{offset: [0, 4], blur: 7, color:"#151515"}]}}]});
+-->
