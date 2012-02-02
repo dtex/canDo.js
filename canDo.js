@@ -1,11 +1,8 @@
 var canDo = function(el, args){
 	
 	if (!args) args = {};
-	
 	var ctx  = el.getContext('2d')
-	
 	ctx.VERSION = '0.0.1';
-	ctx.DateObj = new Date();
 	
 	ctx.timeLine = {
 		duration: args.duration ? args.duration : 1000,
@@ -14,13 +11,7 @@ var canDo = function(el, args){
 		cuePoints: args.cuePoints ? args.cuePoints : {},
 		mode: 1
 	};
-	
-	
-	if (!ctx.timeLine.start) ctx.timeLine.start = 0;
-	if (!ctx.timeLine.end) ctx.timeLine.end = ctx.timeLine.duration;
-	ctx.timeLine.frameInterval = Math.floor(1000 / ctx.timeLine.frameRate);
-
-	
+		
 	ctx.status = {
 		time: args.setTime ? args.setTime : 0,
 		speed: args.playbackSpeed ? args.playbackSpeed : 1.0,
@@ -28,7 +19,10 @@ var canDo = function(el, args){
 		endTime: 0,
 		intervalTimer: 0
 	}
-	
+
+	if (!ctx.timeLine.start) ctx.timeLine.start = 0;
+	if (!ctx.timeLine.end) ctx.timeLine.end = ctx.timeLine.duration;
+	ctx.timeLine.frameInterval = Math.floor(1000 / ctx.timeLine.frameRate);	
 	ctx.timeLine.scaledDuration = ctx.timeLine.duration / ctx.status.speed;
 	
 	ctx.controller = {
@@ -72,14 +66,13 @@ var canDo = function(el, args){
 			}
 		}
 		var subDuration = keyFrames[end].cuePoint - keyFrames[start].cuePoint;
-		var subTime = ctx.status.time - keyFrames[start].cuePoint;
-		var subSubTime = subTime / subDuration;
+		var subSubSubTime = Math.pow(ctx.status.time - keyFrames[start].cuePoint, 2) / subDuration;
 		var changeInValue = keyFrames[end].params[0] - keyFrames[start].params[0];
 		ctx.fillRect(
-			ctx.easing.easeInQuad(0, subTime*subSubTime, keyFrames[start].params[0], keyFrames[end].params[0] - keyFrames[start].params[0], subDuration),
-			ctx.easing.easeInQuad(0, subTime*subSubTime, keyFrames[start].params[1], keyFrames[end].params[1] - keyFrames[start].params[1], subDuration),
-			ctx.easing.easeInQuad(0, subTime*subSubTime, keyFrames[start].params[2], keyFrames[end].params[2] - keyFrames[start].params[2], subDuration),
-			ctx.easing.easeInQuad(0, subTime*subSubTime, keyFrames[start].params[3], keyFrames[end].params[3] - keyFrames[start].params[3], subDuration)	
+			ctx.easing.easeInQuad(0, subSubSubTime, keyFrames[start].params[0], keyFrames[end].params[0] - keyFrames[start].params[0], subDuration),
+			ctx.easing.easeInQuad(0, subSubSubTime, keyFrames[start].params[1], keyFrames[end].params[1] - keyFrames[start].params[1], subDuration),
+			ctx.easing.easeInQuad(0, subSubSubTime, keyFrames[start].params[2], keyFrames[end].params[2] - keyFrames[start].params[2], subDuration),
+			ctx.easing.easeInQuad(0, subSubSubTime, keyFrames[start].params[3], keyFrames[end].params[3] - keyFrames[start].params[3], subDuration)	
 		);
 	};
 	
