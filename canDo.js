@@ -67,12 +67,11 @@ var canDo = function(el, args){
 		}
 		var subDuration = keyFrames[end].cuePoint - keyFrames[start].cuePoint;
 		var subSubSubTime = Math.pow(ctx.status.time - keyFrames[start].cuePoint, 2) / subDuration;
-		var changeInValue = keyFrames[end].params[0] - keyFrames[start].params[0];
 		ctx.fillRect(
-			ctx.easing.easeInQuad(0, subSubSubTime, keyFrames[start].params[0], keyFrames[end].params[0] - keyFrames[start].params[0], subDuration),
-			ctx.easing.easeInQuad(0, subSubSubTime, keyFrames[start].params[1], keyFrames[end].params[1] - keyFrames[start].params[1], subDuration),
-			ctx.easing.easeInQuad(0, subSubSubTime, keyFrames[start].params[2], keyFrames[end].params[2] - keyFrames[start].params[2], subDuration),
-			ctx.easing.easeInQuad(0, subSubSubTime, keyFrames[start].params[3], keyFrames[end].params[3] - keyFrames[start].params[3], subDuration)	
+			ctx.easing.easeInOutQuad(0, subSubSubTime, keyFrames[start].params[0], keyFrames[end].params[0] - keyFrames[start].params[0], subDuration),
+			ctx.easing.easeInOutQuad(0, subSubSubTime, keyFrames[start].params[1], keyFrames[end].params[1] - keyFrames[start].params[1], subDuration),
+			ctx.easing.easeInOutQuad(0, subSubSubTime, keyFrames[start].params[2], keyFrames[end].params[2] - keyFrames[start].params[2], subDuration),
+			ctx.easing.easeInOutQuad(0, subSubSubTime, keyFrames[start].params[3], keyFrames[end].params[3] - keyFrames[start].params[3], subDuration)	
 		);
 	};
 	
