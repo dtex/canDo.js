@@ -13,17 +13,19 @@
 	</canvas>
 	<script>
 		var test = canDo(document.getElementById('test'), {
-			frameRate: 200,
+			frameRate: 60,
 			duration: 2000,
+			cuePoints: {halfway: 0.5},
+			mode: 999,
 			paint: function() {
-				test.fillStyle = "rgb(255,0,0)";
+				test.fillStyle = "rgb(0,0,0)";
 				test.clearRect(0,0,480,960);
 				test.canDoFillRect([
 					{params: [30, 30, 50, 50], cuePoint: 0.0 },
 					{params: [100, 30, 100, 50], cuePoint: 0.2, easing: 'easeInQuad' },
 					{params: [100, 100, 100, 100], cuePoint: 0.5, easing: 'easeOutQuad' },
 					{params: [350, 650, 130, 130], cuePoint: 0.8, easing: 'easeInQuad' },
-					{params: [30, 30, 50, 50], cuePoint: 1.0, easing: 'easeOutQuad' }  
+					{params: [30, 30, 50, 50], cuePoint: 1.0, easing: 'easeInOutQuad' }  
 				]);
 			}
 		});
