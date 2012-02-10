@@ -14,20 +14,61 @@
 			</div>
 			<div id="pageRule">
 				<div id="inline">
+					<div class="inlineSidebar">
+						<h3>canDo.js is:</h3>
+						<ul>
+							<li>Framework agnostic</li>
+							<li>Standalone</li>
+							<li>Tiny (x.xKb gzipped)</li>
+						</ul>
+						<h3>canDo.js is not:</h3>
+						<ul>
+							<li>A scene graph manager</li>
+							<li>A game engine</li>
+							<li>A drawing tool</li>
+						</ul>
+						<h3>Want more? Use these:</h3>
+						<ul>
+							<li><a href="http://fabricjs.com/">fabric.js</a></li>
+							<li><a href="http://paperjs.org/">paper.js</a></li>
+							<li><a href="http://code.google.com/p/cakejs/">cake.js</a></li>
+							<li><a href="https://github.com/hyperandroid/CAAT">CAAT</a></li>
+						</ul>
+					</div>
 					<h3>canDo.js</h2>
-					<p>A canvas wrapper for lightweight animations. It is ideal for animating simple UI elements (i.e. buttons, and little graphical widgets). In a nutshell, canDo.js proxies the methods of the <a href="http://www.w3.org/TR/2dcontext/">HTML Canvas 2D Context</a>, and allows you to add keyframes and easing functions to the properties you pass in. canDo.JS handles the rest of the animation for you.</p>
-					<P>canDo.js is:</p>
-					<ul>
-						<li>Framework agnostic – It works with jQuery, Prototype.js, etc.</li>
-						<li>Standalone – There are no additional requirements (just 1 file)</li>
-						<li>Tiny – Just x.xKb minified and x.xKb gzipped</li>
-					</ul>
-					<p>canDo.js is not:</p>
-					<ul>
-						<li>A scene graph manager</li>
-						<li>A game engine</li>
-						<li>A drawing tool</li>
-					</ul>
+					<p>canDo.js is a canvas wrapper for lightweight animations. It is ideal for animating simple UI elements (i.e. buttons, and little graphical widgets). In a nutshell, canDo.js proxies the methods of the <a href="http://www.w3.org/TR/2dcontext/">HTML Canvas 2D Context</a>, and allows you to add keyframes and easing functions to the properties you pass in. canDo.JS handles the rest.</p>
+					<h3>Hello <strike>World</strike> Box</h3>
+					<p>First you need a canvas element. For example:</p>
+					<pre>
+&lt;canvas id="sample" width="240" height="240"&gt;
+	This text is displayed if your browser does not support HTML5 Canvas.
+&lt;/canvas&gt;
+					</pre>
+					<p>Next you need to create a reference to your canDo wrapped 2D rendering context. When you do that you need to pass in some parameters. For example:</p>
+					<pre>
+var test = canDo(document.getElementById('sample'), {
+	frameRate: 60,
+	duration: 2000,
+	cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
+	mode: 0,
+	paint: function() {
+		test.fillStyle = "rgb(0,0,0)";
+		test.clearRect(0,0,480,960);
+		test.canDo('fillRect', [
+			{params: [0, 0, 50, 50], cuePoint: 'start' },
+			{params: [190, 0, 50, 50], cuePoint: 0.2, easing: 'easeInQuad' },
+			{params: [150, 100, 90, 140], cuePoint: 'halfway', easing: 'easeOutQuad' },
+			{params: [0, 210, 10, 10], cuePoint: 0.8, easing: 'easeInQuad' },
+			{params: [0, 0, 50, 50], cuePoint: 'end', easing: 'easeInOutQuad' }  
+		]);
+	}
+});
+					</pre>
+					<p>Finally you call play on your canDo object like so:</p>
+					<pre>
+test.play();
+					</pre>
+					<div class="clear" />
 				</div>
 			</div>
 			<div id="footer"></div>
