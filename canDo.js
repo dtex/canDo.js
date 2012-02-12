@@ -6,7 +6,6 @@ var canDo = function(el, args){
 	if (!args) args = {};
 	ctx.v = '0.0.1';	// Version number
 	
-	
 	/* Properties of our Canvas timeline with some defaults. They are not specific to any method call */ 
 	ctx.timeLine = {
 		duration: args.duration ? args.duration : 1000,			// Timeline duration in 1/1000 seconds
@@ -33,7 +32,6 @@ var canDo = function(el, args){
 	
 	// Begin the animation
 	ctx.play = function(args) {
-		
 		if (!args) args = {};
 		if (args.speed) ctx.status.speed = args.speed;			// Update with new speed if speed property was passed
 		if (args.time) ctx.status.time = args.time;				// Update the playback head position if time property was passed
@@ -71,7 +69,7 @@ var canDo = function(el, args){
 				// Probably need to write this now
 			}
 			
-			if (ctx.timeLine.mode == 0) {						// We are set to loop
+			if (ctx.timeLine.mode == 2) {						// We are set to loop
 				ctx.status.time = 1.0;							// Set time to end of animation
 				ctx.paint();
 				ctx.status.time = 0;							// Set time to the beginning of the animation
@@ -84,6 +82,9 @@ var canDo = function(el, args){
 		var result = {};
 		result.start = 0, result.end = 1;
 		for (i=0, j= keyFrames.length;i<j;i++) {
+			if ( typeof( keyFrames[i].cuePoint) === "string") {
+				keyFrames[i].cuePoint = ctx.timeLine.cuePoints[keyFrames[i].cuePoint];
+			}
 			if (keyFrames[i].cuePoint < ctx.status.time) {
 				result.start = i;result.end = i+1;
 			}
