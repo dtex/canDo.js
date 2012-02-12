@@ -5,7 +5,12 @@
 		<meta http-equiv="Content-Type" content="application/html">
 		<meta http-equiv="expires" content="-1">
 		<title>canDo.js</title>
+		<link href="http://alexgorbatchev.com/pub/sh/current/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="css/dtex.css" media="all" />
+		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shCore.js" type="text/javascript"></script>
+		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
+		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js" type="text/javascript"></script>
+		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<div id="pagecontainer">
@@ -39,34 +44,31 @@
 					<p>canDo.js is a canvas wrapper for lightweight animations. It is ideal for animating simple UI elements (i.e. buttons, and little graphical widgets). In a nutshell, canDo.js proxies the methods of the <a href="http://www.w3.org/TR/2dcontext/">HTML Canvas 2D Context</a>, and allows you to add keyframes and easing functions to the properties you pass in. canDo.JS handles the rest.</p>
 					<h3>Hello <strike>World</strike> Box</h3>
 					<p>First you need a canvas element. For example:</p>
-					<pre>
-&lt;canvas id="sample" width="240" height="240"&gt;
-	This text is displayed if your browser does not support HTML5 Canvas.
-&lt;/canvas&gt;
-					</pre>
+					<script type="syntaxhighlighter" class="brush: html; toolbar: false"><![CDATA[
+						<canvas id="sample" width="240" height="240">
+							This text is displayed if your browser does not support HTML5 Canvas.
+						</canvas>]]></script>
 					<p>Next you need to create a reference to your canDo wrapped 2D rendering context. When you do that you need to pass in some parameters. For example:</p>
-					<pre>
-var test = canDo(document.getElementById('sample'), {
-	duration: 2000,
-	cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
-	mode: 0,
-	paint: function() {
-		test.fillStyle = "rgb(0,0,0)";
-		test.clearRect(0,0,480,960);
-		test.canDo('fillRect', [
-			{params: [0, 0, 50, 50], cuePoint: 'start' },
-			{params: [190, 0, 50, 50], cuePoint: 0.2, easing: 'easeInQuad' },
-			{params: [150, 100, 90, 140], cuePoint: 'halfway', easing: 'easeOutQuad' },
-			{params: [0, 210, 10, 10], cuePoint: 0.8, easing: 'easeInQuad' },
-			{params: [0, 0, 50, 50], cuePoint: 'end', easing: 'easeInOutQuad' }  
-		]);
-	}
-});
-					</pre>
+					<script type="syntaxhighlighter" class="brush: js; first-line: 5; toolbar: false "><![CDATA[
+						var test = canDo(document.getElementById('sample'), {
+							duration: 2000,
+							cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
+							mode: 0,
+							paint: function() {
+								test.fillStyle = "rgb(0,0,0)";
+								test.clearRect(0,0,480,960);
+								test.canDo('fillRect', [
+									{params: [0, 0, 50, 50], cuePoint: 'start'},
+									{params: [190, 0, 50, 50], cuePoint: 0.2, easing: 'easeInQuad'},
+									{params: [150, 100, 90, 140], cuePoint: 'halfway', easing: 'easeOutQuad'},
+									{params: [0, 210, 10, 10], cuePoint: 0.8, easing: 'easeInQuad'},
+									{params: [0, 0, 50, 50], cuePoint: 'end', easing: 'easeInOutQuad'}  
+								]);
+							}
+						});]]></script>
 					<p>Finally you call play on your canDo object like so:</p>
-					<pre>
-test.play();
-					</pre>
+					<script type="syntaxhighlighter" class="brush: js; toolbar: false; first-line:21;">
+						test.play();</script>
 					<div class="clear" />
 				</div>
 			</div>
@@ -74,5 +76,6 @@ test.play();
 			</div>
 			<div id="copyright" style="text-align:center;">©&nbsp;<span id="theyear">2012</span> Donovan Buck. All rights reserved.</div>
 		</div>
+		<script>SyntaxHighlighter.all();</script>
 	</body>
 </html>
