@@ -4,7 +4,7 @@ var canDo = function(el, args){
 	var ctx  = el.getContext('2d'); 
 	
 	if (!args) args = {};
-	ctx.v = '0.0.1';											// Version number
+	ctx.v = '0.0.1';	// Version number
 	
 	
 	/* Properties of our Canvas timeline with some defaults. They are not specific to any method call */ 
@@ -94,6 +94,12 @@ var canDo = function(el, args){
 		return result;
 	}
 	
+	ctx.canDo = function(method, keyFrames) {
+		var beg = ctx.getCurrentKeyframe(keyFrames);
+		var result = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration);
+		ctx[method].apply(this, result);
+	};
+	
 	// Transformations
 	// void scale(double x, double y);
 	// void rotate(double angle);
@@ -128,14 +134,7 @@ var canDo = function(el, args){
    
 	// rects
 	// void clearRect(double x, double y, double w, double h);
-	
-	ctx.canDoFillRect = function(keyFrames) {
-		// void fillRect(double x, double y, double w, double h);
-		var beg = ctx.getCurrentKeyframe(keyFrames);
-		var result = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration);
-		ctx.fillRect(result[0], result[1], result[2], result[3]);
-	};
-	
+	// void fillRect(double x, double y, double w, double h);
 	// void strokeRect(double x, double y, double w, double h);
 	
 	// path API
