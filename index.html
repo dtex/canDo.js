@@ -25,7 +25,7 @@
 						<ul>
 							<li>Framework agnostic</li>
 							<li>Standalone</li>
-							<li>Tiny (799 bytes gzipped)</li>
+							<li>Tiny </li>
 						</ul>
 						<h3>canDo.js is not:</h3>
 						<ul>
@@ -43,6 +43,7 @@
 					</div>
 					<h3>canDo.js</h2>
 					<p>canDo.js is a canvas wrapper for lightweight animations. It is ideal for animating simple UI elements (i.e. buttons, and little graphical widgets). In a nutshell, canDo.js proxies the methods of the <a href="http://www.w3.org/TR/2dcontext/">HTML Canvas 2D Context</a>, and allows you to add keyframes and easing functions to the properties you pass in. canDo.JS handles the rest.</p>
+					<p>It provides some common easing functions, convenience methods and setter proxies for attributes of the rendering context. You are free to use the non-proxied functions when appropriate.</p>
 					<h3>Hello <strike>World</strike> Box</h3>
 					<p>First you need a canvas element. For example:</p>
 					<script type="syntaxhighlighter" class="brush: html; toolbar: false"><![CDATA[
@@ -52,9 +53,12 @@
 					<p>Next you need to create a reference to your canDo wrapped 2D rendering context. When you do that you need to pass in some parameters. For example:</p>
 					<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
 						var test = canDo(document.getElementById('sample'), {
+							mode: 'loop',
+							frameRate:60,
 							paint: function() {
 								this.clearRect(0,0,240,240);
-								this.canDo('fillRect', [
+								this.canDo('fillRect', 
+								[
 									{params: [115, 115, 10, 10], cuePoint:0},
 									{params: [0, 0, 240, 240], cuePoint: .5, easing: 'easeOutQuad'},
 									{params: [115, 115, 10, 10], cuePoint: 1, easing: 'easeInOutQuad'}
@@ -68,8 +72,11 @@
 					<canvas id="sample" width="240" height="240">
 						This text is displayed if your browser does not support HTML5 Canvas.
 					</canvas>
+					<p><em>Warning: Looping an animation at a high frame rate like this can use up an inordinate amount of CPU...<br/>I think I hear your fan spinning up now.</em></p>
 					<script>
 						var test = canDo(document.getElementById('sample'), {
+							mode: 'loop',
+							frameRate:60,
 							paint: function() {
 								this.clearRect(0,0,240,240);
 								this.canDo('fillRect', [
