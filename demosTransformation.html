@@ -17,8 +17,12 @@ title: canDo.js Transformation Demos
 	<li><a href="demosPixelManipulation.html">Pixel manipulation</a></li>
 </ul>	
 <h3>Transformation Demos</h3>
-<p>Canvas has a series a matrix transformations that can be applied to your rendering context. These transformations are additive
-<h4>context.canDo('scale', { paint: function(){} [, duration: int] [, mode: 'loop']  [, frameRate: int] [, speed: float] [, cuePoints: {}] [, setTime: float]  })</h4>
+<p>Canvas has a series a matrix transformations that can be applied to your rendering context. These transformations are additive so you will usually want to reset the canvas to its default state (the identity matrix) before each call to your paint function.</p>
+
+
+
+
+<h4>context.canDo('scale', { args })</h4>
 <p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-scale">context.scale(x, y)</a></p>
 <p>Applies a scaling transformation to the canvas coordinate grid.</p>
 <script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
@@ -26,7 +30,7 @@ title: canDo.js Transformation Demos
 		mode: 'loop',
 		frameRate:60,
 		paint: function() {
-			//this.identity();
+			this.identity();
 			this.clearRect(0,0,320,320);
 			this.canDo('scale', [
 				{params: [.5, .5], cuePoint:0},
@@ -48,7 +52,7 @@ title: canDo.js Transformation Demos
 			this.clearRect(0,0,320,320);
 			this.canDo('scale', [
 				{params: [.5, .5], cuePoint:0},
-				{params: [1.33, 1.33], cuePoint: .5, easing: 'easeOutQuad'},
+				{params: [1.5, 1.5], cuePoint: .5, easing: 'easeOutQuad'},
 				{params: [.5, .5], cuePoint: 1, easing: 'easeInOutQuad'}
 			]);
 			drawJSLogo(this);
@@ -56,4 +60,46 @@ title: canDo.js Transformation Demos
 	});
 	scale.play();
 </script>
+
 <hr />
+
+<h4>context.canDo('rotate', { args })</h4>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-rotate">context.rotate( radians )</a></p>
+<p>Applies a rotation to the canvas coordinate grid.</p>
+<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
+	var rotate = canDo(document.getElementById('rotate'), {
+		mode: 'loop',
+		frameRate:60,
+		paint: function() {
+			this.identity();
+			this.clearRect(0,0,320,320);
+			this.canDo('rotate', [
+				{params: [ 0 ], cuePoint:0},
+				{params: [1], cuePoint: .25, easing: 'easeOutQuad'},
+				{params: [-1], cuePoint: .75, easing: 'easeInOutQuad'},
+				{params: [ 0 ], cuePoint:1, easing: 'easeInQuad' },
+			]);
+			drawJSLogo(this);
+		}
+	});]]></script>
+<canvas id="scale" width="320" height="320">
+	ctx text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<script>
+	var rotate = canDo(document.getElementById('rotate'), {
+		mode: 'loop',
+		frameRate:60,
+		paint: function() {
+			this.identity();
+			this.clearRect(0,0,320,320);
+			this.canDo('rotate', [
+				{params: [.5, .5], cuePoint:0},
+				{params: [1.5, 1.5], cuePoint: .5, easing: 'easeOutQuad'},
+				{params: [.5, .5], cuePoint: 1, easing: 'easeInOutQuad'}
+			]);
+			this.translate(55,55);
+			drawJSLogo(this);
+		}
+	});
+	rotate.play();
+</script>
