@@ -52,20 +52,12 @@
 					<p>Next you need to create a reference to your canDo wrapped 2D rendering context. When you do that you need to pass in some parameters. For example:</p>
 					<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
 						var test = canDo(document.getElementById('sample'), {
-							duration: 2000,
-							frameRate: 60,
-							cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
-							mode: 'loop',
 							paint: function() {
-								test.fillStyle = "rgb(0,0,0)";
-								test.clearRect(0,0,480,960);
+								test.clearRect(0,0,240,240);
 								test.canDo('fillRect', [
-									{params: [0, 0, 50, 50], cuePoint: 'start'},
-									{params: [0, 0, 240, 240], cuePoint: 0.2, easing: 'easeInQuad'},
-									{params: [190, 190, 50, 50], cuePoint: 'halfway', easing: 'easeOutQuad'},
-									{params: [0, 210, 10, 10], cuePoint: 0.7, easing: 'easeInQuad'},
-									{params: [230, 0, 10, 10], cuePoint: 0.85, easing: 'easeInQuad'},
-									{params: [0, 0, 50, 50], cuePoint: 'end', easing: 'easeInOutQuad'} 
+									{params: [115, 115, 10, 10], cuePoint:0},
+									{params: [0, 0, 240, 240], cuePoint: .5, easing: 'easeOutQuad'},
+									{params: [115, 115, 10, 10], cuePoint: 1, easing: 'easeInOutQuad'}
 								]);
 							}
 						});]]></script>
@@ -78,20 +70,12 @@
 					</canvas>
 					<script>
 						var test = canDo(document.getElementById('sample'), {
-							duration: 2000,
-							frameRate: 60,
-							cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
-							mode: 'loop',
 							paint: function() {
-								test.fillStyle = "rgb(0,0,0)";
-								test.clearRect(0,0,480,960);
+								test.clearRect(0,0,240,240);
 								test.canDo('fillRect', [
-									{params: [0, 0, 50, 50], cuePoint: 'start'},
-									{params: [0, 0, 240, 240], cuePoint: 0.2, easing: 'easeInQuad'},
-									{params: [190, 190, 50, 50], cuePoint: 'halfway', easing: 'easeOutQuad'},
-									{params: [0, 210, 10, 10], cuePoint: 0.7, easing: 'easeInQuad'},
-									{params: [230, 0, 10, 10], cuePoint: 0.85, easing: 'easeInQuad'},
-									{params: [0, 0, 50, 50], cuePoint: 'end', easing: 'easeInOutQuad'} 
+									{params: [115, 115, 10, 10], cuePoint:0},
+									{params: [0, 0, 240, 240], cuePoint: .5, easing: 'easeOutQuad'},
+									{params: [115, 115, 10, 10], cuePoint: 1, easing: 'easeInOutQuad'}
 								]);
 							}
 						});
