@@ -3,46 +3,45 @@ var canDo = function(el, args){
 	// Our 2d rendering context
 	var ctx  = el.getContext('2d'); 
 	
-	if (!args) args = {};
-	ctx.v = '0.0.1';	// Version number
-	
 	/* Properties of our Canvas timeline with some defaults. They are not specific to any method call */ 
-	ctx.timeLine = {
-		duration: args.duration ? args.duration : 1000,			// Timeline duration in 1/1000 seconds
-		frameRate: args.frameRate ? args.frameRate : 30,		// Our target framerate
-		frameInterval : 30,										// Milliseconds between frames (recalculated below)
-		cuePoints: args.cuePoints ? args.cuePoints : {},		// Our list of cuepoints
-		mode: args.mode ? args.mode : 1							// Playback mode (1 = 1x, 0 = loop, -1 = back and forth)
+	ctx.t = { // t=timeLine
+		duration: args.duration ? args.duration : 1000,	 // Timeline duration in 1/1000 seconds
+		frameRate: args.frameRate ? args.frameRate : 30, // Our target framerate
+		frameInterval : 30, // Milliseconds between frames (recalculated below)
+		cuePoints: args.cuePoints ? args.cuePoints : {}, // Our list of cuepoints
+		mode: args.mode ? args.mode : '' // Playback mode ('' = Play 1x, 'loop', 'pendulum')
 	};
 
 	// The calculated value of milliseconds between frames
-	ctx.timeLine.frameInterval = Math.floor(1000 / ctx.timeLine.frameRate);		
+	ctx.t.frameInterval = Math.floor(1000 / ctx.t.frameRate);		
 	
 	// Properties of our playback head
-	ctx.status = {
-		time: args.setTime ? args.setTime : 0,					// Setting the playback head position on the timeline (0.0 - 1.0)
-		speed: args.playbackSpeed ? args.playbackSpeed : 1.0, 	// For stretching the timeline (sill in development)
-		startTime: 0,											// The start time of the current play event (calculated on play)
-		endTime: 0,												// The end time of the current play event (calculated on play)
-		intervalTimer: 0 										// The setInterval used for refresh
+	ctx.s = { // s=status
+		time: args.setTime ? args.setTime : 0, // Setting the playback head position on the timeline (0.0 - 1.0)
+		speed: args.playbackSpeed ? args.playbackSpeed : 1.0, // For stretching the timeline (sill in development)
+		startTime: 0,	 // The start time of the current play event (calculated on play)
+		endTime: 0, // The end time of the current play event (calculated on play)
+		intervalTimer: 0 // The setInterval used for refresh
 	}
 	
-	// Convenience function
+	// Yeah, we're gonna need this
 	ctx.paint = args.paint;
 	
 	// Begin the animation
 	ctx.play = function(args) {
-		if (!args) args = {};
-		if (args.speed) ctx.status.speed = args.speed;			// Update with new speed if speed property was passed
-		if (args.time) ctx.status.time = args.time;				// Update the playback head position if time property was passed
 		
-		// Calculate new values
-		ctx.timeLine.scaledDuration = ctx.timeLine.duration / ctx.status.speed; 
-		ctx.status.time == 0 ? ctx.status.startTime = Date.now() : ctx.status.startTime = Date.now() - ctx.timeLine.scaledDuration * ctx.status.speed /  ctx.status.time;
-		ctx.status.endTime = ctx.status.startTime + ctx.timeLine.scaledDuration;
+		if (!args) args = {}; // We can pass in args to our play function as well
+		if (args.speed) ctx.s.speed = args.speed; // Update with new speed if speed property was passed
+		if (args.time) ctx.s.time = args.time; // Update the playback head position if time property was passed
+		
+		// Calculate our new time values
+		ctx.t.scaledDuration = ctx.t.duration / ctx.s.speed;
+		// This next line is wrong
+		ctx.s.time == 0 ? ctx.s.startTime = Date.now() : ctx.s.startTime = Date.now() - ctx.t.scaledDuration /  ctx.s.time; 
+		ctx.s.endTime = ctx.s.startTime + ctx.t.scaledDuration;
 		
 		// Start our interval timer and render the first frame
-		ctx.status.intervalTimer = setInterval (function() { ctx.update(); }, ctx.timeLine.frameInterval);
+		ctx.s.intervalTimer = setInterval (function() { ctx.update(); }, ctx.t.frameInterval);
 		ctx.update();
 	}
 	
@@ -50,30 +49,26 @@ var canDo = function(el, args){
 	ctx.update = function() {
 		
 		// Find where we are on the timeline
-		ctx.status.time = (Date.now() - ctx.status.startTime) / ctx.timeLine.scaledDuration;
+		ctx.s.time = (Date.now() - ctx.s.startTime) / ctx.t.scaledDuration;
 		
 		// this conditional needs to change to support playing backwards
-		if (ctx.status.time < 1.0) { 							// If the animation is not finished
+		if (ctx.s.time < 1.0) {  // If the animation is not finished
 			
-			ctx.paint();										// Update the canvas and keep on truckin'
+			ctx.paint(); // Update the canvas and keep on truckin'
 			
-		} else { 												// The animation is finished
+		} else { // The animation is finished
 			
-			if (ctx.timeLine.mode == 1) {						// If we are set to play through one time
-				clearInterval(ctx.status.intervalTimer);		// Cancel the refresh interval timer
-				ctx.status.time = 1.0;							// Set time to end of animation
-				ctx.paint();									// Update the canvas
+			if (ctx.t.mode == '') { // If we are set to play through one time
+				clearInterval(ctx.s.intervalTimer); // Cancel the refresh interval timer
+				ctx.s.time = 1.0; // Set time to end of animation
+				ctx.paint(); // Update the canvas
 			}
 			
-			if (ctx.timeLine.mode == -1) {
-				// Probably need to write this now
-			}
-			
-			if (ctx.timeLine.mode == 2) {						// We are set to loop
-				ctx.status.time = 1.0;							// Set time to end of animation
-				ctx.paint();
-				ctx.status.time = 0;							// Set time to the beginning of the animation
-				ctx.play({time:0});								// Play from the beginning
+			if (ctx.t.mode == 'loop') { // We are set to loop
+				ctx.s.time = 1.0; // Set time to end of animation
+				ctx.paint(); // Update the canvas
+				ctx.s.time = 0; // Set time to the beginning of the animation
+				ctx.play({time:0}); // Play from the beginning
 			}
 		}
 	}
@@ -83,14 +78,14 @@ var canDo = function(el, args){
 		result.start = 0, result.end = 1;
 		for (i=0, j= keyFrames.length;i<j;i++) {
 			if ( typeof( keyFrames[i].cuePoint) === "string") {
-				keyFrames[i].cuePoint = ctx.timeLine.cuePoints[keyFrames[i].cuePoint];
+				keyFrames[i].cuePoint = ctx.t.cuePoints[keyFrames[i].cuePoint];
 			}
-			if (keyFrames[i].cuePoint < ctx.status.time) {
+			if (keyFrames[i].cuePoint < ctx.s.time) {
 				result.start = i;result.end = i+1;
 			}
 		}
 		result.subDuration = keyFrames[result.end].cuePoint - keyFrames[result.start].cuePoint;
-		result.subTime = Math.pow(ctx.status.time - keyFrames[result.start].cuePoint, 2) / result.subDuration;
+		result.subTime = Math.pow(ctx.s.time - keyFrames[result.start].cuePoint, 2) / result.subDuration;
 		result.bounces = 0;
 		return result;
 	}

@@ -9,16 +9,19 @@
 	<canvas id="sample" width="240" height="240">
     	This text is displayed if your browser does not support HTML5 Canvas.
 	</canvas>
+	<canvas id="otherSample" width="240" height="240">
+    	This text is displayed if your browser does not support HTML5 Canvas.
+	</canvas>
 	<script>
 		var test = canDo(document.getElementById('sample'), {
 			duration: 2000,
 			frameRate: 60,
 			cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
-			mode: 2,
+			mode: 'loop',
 			paint: function() {
-				test.fillStyle = "rgb(0,0,0)";
-				test.clearRect(0,0,480,960);
-				test.canDo('fillRect', [
+				this.fillStyle = "rgb(0,0,0)";
+				this.clearRect(0,0,240,240);
+				this.canDo('fillRect', [
 					{params: [0, 0, 50, 50], cuePoint: 'start'},
 					{params: [0, 0, 240, 240], cuePoint: 0.2, easing: 'easeInQuad'},
 					{params: [190, 190, 50, 50], cuePoint: 'halfway', easing: 'easeOutQuad'},
@@ -28,7 +31,26 @@
 				]);
 			}
 		});
-		test.play();
+		test.play({speed:0.5});
+		var test2 = canDo(document.getElementById('otherSample'), {
+			duration: 2000,
+			frameRate: 60,
+			cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
+			mode: 'loop',
+			paint: function() {
+				this.fillStyle = "rgb(0,0,0)";
+				this.clearRect(0,0,240,240);
+				this.canDo('fillRect', [
+					{params: [190, 190, 50, 50], cuePoint: 'start'},
+					{params: [0, 0, 240, 240], cuePoint: 0.2, easing: 'easeInQuad'},
+					{params: [0, 0, 50, 50], cuePoint: 'halfway', easing: 'easeOutQuad'},
+					{params: [230, 210, 10, 10], cuePoint: 0.7, easing: 'easeInQuad'},
+					{params: [0, 0, 10, 10], cuePoint: 0.85, easing: 'easeInQuad'},
+					{params: [190, 190, 50, 50], cuePoint: 'end', easing: 'easeInOutQuad'} 
+				]);
+			}
+		});
+		test2.play();
 
 		var js = function() {
 			// Clear and draw the square
