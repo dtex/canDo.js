@@ -11,6 +11,7 @@
 		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shAutoloader.js" type="text/javascript"></script>
 		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushJScript.js" type="text/javascript"></script>
 		<script src="http://alexgorbatchev.com/pub/sh/current/scripts/shBrushXml.js" type="text/javascript"></script>
+		<script src="js/cando.min.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<div id="pagecontainer">
@@ -24,7 +25,7 @@
 						<ul>
 							<li>Framework agnostic</li>
 							<li>Standalone</li>
-							<li>Tiny (x.xKb gzipped)</li>
+							<li>Tiny (804 bytes gzipped)</li>
 						</ul>
 						<h3>canDo.js is not:</h3>
 						<ul>
@@ -49,7 +50,7 @@
 							This text is displayed if your browser does not support HTML5 Canvas.
 						</canvas>]]></script>
 					<p>Next you need to create a reference to your canDo wrapped 2D rendering context. When you do that you need to pass in some parameters. For example:</p>
-					<script type="syntaxhighlighter" class="brush: js; first-line: 5; toolbar: false "><![CDATA[
+					<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
 						var test = canDo(document.getElementById('sample'), {
 							duration: 2000,
 							cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
@@ -67,8 +68,33 @@
 							}
 						});]]></script>
 					<p>Finally you call play on your canDo object like so:</p>
-					<script type="syntaxhighlighter" class="brush: js; toolbar: false; first-line:21;">
+					<script type="syntaxhighlighter" class="brush: js; toolbar: false; first-line:20;">
 						test.play();</script>
+					<p>And we end up with:</p>
+					<canvas id="sample" width="240" height="240">
+						This text is displayed if your browser does not support HTML5 Canvas.
+					</canvas>
+					<script>
+						var test = canDo(document.getElementById('sample'), {
+							duration: 2000,
+							frameRate: 60,
+							cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
+							mode: 2,
+							paint: function() {
+								test.fillStyle = "rgb(0,0,0)";
+								test.clearRect(0,0,480,960);
+								test.canDo('fillRect', [
+									{params: [0, 0, 50, 50], cuePoint: 'start'},
+									{params: [0, 0, 240, 240], cuePoint: 0.2, easing: 'easeInQuad'},
+									{params: [190, 190, 50, 50], cuePoint: 'halfway', easing: 'easeOutQuad'},
+									{params: [0, 210, 10, 10], cuePoint: 0.7, easing: 'easeInQuad'},
+									{params: [230, 0, 10, 10], cuePoint: 0.85, easing: 'easeInQuad'},
+									{params: [0, 0, 50, 50], cuePoint: 'end', easing: 'easeInOutQuad'} 
+								]);
+							}
+						});
+						test.play();
+					</script>
 					<div class="clear" />
 				</div>
 			</div>
