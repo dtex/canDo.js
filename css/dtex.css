@@ -15,3 +15,5 @@ p {}
 .clear {clear:both;}
 
 .syntaxhighlighter .line.alt1 {background-color: #f3f3f3 !important;}
+
+canvas {margin-bottom:18px;}
