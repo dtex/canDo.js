@@ -6,10 +6,10 @@ var canDo = function(el, args){
 	/* Properties of our Canvas timeline with some defaults. They are not specific to any method call */ 
 	ctx.t = { // t=timeLine
 		duration: args.duration ? args.duration : 1000,	 // Timeline duration in 1/1000 seconds
-		frameRate: args.frameRate ? args.frameRate : 30, // Our target framerate
+		frameRate: args.frameRate ? args.frameRate : 60, // Our target framerate
 		frameInterval : 30, // Milliseconds between frames (recalculated below)
 		cuePoints: args.cuePoints ? args.cuePoints : {}, // Our list of cuepoints
-		mode: args.mode ? args.mode : '' // Playback mode ('' = Play 1x, 'loop', 'pendulum')
+		mode: args.mode ? args.mode : 'loop' // Playback mode ('' = Play 1x, 'loop')
 	};
 
 	// The calculated value of milliseconds between frames
