@@ -17,7 +17,8 @@ title: canDo.js Transformation Demos
 	<li><a href="demosPixelManipulation.html">Pixel manipulation</a></li>
 </ul>	
 <h3>Transformation Demos</h3>
-<h4>context.canDo('scale', { params })</h4>
+<p>Canvas has a series a matrix transformations that can be applied to your rendering context. These transformations are additive
+<h4>context.canDo('scale', { paint: function(){} [, duration: int] [, mode: 'loop']  [, frameRate: int] [, speed: float] [, cuePoints: {}] [, setTime: float]  })</h4>
 <p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-scale">context.scale(x, y)</a></p>
 <p>Applies a scaling transformation to the canvas coordinate grid.</p>
 <script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
@@ -25,7 +26,7 @@ title: canDo.js Transformation Demos
 		mode: 'loop',
 		frameRate:60,
 		paint: function() {
-			this.identity();
+			//this.identity();
 			this.clearRect(0,0,320,320);
 			this.canDo('scale', [
 				{params: [.5, .5], cuePoint:0},
@@ -43,7 +44,7 @@ title: canDo.js Transformation Demos
 		mode: 'loop',
 		frameRate:60,
 		paint: function() {
-			this.identity();
+			//this.identity();
 			this.clearRect(0,0,320,320);
 			this.canDo('scale', [
 				{params: [.5, .5], cuePoint:0},
@@ -55,3 +56,4 @@ title: canDo.js Transformation Demos
 	});
 	scale.play();
 </script>
+<hr />
