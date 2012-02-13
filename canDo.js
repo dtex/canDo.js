@@ -95,6 +95,10 @@ var canDo = function(el, args){
 		return result;
 	}
 	
+	ctx.identity = function() { 
+    	this.setTransform(1, 0, 0, 1, 0, 0); 
+	}
+
 	ctx.canDo = function(method, keyFrames) {
 		var beg = ctx.getCurrentKeyframe(keyFrames);
 		var result = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration);
