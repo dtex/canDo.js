@@ -53,8 +53,8 @@
 					<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
 						var test = canDo(document.getElementById('sample'), {
 							paint: function() {
-								test.clearRect(0,0,240,240);
-								test.canDo('fillRect', [
+								this.clearRect(0,0,240,240);
+								this.canDo('fillRect', [
 									{params: [115, 115, 10, 10], cuePoint:0},
 									{params: [0, 0, 240, 240], cuePoint: .5, easing: 'easeOutQuad'},
 									{params: [115, 115, 10, 10], cuePoint: 1, easing: 'easeInOutQuad'}
@@ -71,8 +71,8 @@
 					<script>
 						var test = canDo(document.getElementById('sample'), {
 							paint: function() {
-								test.clearRect(0,0,240,240);
-								test.canDo('fillRect', [
+								this.clearRect(0,0,240,240);
+								this.canDo('fillRect', [
 									{params: [115, 115, 10, 10], cuePoint:0},
 									{params: [0, 0, 240, 240], cuePoint: .5, easing: 'easeOutQuad'},
 									{params: [115, 115, 10, 10], cuePoint: 1, easing: 'easeInOutQuad'}
