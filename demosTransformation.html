@@ -93,9 +93,10 @@ title: canDo.js Transformation Demos
 			this.identity();
 			this.clearRect(0,0,320,320);
 			this.canDo('rotate', [
-				{params: [.5, .5], cuePoint:0},
-				{params: [1.5, 1.5], cuePoint: .5, easing: 'easeOutQuad'},
-				{params: [.5, .5], cuePoint: 1, easing: 'easeInOutQuad'}
+				{params: [ 0 ], cuePoint:0},
+				{params: [1], cuePoint: .25, easing: 'easeOutQuad'},
+				{params: [-1], cuePoint: .75, easing: 'easeInOutQuad'},
+				{params: [ 0 ], cuePoint:1, easing: 'easeInQuad' },
 			]);
 			this.translate(55,55);
 			drawJSLogo(this);
