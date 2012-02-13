@@ -2,12 +2,12 @@
 layout: default
 title: canDo.js Transformation Demos
 ---
-<!--<script src="js/canDo.min.js"></script>
+<script src="js/canDo.min.js"></script>
 <script>var drawJSLogo = function(ctx) {
 ctx.beginPath();ctx.clearRect(0,0,210,210);ctx.fillStyle = "rgb(247,223,30)";ctx.fillRect(0,0,210,210);
 ctx.fillStyle = "rgb(0,0,0)";ctx.moveTo(94.66,164.33);ctx.lineTo(94.66,96.66);ctx.lineTo(114,96.66);ctx.lineTo(114,164.33);ctx.bezierCurveTo(114,179.33,106.66,193.33,84.66,193.33);ctx.bezierCurveTo(62.66,193.33,55.33,176,55.33,176);ctx.lineTo(71.33,166);ctx.bezierCurveTo(71.33,166,74.66,176.33,84.33,176.33);ctx.bezierCurveTo(95.66, 176.33, 94.66, 164.33, 94.66, 164.33);
 ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33, 157, 176.33, 160, 176.33);ctx.bezierCurveTo(162.67, 176.33, 173, 176.33, 173.33, 167);ctx.bezierCurveTo(173.67, 157.67, 166, 156.67, 150, 148.67);ctx.bezierCurveTo(133.33, 141.33, 130.67, 131.67, 130.67, 120.33);ctx.bezierCurveTo(131, 109, 139.67, 95, 160, 95);ctx.bezierCurveTo(180, 95, 187.67, 111.33, 187.67, 111.33);ctx.lineTo(172.33, 121.33);ctx.bezierCurveTo(169, 114, 163.33, 112.33, 160, 112.33);ctx.bezierCurveTo(156.67, 112.67, 150, 114.33, 150, 121);ctx.bezierCurveTo(150.67, 127.67, 150.67, 127.67, 171.33, 137.33);ctx.bezierCurveTo(193, 146.67, 193.33, 158.33, 193.33, 167.33);ctx.bezierCurveTo(193.33, 175, 188.67, 193.33, 160.67, 193.33);ctx.bezierCurveTo(132.33, 193.33, 125, 173.33, 125, 173.33);ctx.fill();ctx.closePath();
-}</script>-->
+}</script>
 <h3>canDo.js Demos</h2>
 <p>For convenience, demo groupings reflect the HTML Canvas 2D Context working draft structure.</p>
 <ul>
@@ -34,31 +34,33 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 <script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
 	var scale = canDo(document.getElementById('scale'), {
 		mode: 'loop',
-		frameRate:60,
+		frameRate:30,
+		duration:4000,
 		paint: function() {
 			this.identity();
 			this.clearRect(0,0,320,320);
 			this.canDo('scale', [
 				{params: [.5, .5], cuePoint:0},
-				{params: [1.33, 1.33], cuePoint: .5, easing: 'easeOutQuad'},
+				{params: [1.33, 1.33], cuePoint: .5, easing: 'easeInOutQuad'},
 				{params: [.5, .5], cuePoint: 1, easing: 'easeInOutQuad'}
 			]);
 			drawJSLogo(this);
 		}
 	});]]></script>
 <canvas id="scale" width="320" height="320">
-	ctx text is displayed if your browser does not support HTML5 Canvas.
+	This text is displayed if your browser does not support HTML5 Canvas.
 </canvas>
 <script>
 	var scale = canDo(document.getElementById('scale'), {
 		mode: 'loop',
-		frameRate:60,
+		frameRate:30,
+		duration:4000,
 		paint: function() {
 			this.identity();
 			this.clearRect(0,0,320,320);
 			this.canDo('scale', [
 				{params: [.5, .5], cuePoint:0},
-				{params: [1.5, 1.5], cuePoint: .5, easing: 'easeOutQuad'},
+				{params: [1.5, 1.5], cuePoint: .5, easing: 'easeInOutQuad'},
 				{params: [.5, .5], cuePoint: 1, easing: 'easeInOutQuad'}
 			]);
 			drawJSLogo(this);
@@ -75,7 +77,8 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 <script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
 		var rotate = canDo(document.getElementById('rotate'), {
 		mode: 'loop',
-		frameRate:60,
+		frameRate:30,
+		duration:4000,
 		paint: function() {
 			this.identity();
 			this.clearRect(0,0,320,320);
@@ -91,12 +94,13 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 	});
 ]]></script>
 <canvas id="rotate" width="320" height="320">
-	ctx text is displayed if your browser does not support HTML5 Canvas.
+	This text is displayed if your browser does not support HTML5 Canvas.
 </canvas>
 <script>
 	var rotate = canDo(document.getElementById('rotate'), {
 		mode: 'loop',
-		frameRate:60,
+		frameRate:30,
+		duration:4000,
 		paint: function() {
 			this.identity();
 			this.clearRect(0,0,320,320);
@@ -111,4 +115,88 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 		}
 	});
 	rotate.play();
+</script>
+
+<hr />
+
+<h4>context.canDo('translate', { args })</h4>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-rotate">context.translate( x, y )</a></p>
+<p>Applies a translation to the canvas coordinate grid.</p>
+<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
+		var translate = canDo(document.getElementById('translate'), {
+		mode: 'loop',
+		frameRate:30,
+		duration:4000,
+		paint: function() {
+			this.identity();
+			this.clearRect(0,0,320,320);
+			this.canDo('translate', [
+				{params: [ 0, 0 ], cuePoint:0},
+				{params: [ 90, 0 ], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [ 0, 0 ], cuePoint: 1, easing: 'easeInOutQuad'}
+			]);
+			drawJSLogo(this);
+		}
+	});]]></script>
+<canvas id="translate" width="320" height="320">
+	This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<script>
+	var translate = canDo(document.getElementById('translate'), {
+		mode: 'loop',
+		frameRate:30,
+		duration:4000,
+		paint: function() {
+			this.identity();
+			this.clearRect(0,0,320,320);
+			this.canDo('translate', [
+				{params: [ 0, 0 ], cuePoint:0},
+				{params: [ 90, 0 ], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [ 0, 0 ], cuePoint: 1, easing: 'easeInOutQuad'}
+			]);
+			drawJSLogo(this);
+		}
+	});
+	translate.play();
+</script>
+
+<hr />
+
+<h4>context.canDo('setTransform', { args })</h4>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-rotate">context.setTransform( a, b, c, d, e, f )</a></p>
+<p>Sets the current transormation matrix.</p>
+<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
+		var setTransform = canDo(document.getElementById('setTransform'), {
+		mode: 'loop',
+		frameRate:30,
+		duration:4000,
+		paint: function() {
+			this.clearRect(0,0,320,320);
+			this.canDo('setTransform', [
+				{params: [ 1, 0, 0, 1, 0, 0 ], cuePoint:0},
+				{params: [ 1, .5, .5, 1, 0, 0 ], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [ 1, 0, 0, 1, 0, 0 ], cuePoint: 1, easing: 'easeInOutQuad'}
+			]);
+			drawJSLogo(this);
+		}
+	});]]></script>
+<canvas id="setTransform" width="320" height="320">
+	This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<script>
+	var setTransform = canDo(document.getElementById('setTransform'), {
+		mode: 'loop',
+		frameRate:30,
+		duration:4000,
+		paint: function() {
+			this.clearRect(0,0,320,320);
+			this.canDo('setTransform', [
+				{params: [ 1, 0, 0, 1, 0, 0 ], cuePoint:0},
+				{params: [ 1, .5, .5, 1, 0, 0 ], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [ 1, 0, 0, 1, 0, 0 ], cuePoint: 1, easing: 'easeInOutQuad'}
+			]);
+			drawJSLogo(this);
+		}
+	});
+	setTransform.play();
 </script>
