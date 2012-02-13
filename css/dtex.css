@@ -16,4 +16,4 @@ p {}
 
 .syntaxhighlighter .line.alt1 {background-color: #f3f3f3 !important;}
 
-canvas {margin-bottom:18px;}
+canvas {margin-top:18px;border:solid 1px #ccc;padding:1px;}
