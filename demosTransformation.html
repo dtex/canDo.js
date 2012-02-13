@@ -31,7 +31,7 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 <h4>context.canDo('scale', { args })</h4>
 <p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-scale">context.scale(x, y)</a></p>
 <p>Applies a scaling transformation to the canvas coordinate grid.</p>
-<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
+<script type="syntaxhighlighter" class="brush: js; toolbar: false "><![CDATA[
 	var scale = canDo(document.getElementById('scale'), {
 		mode: 'loop',
 		frameRate:30,
@@ -74,7 +74,7 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 <h4>context.canDo('rotate', { args })</h4>
 <p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-rotate">context.rotate( radians )</a></p>
 <p>Applies a rotation to the canvas coordinate grid.</p>
-<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
+<script type="syntaxhighlighter" class="brush: js; toolbar: false "><![CDATA[
 		var rotate = canDo(document.getElementById('rotate'), {
 		mode: 'loop',
 		frameRate:30,
@@ -122,7 +122,7 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 <h4>context.canDo('translate', { args })</h4>
 <p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-rotate">context.translate( x, y )</a></p>
 <p>Applies a translation to the canvas coordinate grid.</p>
-<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
+<script type="syntaxhighlighter" class="brush: js; toolbar: false "><![CDATA[
 		var translate = canDo(document.getElementById('translate'), {
 		mode: 'loop',
 		frameRate:30,
@@ -132,7 +132,7 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 			this.clearRect(0,0,320,320);
 			this.canDo('translate', [
 				{params: [ 0, 0 ], cuePoint:0},
-				{params: [ 90, 0 ], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [ 110, 110 ], cuePoint: .5, easing: 'easeInOutQuad'},
 				{params: [ 0, 0 ], cuePoint: 1, easing: 'easeInOutQuad'}
 			]);
 			drawJSLogo(this);
@@ -151,7 +151,7 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 			this.clearRect(0,0,320,320);
 			this.canDo('translate', [
 				{params: [ 0, 0 ], cuePoint:0},
-				{params: [ 90, 0 ], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [ 110, 110 ], cuePoint: .5, easing: 'easeInOutQuad'},
 				{params: [ 0, 0 ], cuePoint: 1, easing: 'easeInOutQuad'}
 			]);
 			drawJSLogo(this);
@@ -165,7 +165,7 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 <h4>context.canDo('setTransform', { args })</h4>
 <p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-rotate">context.setTransform( a, b, c, d, e, f )</a></p>
 <p>Sets the current transormation matrix.</p>
-<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
+<script type="syntaxhighlighter" class="brush: js; toolbar: false "><![CDATA[
 		var setTransform = canDo(document.getElementById('setTransform'), {
 		mode: 'loop',
 		frameRate:30,
@@ -189,6 +189,7 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 		frameRate:30,
 		duration:4000,
 		paint: function() {
+			this.identity();
 			this.clearRect(0,0,320,320);
 			this.canDo('setTransform', [
 				{params: [ 1, 0, 0, 1, 0, 0 ], cuePoint:0},
