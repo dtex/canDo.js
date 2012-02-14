@@ -40,6 +40,11 @@
 			paint: function() {
 				this.fillStyle = "rgb(0,0,0)";
 				this.clearRect(0,0,240,240);
+				this.canSet('globalAlpha', [
+					{params: [1.0], cuePoint: 'start', easing: 'easeOutQuad'},
+					{params: [0.1], cuePoint: 'halfway', easing: 'easeOutQuad'},
+					{params: [1.0], cuePoint: 'end', easing: 'easeOutQuad'},
+				]);
 				this.canDo('fillRect', [
 					{params: [190, 190, 50, 50], cuePoint: 'start'},
 					{params: [0, 0, 240, 240], cuePoint: 0.2, easing: 'easeInQuad'},
