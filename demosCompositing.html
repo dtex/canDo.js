@@ -23,48 +23,44 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 	<li><a href="demosPixelManipulation.html">Pixel manipulation</a></li>
 </ul>	
 <h3>Compositing Demos</h3>
-<p>Canvas has a series a matrix transformations that can be applied to your rendering context. These transformations are additive so you will usually want to reset the canvas to its default state (the identity matrix) before each call to your paint function.</p>
-
-
-
-
-<h4>context.canDo('scale', { args })</h4>
-<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-scale">context.scale(x, y)</a></p>
-<p>Applies a scaling transformation to the canvas coordinate grid.</p>
+<p>Composition properties control how Canvas will overlay elements.</p>
+<h4>context.canSet('globalAlpha', { args })</h4>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-globalalpha">context.globalAlpha [ = value ]</a></p>
+<p>Sets the alpha value that is applied to all shapes and objects before they are composited onto the canvas.</p>
 <script type="syntaxhighlighter" class="brush: js; toolbar: false "><![CDATA[
-	var scale = canDo(document.getElementById('scale'), {
+	var globalAlpha = canDo(document.getElementById('globalAlpha'), {
 		mode: 'loop',
 		frameRate:30,
-		duration:4000,
+		duration:2000,
 		paint: function() {
 			this.identity();
 			this.clearRect(0,0,320,320);
-			this.canDo('scale', [
-				{params: [.5, .5], cuePoint:0},
-				{params: [1.33, 1.33], cuePoint: .5, easing: 'easeInOutQuad'},
-				{params: [.5, .5], cuePoint: 1, easing: 'easeInOutQuad'}
+			this.canSet('globalAlpha', [
+				{params: [1.0], cuePoint:0},
+				{params: [.1], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [1.0], cuePoint: 1, easing: 'easeInOutQuad'}
 			]);
 			drawJSLogo(this);
 		}
-	});]]></script>
-<canvas id="scale" width="320" height="320">
+	});]></script>
+<canvas id="globalAlpha" width="320" height="320">
 	This text is displayed if your browser does not support HTML5 Canvas.
 </canvas>
 <script>
-	var scale = canDo(document.getElementById('scale'), {
+	var globalAlpha = canDo(document.getElementById('globalAlpha'), {
 		mode: 'loop',
 		frameRate:30,
-		duration:4000,
+		duration:2000,
 		paint: function() {
 			this.identity();
 			this.clearRect(0,0,320,320);
-			this.canDo('scale', [
-				{params: [.5, .5], cuePoint:0},
-				{params: [1.5, 1.5], cuePoint: .5, easing: 'easeInOutQuad'},
-				{params: [.5, .5], cuePoint: 1, easing: 'easeInOutQuad'}
+			this.canSet('globalAlpha', [
+				{params: [1.0], cuePoint:0},
+				{params: [.1], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [1.0], cuePoint: 1, easing: 'easeInOutQuad'}
 			]);
 			drawJSLogo(this);
 		}
 	});
-	scale.play();
+	globalAlpha.play();
 </script>
