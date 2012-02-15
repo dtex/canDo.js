@@ -98,14 +98,15 @@ var canDo = function(el, args){
 	// Here's our wrapper
 	ctx.canDo = function(method, keyFrames) {
 		var beg = ctx.getCurrentKeyframe(keyFrames); // Find the start point for the current animation segment
-		var result = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration); // Call our easing function passing in our array of parameters and getting an array in return
-		ctx[method].apply(this, result); // Call the proxied function with the computed parameters
+		var state = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration); // Call our easing function passing in our array of parameters and getting an array in return
+		result = ctx[method].apply(this, state); // Call the proxied function with the computed parameters
+		return result;
 	};
 	
 	ctx.canSet = function(property, keyFrames) {
-			var beg = ctx.getCurrentKeyframe(keyFrames); // Find the start point for the current animation segment
-			var result = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration); // Call our easing function passing in our array of parameters and getting an array in return
-			ctx[property] = result[0]; // Call the proxied function with the computed parameters
+		var beg = ctx.getCurrentKeyframe(keyFrames); // Find the start point for the current animation segment
+		var result = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration); // Call our easing function passing in our array of parameters and getting an array in return
+		ctx[property] = result[0]; // Call the proxied function with the computed parameters
 	};
   
 	/* These functions are based on easing equations from jQuery UI
