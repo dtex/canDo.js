@@ -27,6 +27,7 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 <h4>context.canDo('createLinearGradient', { args })</h4>
 <p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-createlineargradient">context.createLinearGradient ( x0, y0, x1, y1 )</a></p>
 <p>Creates a linear gradient from point (x0,y0) to (x1, y1).</p>
+<p>Returns a gradient object.</p>
 <script type="syntaxhighlighter" class="brush: js; toolbar: false "><![CDATA[
 	var createLinearGradient = canDo(document.getElementById('createLinearGradient'), {
 		mode: 'loop',
@@ -73,4 +74,61 @@ ctx.moveTo(125, 173.33);ctx.lineTo(141, 163.67);ctx.bezierCurveTo(148.33, 176.33
 		}
 	});
 	createLinearGradient.play();
-</script>-->
+</script>
+
+<hr />
+
+<h4>context.canDo('createLinearGradient', { args })</h4>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-createradialgradient">context.createRadialGradient ( x0, y0, r0, x1, y1 r1 )</a></p>
+<p>Creates a radial gradient starting at point (x0,y0) with radius (r0) to end point (x1, y1) with radius r1.</p>
+<p>Returns a gradient object.</p>
+<script type="syntaxhighlighter" class="brush: js; toolbar: false "><![CDATA[
+	var createRadialGradient = canDo(document.getElementById('createRadialGradient'), {
+		mode: 'loop',
+		frameRate:30,
+		duration:2000,
+		paint: function() {
+			this.identity();
+			this.clearRect(0,0,320,320);
+			var myGradient = this.canDo('createRadialGradient', [
+				{params: [200,200,2,0,0,320], cuePoint:0},
+				{params: [120,200,2,320,0,320], cuePoint: .25, easing: 'easeInOutQuad'},
+				{params: [120,120,2,320,320,320], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [200,120,2,0,320,320], cuePoint: .75, easing: 'easeInOutQuad'},
+				{params: [200,200,2,0,0,320], cuePoint:1, easing: 'easeInOutQuad'},
+			]);
+			myGradient.addColorStop(0, '#00ff00');
+			myGradient.addColorStop(1, '#ff00ff');
+			this.fillStyle = myGradient;
+			this.fillRect(0,0,320,320);  
+		}
+	});]></script>
+<canvas id="createRadialGradient" width="320" height="320">
+	This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<script>
+	var createRadialGradient = canDo(document.getElementById('createRadialGradient'), {
+		mode: 'loop',
+		frameRate:30,
+		duration:2000,
+		paint: function() {
+			this.identity();
+			this.clearRect(0,0,320,320);
+			var myGradient = this.canDo('createRadialGradient', [
+				{params: [200,200,2,0,0,320], cuePoint:0},
+				{params: [120,200,2,320,0,320], cuePoint: .25, easing: 'easeInOutQuad'},
+				{params: [120,120,2,320,320,320], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [200,120,2,0,320,320], cuePoint: .75, easing: 'easeInOutQuad'},
+				{params: [200,200,2,0,0,320], cuePoint:1, easing: 'easeInOutQuad'},
+			]);
+			myGradient.addColorStop(0, '#00ff00');
+			myGradient.addColorStop(1, '#ff00ff');
+			this.fillStyle = myGradient;
+			this.fillRect(0,0,320,320);  
+		}
+	});
+	createRadialGradient.play();
+</script>
+
+
+
