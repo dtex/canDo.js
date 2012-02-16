@@ -1,22 +1,29 @@
 body { margin:0;font-family:verdana, "trebuchet MS", helvetica, sans-serif;font-size:11px;color:#666666;font-size:14px;}
 h2 {font-weight:normal;margin:6px 0 0 0;padding:0;text-transform:uppercase;font-size:18px;}
 p {}
+
 ul.demoButtons {list-style-type: none;padding: 0;}
 ul.demoButtons li {background-color:#950801;float:left;padding:4px 8px;margin:0 10px 10px 0;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;border-color:#ccc;border-style:ridge;}
-ul.demoButtons li:hover {background-color:#a40a01;}
+ul.demoButtons li:hover {background-color:#af5c57;}
 ul.demoButtons li a {color:#fff;text-decoration:none;}
+
 #pagecontainer {width:987px;margin:0px auto;text-align:left;}
 #masthead {width:987px;height:125px;text-align:center; }
 #pageRule {border: 1px solid #d9d4ce;width:987px;padding:0 0 24px 0; }
 #inline {padding:36px 20px;}
+
 .listLabel {float:left;text-align:right;padding:0 6px 0 0;width:100px;clear:left;font-weight:bold;}
+
 .inlineSidebar {float:right;width:220px;margin:0 0 0 18px;}
 .inlineSidebar h3 {font-size:12px; margin-bottom:2px;padding-top:12px;}
 .inlineSidebar ul {margin:0;padding:0;}
 .inlineSidebar li {padding:2px 0;margin:0;list-style-type:none;}
+
 #copyright {padding: 11px 4px;font-size:10px;color:#beb7ae; }
 #copyright a {color:#beb7ae; }
+
 .clear {clear:both;}
+.clearLeft {clear:left;}
 
 .syntaxhighlighter .line.alt1 {background-color: #f3f3f3 !important;}
 
