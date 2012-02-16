@@ -1,6 +1,9 @@
 body { margin:0;font-family:verdana, "trebuchet MS", helvetica, sans-serif;font-size:11px;color:#666666;font-size:14px;}
 h2 {font-weight:normal;margin:6px 0 0 0;padding:0;text-transform:uppercase;font-size:18px;}
 p {}
+ul.demoButtons {list-style-type: none;padding: 0;}
+ul.demoButtons li {background-color:#;float:left;padding:4px 8px;margin:0 10px 10px 0;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;}
+ul.demoButtons li a {color:#fff;text-decoration:none;}
 #pagecontainer {width:987px;margin:0px auto;text-align:left;}
 #masthead {width:987px;height:125px;text-align:center; }
 #pageRule {border: 1px solid #d9d4ce;width:987px;padding:0 0 24px 0; }
