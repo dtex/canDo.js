@@ -4,7 +4,7 @@ title: canDo.js Demos
 ---
 <h3>Notes</h2>
 <p>These demos only show the minimal implementation required to show a particular wrapped function in use. You'll want to look at the <a href="documentation.html">full documentation</a>. It's short and sweet, but worth a read.</p>
-<p> I make repeated use of the following function which is called from, but not shown in the demo code:</p>
+<p> I make repeated use of the following functions which are called from, but not shown in the demo code:</p>
 <script type="syntaxhighlighter" class="brush: js; toolbar: false "><![CDATA[
 var drawJSBox = function(ctx) {
 	ctx.clearRect(0,0,210,210);
@@ -37,7 +37,8 @@ var drawS = function(ctx) {
 	ctx.bezierCurveTo(133.33, 141.33, 130.67, 131.67, 130.67, 120.33);
 	ctx.bezierCurveTo(131, 109, 139.67, 95, 160, 95);
 	ctx.bezierCurveTo(180, 95, 187.67, 111.33, 187.67, 111.33);
-	ctx.lineTo(172.33, 121.33);ctx.bezierCurveTo(169, 114, 163.33, 112.33, 160, 112.33);
+	ctx.lineTo(172.33, 121.33);
+	ctx.bezierCurveTo(169, 114, 163.33, 112.33, 160, 112.33);
 	ctx.bezierCurveTo(156.67, 112.67, 150, 114.33, 150, 121);
 	ctx.bezierCurveTo(150.67, 127.67, 150.67, 127.67, 171.33, 137.33);
 	ctx.bezierCurveTo(193, 146.67, 193.33, 158.33, 193.33, 167.33);
