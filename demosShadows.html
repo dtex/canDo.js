@@ -6,7 +6,7 @@ title: canDo.js Compositing Demos
 <h3>Shaodws Demos</h3>
 <p>Shadow properties give you control over offset and blur.</p>
 <h4>context.canSet('shadowOffsetX', { args }), context.canSet('shadowOffsetY', { args })</h4>
-<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-linewidth">context.shadowOffsetX [ = value ], context.shadowOffsetY [ = value ]</a></p>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-shadowoffsetx">context.shadowOffsetX [ = value ], context.shadowOffsetY [ = value ]</a></p>
 <p>Sets the shadow offset on the x and y axis.</p>
 <script type="syntaxhighlighter" class="brush: js; toolbar: false "><![CDATA[
 	var shadowOffset = canDo(document.getElementById('shadowOffset'), {
@@ -58,6 +58,71 @@ title: canDo.js Compositing Demos
 				{params: [3], cuePoint:1.0, easing: 'easeInOutQuad'},
 			]);
 			this.canSet('shadowOffsetY', [
+				{params: [3], cuePoint:0},
+				{params: [20], cuePoint:.5, easing: 'easeInOutQuad'},
+				{params: [3], cuePoint:1.0, easing: 'easeInOutQuad'},
+			]);
+			this.beginPath();
+			this.fillStyle = "rgb(247,223,30)";
+			this.fillRect(0,0,210,210);
+			this.closePath();
+			this.shadowOffsetX = 0;
+			this.shadowOffsetY = 0;
+			this.shadowBlur = 0;
+			drawJ(this);
+			drawS(this);
+		}
+	});
+	shadowOffset.play();
+</script>
+
+<hr/>
+
+<h4>context.canSet('shadowBlur', { args }), context.canSet('shadowBlur', { args })</h4>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-shadowblur">context.shadowBlur [ = value ]</a></p>
+<p>Sets the shadow blur size.</p>
+<script type="syntaxhighlighter" class="brush: js; toolbar: false "><![CDATA[
+	var shadowOffset = canDo(document.getElementById('shadowOffset'), {
+		mode: 'loop',
+		frameRate:30,
+		duration:2000,
+		paint: function() {
+			this.identity();
+			this.clearRect(0,0,240,3240);
+			this.shadowColor   = 'rgba(0, 0, 0, 0.7)';
+			this.shadowOffsetX = 10;
+			this.shadowOffsetY = 10;
+			this.canSet('shadowBlur', [
+				{params: [3], cuePoint:0},
+				{params: [20], cuePoint:.5, easing: 'easeInOutQuad'},
+				{params: [3], cuePoint:1.0, easing: 'easeInOutQuad'},
+			]);
+			this.beginPath();
+			this.fillStyle = "rgb(247,223,30)";
+			this.fillRect(0,0,210,210);
+			this.closePath();
+			this.shadowOffsetX = 0;
+			this.shadowOffsetY = 0;
+			this.shadowBlur = 0;
+			drawJ(this);
+			drawS(this);
+		}
+	});]]></script>
+<canvas id="shadowOffset" width="240" height="240">
+	This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+<script>
+	var shadowOffset = canDo(document.getElementById('shadowOffset'), {
+		mode: 'loop',
+		frameRate:30,
+		duration:2000,
+		paint: function() {
+			this.identity();
+			this.clearRect(0,0,240,3240);
+			this.shadowColor   = 'rgba(0, 0, 0, 0.7)';
+			this.shadowOffsetX = 10;
+			this.shadowOffsetY = 10;
+			this.canSet('shadowBlur', [
 				{params: [3], cuePoint:0},
 				{params: [20], cuePoint:.5, easing: 'easeInOutQuad'},
 				{params: [3], cuePoint:1.0, easing: 'easeInOutQuad'},
