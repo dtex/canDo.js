@@ -88,9 +88,9 @@ title: canDo.js Compositing Demos
 			this.clearRect(0,0,210,210);
 			this.beginPath();
 			var myGradient = this.canDo('createRadialGradient', [
-				{params: [200,200,50,0,0,320], cuePoint:0},
-				{params: [10,10,50,210,210,320], cuePoint: .5, easing: 'easeInOutQuad'},
-				{params: [200,200,50,0,0,320], cuePoint:1, easing: 'easeInOutQuad'},
+				{params: [200,200,50,10,10,320], cuePoint:0},
+				{params: [10,10,50,200,200,320], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [200,200,50,10,10,320], cuePoint:1, easing: 'easeInOutQuad'},
 			]);
 			myGradient.addColorStop(0, '#f7df1e');
 			myGradient.addColorStop(1, '#6e630c');
@@ -115,11 +115,11 @@ title: canDo.js Compositing Demos
 			this.beginPath();
 			var myGradient = this.canDo('createRadialGradient', [
 				{params: [200,200,50,10,10,320], cuePoint:0},
-				{params: [10,10,50,210,210,320], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [10,10,50,200,200,320], cuePoint: .5, easing: 'easeInOutQuad'},
 				{params: [200,200,50,10,10,320], cuePoint:1, easing: 'easeInOutQuad'},
 			]);
-			myGradient.addColorStop(0, '#6e630c');
-			myGradient.addColorStop(1, '#f7df1e');
+			myGradient.addColorStop(0, '#f7df1e');
+			myGradient.addColorStop(1, '#6e630c');
 			this.fillStyle = myGradient;
 			this.fillRect(0,0,210,210); 
 			this.closePath();
