@@ -53,6 +53,7 @@ title: canDo.js Compositing Demos
 		duration:2000,
 		paint: function() {
 			this.identity();
+			this.beginPath();
 			this.clearRect(0,0,210,210);
 			var myGradient = this.canDo('createLinearGradient', [
 				{params: [0,0,210,210], cuePoint:0},
@@ -65,6 +66,7 @@ title: canDo.js Compositing Demos
 			myGradient.addColorStop(1, '#000000');
 			this.fillStyle = myGradient;
 			this.fillRect(0,0,210,210);
+			this.endPath();
 			drawJ(this);
 			drawS(this);
 		}
