@@ -27,21 +27,23 @@ title: canDo.js Compositing Demos
 		duration:2000,
 		paint: function() {
 			this.identity();
-			this.clearRect(0,0,320,320);
+			this.clearRect(0,0,210,210);
 			var myGradient = this.canDo('createLinearGradient', [
-				{params: [0,0,320,320], cuePoint:0},
-				{params: [320,0,0,320], cuePoint: .25, easing: 'easeInOutQuad'},
-				{params: [320,320,0,0], cuePoint: .5, easing: 'easeInOutQuad'},
-				{params: [0,320,320,0], cuePoint: .75, easing: 'easeInOutQuad'},
-				{params: [0,0,320,320], cuePoint:1, easing: 'easeInOutQuad'},
+				{params: [0,0,210,210], cuePoint:0},
+				{params: [210,0,0,210], cuePoint: .25, easing: 'easeInOutQuad'},
+				{params: [210,210,0,0], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [0,210,210,0], cuePoint: .75, easing: 'easeInOutQuad'},
+				{params: [0,0,210,210], cuePoint:1, easing: 'easeInOutQuad'},
 			]);
-			myGradient.addColorStop(0, '#00ff00');
-			myGradient.addColorStop(1, '#ff00ff');
+			myGradient.addColorStop(0, '#F7DF1E');
+			myGradient.addColorStop(1, '#000000');
 			this.fillStyle = myGradient;
-			this.fillRect(0,0,320,320);  
+			this.fillRect(0,0,210,210);
+			drawJ(this);
+			drawS(this);
 		}
-	});]></script>
-<canvas id="createLinearGradient" width="320" height="320">
+	});]]></script>
+<canvas id="createLinearGradient" width="210" height="210">
 	This text is displayed if your browser does not support HTML5 Canvas.
 </canvas>
 <script>
@@ -51,18 +53,20 @@ title: canDo.js Compositing Demos
 		duration:2000,
 		paint: function() {
 			this.identity();
-			this.clearRect(0,0,320,320);
+			this.clearRect(0,0,210,210);
 			var myGradient = this.canDo('createLinearGradient', [
-				{params: [0,0,320,320], cuePoint:0},
-				{params: [320,0,0,320], cuePoint: .25, easing: 'easeInOutQuad'},
-				{params: [320,320,0,0], cuePoint: .5, easing: 'easeInOutQuad'},
-				{params: [0,320,320,0], cuePoint: .75, easing: 'easeInOutQuad'},
-				{params: [0,0,320,320], cuePoint:1, easing: 'easeInOutQuad'},
+				{params: [0,0,210,210], cuePoint:0},
+				{params: [210,0,0,210], cuePoint: .25, easing: 'easeInOutQuad'},
+				{params: [210,210,0,0], cuePoint: .5, easing: 'easeInOutQuad'},
+				{params: [0,210,210,0], cuePoint: .75, easing: 'easeInOutQuad'},
+				{params: [0,0,210,210], cuePoint:1, easing: 'easeInOutQuad'},
 			]);
-			myGradient.addColorStop(0, '#00ff00');
-			myGradient.addColorStop(1, '#ff00ff');
+			myGradient.addColorStop(0, '#F7DF1E');
+			myGradient.addColorStop(1, '#000000');
 			this.fillStyle = myGradient;
-			this.fillRect(0,0,320,320);  
+			this.fillRect(0,0,210,210);
+			drawJ(this);
+			drawS(this);
 		}
 	});
 	createLinearGradient.play();
