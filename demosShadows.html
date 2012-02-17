@@ -16,14 +16,26 @@ title: canDo.js Compositing Demos
 		paint: function() {
 			this.identity();
 			this.clearRect(0,0,320,320);
+			this.shadowColor   = 'rgba(0, 0, 0, 0.7)';
+			this.shadowBlur   = 10;
 			this.canSet('shadowOffsetX', [
 				{params: [3], cuePoint:0},
 				{params: [20], cuePoint:.5, easing: 'easeInOutQuad'},
 				{params: [3], cuePoint:1.0, easing: 'easeInOutQuad'},
 			]);
-			drawJSLogo(this);			
+			this.canSet('shadowOffsetY', [
+				{params: [3], cuePoint:0},
+				{params: [20], cuePoint:.5, easing: 'easeInOutQuad'},
+				{params: [3], cuePoint:1.0, easing: 'easeInOutQuad'},
+			]);
+			ctx.beginPath();ctx.clearRect(0,0,210,210);ctx.fillStyle = "rgb(247,223,30)";ctx.fillRect(0,0,210,210);ctx.closePath();
+			this.shadowOffsetX = 0;
+			this.shadowOffsetY = 0;
+			this.shadowBlur = 0;
+			drawJ(this);
+			drawS(this);
 		}
-	});]></script>
+	});]]></script>
 <canvas id="shadowOffset" width="320" height="320">
 	This text is displayed if your browser does not support HTML5 Canvas.
 </canvas>
@@ -36,12 +48,23 @@ title: canDo.js Compositing Demos
 			this.identity();
 			this.clearRect(0,0,320,320);
 			this.shadowColor   = 'rgba(0, 0, 0, 0.7)';
+			this.shadowBlur   = 10;
 			this.canSet('shadowOffsetX', [
 				{params: [3], cuePoint:0},
 				{params: [20], cuePoint:.5, easing: 'easeInOutQuad'},
 				{params: [3], cuePoint:1.0, easing: 'easeInOutQuad'},
 			]);
-			drawJSLogo(this);			
+			this.canSet('shadowOffsetY', [
+				{params: [3], cuePoint:0},
+				{params: [20], cuePoint:.5, easing: 'easeInOutQuad'},
+				{params: [3], cuePoint:1.0, easing: 'easeInOutQuad'},
+			]);
+			ctx.beginPath();ctx.clearRect(0,0,210,210);ctx.fillStyle = "rgb(247,223,30)";ctx.fillRect(0,0,210,210);ctx.closePath();
+			this.shadowOffsetX = 0;
+			this.shadowOffsetY = 0;
+			this.shadowBlur = 0;
+			drawJ(this);
+			drawS(this);
 		}
 	});
 	shadowOffset.play();
