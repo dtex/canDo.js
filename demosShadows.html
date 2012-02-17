@@ -35,6 +35,7 @@ title: canDo.js Compositing Demos
 		paint: function() {
 			this.identity();
 			this.clearRect(0,0,320,320);
+			this.shadowColor   = 'rgba(0, 0, 0, 0.7)';
 			this.canSet('shadowOffsetX', [
 				{params: [3], cuePoint:0},
 				{params: [20], cuePoint:.5, easing: 'easeInOutQuad'},
