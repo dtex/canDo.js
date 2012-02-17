@@ -108,11 +108,11 @@ title: canDo.js Compositing Demos
 			drawS(this);
 		}
 	});]]></script>
-<canvas id="shadowOffset" width="240" height="240">
+<canvas id="shadowBlur" width="240" height="240">
 	This text is displayed if your browser does not support HTML5 Canvas.
 </canvas>
 <script>
-	var shadowOffset = canDo(document.getElementById('shadowOffset'), {
+	var shadowBlur = canDo(document.getElementById('shadowBlur'), {
 		mode: 'loop',
 		frameRate:30,
 		duration:2000,
@@ -138,7 +138,7 @@ title: canDo.js Compositing Demos
 			drawS(this);
 		}
 	});
-	shadowOffset.play();
+	shadowBlur.play();
 </script>
 
 
