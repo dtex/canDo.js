@@ -27,6 +27,15 @@ var canDo = function(el, args){
 	// Yeah, we're gonna need this
 	ctx.paint = args.paint;
 	
+	// Event handlers
+	if (args.click) { // If a click function was passed
+		if (el.addEventListener){
+			el.addEventListener('click', args.click, false);   
+		} else if (el.attachEvent){  
+			el.attachEvent('onclick', args.click);  
+		}
+	}
+	
 	// Begin the animation
 	ctx.play = function(args) {
 		
