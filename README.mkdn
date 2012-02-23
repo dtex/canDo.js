@@ -4,5 +4,13 @@ Really, I mean it!
 
 canDo.js is a canvas wrapper for lightweight animations. It is ideal for animating simple UI elements (i.e. buttons, and little graphical widgets). In a nutshell, canDo.js proxies the methods of the HTML Canvas 2D Context, and allows you to add keyframes and easing functions to the properties you pass in. canDo.JS handles the rest.
 
+Issues to resolve before sharing:
+
+* Last frame when playing backwards does not render properly
+* New improved easing
+* Easing on timeline
+* Canvas events Over, Click, Out
+* Hotspot events Over, Click, Out
+
 [More info: http://dtex.github.com/canDo.js/](http://dtex.github.com/canDo.js/ "More info").
 
