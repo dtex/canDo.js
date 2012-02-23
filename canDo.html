@@ -9,15 +9,15 @@
 	<canvas id="sample" width="240" height="240">
     	This text is displayed if your browser does not support HTML5 Canvas.
 	</canvas>
-	<canvas id="otherSample" width="240" height="240">
+	<!--<canvas id="otherSample" width="240" height="240">
     	This text is displayed if your browser does not support HTML5 Canvas.
-	</canvas>
+	</canvas>-->
 	<script>
 		var test = canDo(document.getElementById('sample'), {
 			duration: 2000,
 			frameRate: 60,
 			cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
-			mode: 'loop',
+			//mode: 'loop',
 			paint: function() {
 				this.fillStyle = "rgb(0,0,0)";
 				this.clearRect(0,0,240,240);
@@ -31,8 +31,8 @@
 				]);
 			}
 		});
-		test.play({speed:0.5});
-		var test2 = canDo(document.getElementById('otherSample'), {
+		//test.play({speed:-0.5, time:.5});
+		/*var test2 = canDo(document.getElementById('otherSample'), {
 			duration: 2000,
 			frameRate: 60,
 			cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
@@ -55,7 +55,7 @@
 				]);
 			}
 		});
-		test2.play();
+		test2.play();*/
 
 		var js = function() {
 			// Clear and draw the square
