@@ -11,6 +11,8 @@ Issues to resolve before sharing:
 * Easing on timeline
 * Canvas events Over, Click, Out
 * Hotspot events Over, Click, Out
+* Code optimization (nuke nested ifs and the like)
+* Minification help
 
 [More info: http://dtex.github.com/canDo.js/](http://dtex.github.com/canDo.js/ "More info").
 
