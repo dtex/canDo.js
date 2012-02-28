@@ -7,44 +7,7 @@ title: canDo.js Introduction
 <p>It provides some common easing functions, convenience methods and setter proxies for attributes of the rendering context. You are free to use the non-proxied functions when appropriate.</p>
 <h3>Hello <strike>World</strike> Box</h3>
 <p>First you need a canvas element. For example:</p>
-<script type="syntaxhighlighter" class="brush: html; toolbar: false"><![CDATA[
-	<canvas id="sample" width="240" height="240">
-		This text is displayed if your browser does not support HTML5 Canvas.
-	</canvas>]]></script>
-<p>Next you need to create a reference to your canDo wrapped 2D rendering context. When you do that you need to pass in some parameters. For example:</p>
-<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
-	var demo = canDo(document.getElementById('demo'), {
-    frameRate: 60,
-    duration: 4000,
-    paint: function() {
-        this.identity();
-        this.clearRect(0, 0, 400, 360);
-        this.translate(160, 160);
-        
-        this.canDo('rotate', [{params: [0],cuePoint: 0},{params: [12.78],cuePoint: 0.5,easing: 'easeInOutQuad'},{params: [0],cuePoint: 1,easing: 'easeInOutQuad'}]);
-        
-        this.translate(-105, -105);
-        
-        this.canDo('scale', [{params: [0.25, 0.25],cuePoint: 0},{params: [1.0, 1.0],cuePoint: 0.5,easing: 'easeInOutQuad'},{params: [0.25, 0.25],cuePoint: 1,easing: 'easeInOutQuad'}]);
-        
-        this.shadowColor = 'rgba(0, 0, 0, 0.7)';
-        
-        this.canSet('shadowOffsetX', [{params: [3],cuePoint: 0},{params: [90],cuePoint: 0.5,easing: 'easeInOutQuad'},{params: [3],cuePoint: 1.0,easing: 'easeInOutQuad'}]);
-        
-        this.canSet('shadowOffsetY', [{params: [3],cuePoint: 0},{params: [50],cuePoint: 0.5,easing: 'easeInOutQuad'},{params: [3],cuePoint: 1.0,easing: 'easeInOutQuad'}]);
-        
-        this.canSet('shadowBlur', [{params: [3],cuePoint: 0},{params: [20],cuePoint: 0.5,easing: 'easeInOutQuad'},{params: [3],cuePoint: 1.0,easing: 'easeInOutQuad'}]);
-        
-        drawJSBox(this);
-        this.shadowOffsetX = 0;
-        this.shadowOffsetY = 0;
-        this.shadowBlur = 0;
-        drawJ(this);
-        drawS(this);
-    }
-});]]></script>
-<p>Finally you call play on your canDo object like so:</p>
-<script type="syntaxhighlighter" class="brush: js; toolbar: false; first-line:20;">
-	demo.play();</script>
+<p>Next you need to create a reference to your canDo wrapped 2D rendering context. When you do that you need to pass in some parameters, not least of witch is your paint () function.</p>
+<p>Finally you call play on your canDo object.</p>
 <p>And we end up with:</p>
 <iframe style="width: 100%; height: 480px" src="http://jsfiddle.net/dtex/YJP8S/embedded/javascript,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
