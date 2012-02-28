@@ -6,7 +6,7 @@
 	<script src="canDo.js"></script>
 </head>
 <body>
-	<canvas id="sample" width="240" height="240">
+	<canvas id="sample" width="160" height="165">
     	This text is displayed if your browser does not support HTML5 Canvas.
 	</canvas>
 	<!--<canvas id="otherSample" width="240" height="240">
@@ -14,21 +14,51 @@
 	</canvas>-->
 	<script>
 		var test = canDo(document.getElementById('sample'), {
-			duration: 2000,
+			duration: 150,
 			frameRate: 60,
-			cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
-			//mode: 'loop',
+			images: {
+				requestMoreInfo: {url: 'http://173.203.65.217:9999/images/homeButtons/requestMoreInfo.jpg'}
+			},
+			events: {
+				click: function() { window.location.href='/Default.asp?pageid=29'; },
+				mouseover: function() { test.play({speed:1}); },
+				mouseout: function () { test.play({speed:-1}); }
+			},
 			paint: function() {
-				this.fillStyle = "rgb(0,0,0)";
-				this.clearRect(0,0,240,240);
-				this.canDo('fillRect', [
-					{params: [0, 0, 50, 50], cuePoint: 'start'},
-					{params: [0, 0, 240, 240], cuePoint: 0.2, easing: 'easeInQuad'},
-					{params: [190, 190, 50, 50], cuePoint: 'halfway', easing: 'easeOutQuad'},
-					{params: [0, 210, 10, 10], cuePoint: 0.7, easing: 'easeInQuad'},
-					{params: [230, 0, 10, 10], cuePoint: 0.85, easing: 'easeInQuad'},
-					{params: [0, 0, 50, 50], cuePoint: 'end', easing: 'easeInOutQuad'} 
-				]);
+				this.clearRect(0,0,160,165);
+				this.save();
+				// Our shape
+				this.beginPath();
+				this.moveTo(10,13);
+				this.quadraticCurveTo(10,8, 15,8);
+				this.lineTo(113,8);
+				this.canDo('quadraticCurveTo', [{params: [118,8,118,13], cuePoint:0},{params: [118,8,118,8], cuePoint:1, easing: 'easeInOutQuad'}]);
+				this.canDo('lineTo', [{params: [118,28], cuePoint:0},{params: [143,8], cuePoint:1,  easing: 'easeInOutQuad'}]);
+				this.canDo('quadraticCurveTo', [{params: [118,33,123,33], cuePoint:0},{params: [148,8,148,13], cuePoint:1, easing: 'easeInOutQuad'}]);
+				this.canDo('lineTo', [{params: [143,33], cuePoint:0},{params: [148,33], cuePoint:1,  easing: 'easeInOutQuad'}]);
+				this.quadraticCurveTo(148,33, 148,38);
+				this.lineTo(148,124);
+				this.canDo('quadraticCurveTo', [{params: [148,129,143,129], cuePoint:0},{params: [148,129,148,129], cuePoint:1, easing: 'easeInOutQuad'}]);
+				this.canDo('lineTo', [{params: [123,129], cuePoint:0},{params: [148,149], cuePoint:1,  easing: 'easeInOutQuad'}]);
+				this.canDo('quadraticCurveTo', [{params: [118,129,118,134], cuePoint:0},{params: [148,156,143,156], cuePoint:1, easing: 'easeInOutQuad'}]);
+				this.canDo('lineTo', [{params: [118,151], cuePoint:0},{params: [118,156], cuePoint:1,  easing: 'easeInOutQuad'}]);
+				this.quadraticCurveTo(118,156, 113,156);
+				this.lineTo(15,156);
+				this.quadraticCurveTo(10,156, 10,151);
+				// Our shadowOffset
+				this.shadowColor   = 'rgba(0, 0, 0, 0.7)';
+				this.shadowBlur   = 10;
+				this.shadowOffsetX = 3;
+				this.shadowOffsetY = 3;	
+				
+				this.fill();
+				this.closePath();
+	
+				this.clip();
+				this.drawImage(this.images.requestMoreInfo.img, 5, 5);
+				
+				this.restore();
+				
 			}
 		});
 		//test.play({speed:-0.5, time:.5});
