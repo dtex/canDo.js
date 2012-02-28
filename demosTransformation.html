@@ -12,43 +12,7 @@ title: canDo.js Transformation Demos
 <h4>context.canDo('scale', { args })</h4>
 <p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-scale">context.scale(x, y)</a></p>
 <p>Applies a scaling transformation to the canvas coordinate grid.</p>
-<script type="syntaxhighlighter" class="brush: js; toolbar: false "><![CDATA[
-	var scale = canDo(document.getElementById('scale'), {
-		mode: 'loop',
-		frameRate:30,
-		duration:4000,
-		paint: function() {
-			this.identity();
-			this.clearRect(0,0,320,320);
-			this.canDo('scale', [
-				{params: [.5, .5], cuePoint:0},
-				{params: [1.33, 1.33], cuePoint: .5, easing: 'easeInOutQuad'},
-				{params: [.5, .5], cuePoint: 1, easing: 'easeInOutQuad'}
-			]);
-			drawJSLogo(this);
-		}
-	});]]></script>
-<canvas id="scale" width="320" height="320">
-	This text is displayed if your browser does not support HTML5 Canvas.
-</canvas>
-<script>
-	var scale = canDo(document.getElementById('scale'), {
-		mode: 'loop',
-		frameRate:30,
-		duration:4000,
-		paint: function() {
-			this.identity();
-			this.clearRect(0,0,320,320);
-			this.canDo('scale', [
-				{params: [.5, .5], cuePoint:0},
-				{params: [1.5, 1.5], cuePoint: .5, easing: 'easeInOutQuad'},
-				{params: [.5, .5], cuePoint: 1, easing: 'easeInOutQuad'}
-			]);
-			drawJSLogo(this);
-		}
-	});
-	scale.play();
-</script>
+<iframe style="width: 100%; height: 300px" src="http://jsfiddle.net/dtex/LKRxe/embedded/" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 <hr />
 
