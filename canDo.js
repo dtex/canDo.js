@@ -4,7 +4,17 @@ var canDo = function (el, args) {
 	"use strict";
 
 	// Our 2d rendering context
-	var ctx  = el.getContext('2d'), loadCount = 0, imageName; // Holds the number of images yet to load;
+	var ctx  = el.getContext('2d'), loadCount = 0, imageName, eventName,
+		loadCounter = function () {// When the image is loaded
+			loadCount = loadCount - 1; // Decrement the number of images left to load
+
+			if (loadCount === 0) { // If there are no more images to load
+				if (ctx.t.splash) { // If we want a splash screen, render it now
+					ctx.update({time: 0});
+				}
+				ctx.s.loaded = true; // Inidicate that all images are loaded
+			}
+		};
 
 	/* Properties of our Canvas timeline with some defaults. They are not specific to any method call */
 	ctx.t = { // t=timeLine
@@ -34,20 +44,12 @@ var canDo = function (el, args) {
 		ctx.s.loaded = false; // Indicate that images are not ready
 		ctx.images = args.images; // Copy the images from args to the context
 		for (imageName in ctx.images) { // Loop through each image
-			loadCount = loadCount + 1; // We have one more image to load
-			ctx.images[imageName].img = new Image(); // Add an image to the image object
-			ctx.images[imageName].img.onload = function () { // When the image is loaded
-				loadCount = loadCount - 1; // Decrement the number of images left to load
-
-				if (loadCount === 0) { // If there are no more images to load
-					if (ctx.t.splash) { // If we want a splash screen, render it now
-						ctx.update({time: 0});
-					}
-					ctx.s.loaded = true; // Inidicate that all images are loaded
-				}
+			if (ctx.images.hasOwnProperty(imageName)) {
+				loadCount = loadCount + 1; // We have one more image to load
+				ctx.images[imageName].img = new Image(); // Add an image to the image object
+				ctx.images[imageName].img.onload = loadCounter;
+				ctx.images[imageName].img.src = ctx.images[imageName].url; // Set the src for the image to start loading it
 			}
-
-			ctx.images[imageName].img.src = ctx.images[imageName].url; // Set the src for the image to start loading it
 		}
 	}
 
@@ -55,12 +57,14 @@ var canDo = function (el, args) {
 	ctx.paint = args.paint;
 
 	// Event handlers
-	if (typeof args.events !== 'undefined') { // If a click function was passed
-		for (var eventName in args.events) { // Loop through each image
-			if (el.addEventListener) {
-				el.addEventListener(eventName, args.events[eventName], false);
-			} else if (el.attachEvent) {
-				el.attachEvent('on'+eventName, args.events[eventName]);
+	if (typeof args.events !== 'undefined') { // If an events object was passed
+		for (eventName in	 args.events) { // Loop through each event
+			if (args.events.hasOwnProperty(eventName)) {
+				if (el.addEventListener) {
+					el.addEventListener(eventName, args.events[eventName], false);
+				} else if (el.attachEvent) {
+					el.attachEvent('on' + eventName, args.events[eventName]);
+				}
 			}
 		}
 	}
@@ -69,25 +73,35 @@ var canDo = function (el, args) {
 	ctx.play = function (args) {
 		var preTime; // Used to hold how much time has already passed in the animation
 
-		if (args === undefined) args = {}; // We can pass in args to our play function as well
-		if (typeof args.speed !== 'undefined') ctx.s.speed = args.speed; // Update with new speed if speed property was passed
-		if (typeof args.time !== 'undefined') {ctx.s.time = args.time;} // Update the playback head position if time property was passed
-		if (typeof args.mode !== 'undefined') {ctx.t.mode = args.mode;} // Update the playback head position if time property was passed
+		if (args === undefined) {
+			args = {}; // We can pass in args to our play function as well
+		}
+		if (typeof args.speed !== 'undefined') {
+			ctx.s.speed = args.speed; // Update with new speed if speed property was passed
+		}
+		if (typeof args.time !== 'undefined') {
+			ctx.s.time = args.time; // Update the playback head position if time property was passed
+		}
+		if (typeof args.mode !== 'undefined') {
+			ctx.t.mode = args.mode; // Update the playback head position if time property was passed
+		}
 
 		// Calculate our new time values
 		ctx.t.scaledDuration = Math.abs(ctx.t.duration / ctx.s.speed); // Calculate the total duration of the timeline
-		ctx.s.speed < 0 ? preTime = 1 - ctx.s.time : preTime = ctx.s.time; // If we are playing backwards we need to tweak our formula
-		ctx.s.time == 0 ? ctx.s.startTime = Date.now() : ctx.s.startTime = Date.now() - ctx.t.scaledDuration * preTime; // Calculate what our start time is/was on the real clock
+		preTime = ctx.s.speed < 0 ? 1 - ctx.s.time : ctx.s.time; // If we are playing backwards we need to tweak our formula
+		ctx.s.startTime = ctx.s.time === 0 ? Date.now() : Date.now() - ctx.t.scaledDuration * preTime; // Calculate what our start time is/was on the real clock
 		ctx.s.endTime = ctx.s.startTime + ctx.t.scaledDuration; // Calculate our endtime on the real clock
 
 		// Start our interval timer and render the first frame
-		ctx.s.intervalTimer = setInterval (function () { ctx.update(); }, ctx.t.frameInterval);
+		ctx.s.intervalTimer = setInterval(function () { ctx.update(); }, ctx.t.frameInterval);
 		ctx.update();
-	}
+	};
 
 	// Our refresh function
 	ctx.update = function (args) {
-		if (args === undefined) args = {};
+		if (args === undefined) {
+			args = {};
+		}
 
 		// Find where we are on the timeline
 		if (typeof args.time === 'undefined') {
@@ -100,62 +114,63 @@ var canDo = function (el, args) {
 			ctx.s.time = args.time;
 		}
 
-		if ((ctx.s.time < 1.0  && ctx.s.speed > 0) | (ctx.s.time > 0  && ctx.s.speed < 0)) {  // If the animation is not finished
+		if ((ctx.s.time < 1.0  && ctx.s.speed > 0) || (ctx.s.time > 0  && ctx.s.speed < 0)) {  // If the animation is not finished
 
 			ctx.paint(); // Update the canvas and keep on truckin'
 
 		} else { // The animation is finished
 
-			if (ctx.t.mode == '') { // If we are set to play through one time
+			if (ctx.t.mode === '') { // If we are set to play through one time
 				clearInterval(ctx.s.intervalTimer); // Cancel the refresh interval timer
-				ctx.s.speed > 0 ? ctx.s.time = 1.0 : ctx.s.time = 0; // Set time to end of animation
+				ctx.s.time = ctx.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
 				ctx.paint(); // Update the canvas
 			}
 
-			if (ctx.t.mode == 'loop') { // We are set to loop
-				ctx.s.speed > 0 ? ctx.s.time = 1.0 : ctx.s.time = 0; // Set time to end of animation
+			if (ctx.t.mode === 'loop') { // We are set to loop
+				ctx.s.time = ctx.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
 				ctx.paint(); // Update the canvas
-				ctx.s.speed > 0 ? ctx.s.time = 0 : ctx.s.time = 1.0; // Set time to the beginning of the animation
-				ctx.play({time:0}); // Play from the beginning
+				ctx.s.time = ctx.s.speed > 0 ? 0 : 1.0; // Set time to the beginning of the animation
+				ctx.play({time: 0}); // Play from the beginning
 			}
 		}
-	}
+	};
 
 	// Find out which keyframes we are using (definitely room for improvement here)
 	ctx.getCurrentKeyframe = function (keyFrames) {
 
-		var result = { start:0, end: 1}; // Our result object
+		var i, j, result = { start: 0, end: 1}; // Our result object
 
-		for (var i=0, j= keyFrames.length;i<j;i++) { //Loop through the keyframes
-			if ( typeof( keyFrames[i].cuePoint) === "string") { // If they keyframe was passed as a name
+		for (i = 0, j = keyFrames.length; i < j; i = i + 1) { //Loop through the keyframes
+			if (typeof (keyFrames[i].cuePoint) === "string") { // If they keyframe was passed as a name
 				keyFrames[i].cuePoint = ctx.t.cuePoints[keyFrames[i].cuePoint]; // Get the name value and update the cuepoint so we don't have to do this again
 			}
 			if (keyFrames[i].cuePoint < ctx.s.time) { // If this cuepoint occurs before the current time
-				result.start = i;result.end = i+1; // This could be our cuepoint (might be replaced later in our loop)
+				result.start = i;
+				result.end = i + 1; // This could be our cuepoint (might be replaced later in our loop)
 			}
 		}
 
 		result.subDuration = keyFrames[result.end].cuePoint - keyFrames[result.start].cuePoint; // Calculate the time between our two keyframes
 		result.subTime = Math.pow(ctx.s.time - keyFrames[result.start].cuePoint, 2) / result.subDuration; // Calculate how far through this transition we are
 		return result;
-	}
+	};
 
 	// Convenience method for resetting the transformation matrix to the identity transform
 	ctx.identity = function () {
-    	this.setTransform(1, 0, 0, 1, 0, 0);
-	}
+		this.setTransform(1, 0, 0, 1, 0, 0);
+	};
 
 	// Here's our wrapper
 	ctx.canDo = function (method, keyFrames) {
-		var beg = ctx.getCurrentKeyframe(keyFrames); // Find the start point for the current animation segment
-		var state = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration); // Call our easing function passing in our array of parameters and getting an array in return
-		var result = ctx[method].apply(this, state); // Call the proxied function with the computed parameters
+		var beg = ctx.getCurrentKeyframe(keyFrames), // Find the start point for the current animation segment
+			state = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration), // Call our easing function passing in our array of parameters and getting an array in return
+			result = ctx[method].apply(this, state); // Call the proxied function with the computed parameters
 		return result;
 	};
 
 	ctx.canSet = function (property, keyFrames) {
-		var beg = ctx.getCurrentKeyframe(keyFrames); // Find the start point for the current animation segment
-		var result = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration); // Call our easing function passing in our array of parameters and getting an array in return
+		var beg = ctx.getCurrentKeyframe(keyFrames), // Find the start point for the current animation segment
+			result = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration); // Call our easing function passing in our array of parameters and getting an array in return
 		ctx[property] = result[0]; // Call the proxied function with the computed parameters
 	};
 
@@ -166,38 +181,40 @@ var canDo = function (el, args) {
 
 	ctx.easing = {
 
-		easeInQuad: function ( x, t, b, c, d ) {
-			var result = [], v = Math.pow(t/d, 2);
-			for (var k=0,l=b.length;k<l;k++) {
-				result.push( ( c[k] - b[k] ) * v + b[k] );
+		easeInQuad: function (x, t, b, c, d) {
+			var k, l, result = [], v = Math.pow(t / d, 2);
+			for (k = 0, l = b.length; k < l; k = k + 1) {
+				result.push((c[k] - b[k]) * v + b[k]);
 			}
 			return result;
 		},
 
-		easeOutQuad: function ( x, t, b, c, d ) {
-			var result = [], v = (t/d) * (t/d-2);
-			for (var k=0,l=b.length;k<l;k++) {
-				result.push( -(c[k]-b[k]) * v + b[k]);
+		easeOutQuad: function (x, t, b, c, d) {
+			var k, l, result = [], v = (t / d) * (t / d - 2);
+			for (k = 0, l = b.length; k < l; k = k + 1) {
+				result.push(-(c[k] - b[k]) * v + b[k]);
 			}
 			return result;
 		},
 
-		easeInOutQuad: function ( x, t, b, c, d ) {
-			var result = [], v = t/(d/2);
-			for (var k=0,l=b.length;k<l;k++) {
-				var w = (c[k]-b[k])/2;
-				if ( ( v ) < 1 ) {
-					result.push( w * v * v + b[k]);
+		easeInOutQuad: function (x, t, b, c, d) {
+			var w, k, l, result = [], v = t / (d / 2);
+			for (k = 0, l = b.length; k < l; k = k + 1) {
+				w = (c[k] - b[k]) / 2;
+				if (v < 1) {
+					result.push(w * v * v + b[k]);
 				} else {
-					result.push( -1 *  w * ( ( v-1 ) * ( v-3 ) - 1) + b[k]);
+					result.push(-1 *  w * ((v - 1) * (v - 3) - 1) + b[k]);
 				}
 			}
 			return result;
 		}
 
-	}	
+	};
 
-	if (typeof args.images === 'undefined' && ctx.t.splash) ctx.update({time:0});
+	if (typeof args.images === 'undefined' && ctx.t.splash) {
+		ctx.update({time: 0});
+	}
 
 	return ctx;
 };
