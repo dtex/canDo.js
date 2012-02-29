@@ -4,9 +4,6 @@ canDo.js is a canvas wrapper for simple animations. It is ideal for animating UI
 
 Issues I need to resolve before it's "finished":
 
-* Wait for preload images
-* Handle splash = true
-* Canvas events Over, Click, Out
 * Easing on timeline
 * New improved easing
 * Code optimization (nuke nested ifs and the like)
@@ -15,4 +12,4 @@ Issues I need to resolve before it's "finished":
 
 [More info: http://dtex.github.com/canDo.js/](http://dtex.github.com/canDo.js/ "More info").
 
-Quoting Tim Berners-Lee, but of course he was talking about something else.
+*Quoting Tim Berners-Lee, but of course he was talking about something else.
