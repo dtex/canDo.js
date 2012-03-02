@@ -2,10 +2,10 @@ canDo.js is a canvas wrapper for simple animations. It is ideal for animating UI
 
 "This project is experimental and of course comes without any warranty whatsoever"*
 
-Issues I need to resolve before it's "finished":
+Issues I need to resolve before v1.0:
 
-* Easing on timeline
 * New improved easing
+* Refactor to appropriate pattern (just sandboxed for now)
 * Code optimization (nuke nested ifs and the like)
 * Minification optimization
 * Hotspot events Over, Click, Out

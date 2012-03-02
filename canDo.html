@@ -14,8 +14,9 @@
 	</canvas>-->
 	<script>
 		var test = canDo(document.getElementById('sample'), {
-			duration: 150,
+			duration: 250,
 			frameRate: 60,
+			easing: 'easeInOutQuad',
 			images: {
 				requestMoreInfo: {url: 'http://173.203.65.217:9999/images/homeButtons/requestMoreInfo.jpg'}
 			},
@@ -32,16 +33,16 @@
 				this.moveTo(10,13);
 				this.quadraticCurveTo(10,8, 15,8);
 				this.lineTo(113,8);
-				this.canDo('quadraticCurveTo', [{params: [118,8,118,13], cuePoint:0},{params: [118,8,118,8], cuePoint:1, easing: 'easeInOutQuad'}]);
-				this.canDo('lineTo', [{params: [118,28], cuePoint:0},{params: [143,8], cuePoint:1,  easing: 'easeInOutQuad'}]);
-				this.canDo('quadraticCurveTo', [{params: [118,33,123,33], cuePoint:0},{params: [148,8,148,13], cuePoint:1, easing: 'easeInOutQuad'}]);
-				this.canDo('lineTo', [{params: [143,33], cuePoint:0},{params: [148,33], cuePoint:1,  easing: 'easeInOutQuad'}]);
+				this.canDo('quadraticCurveTo', [{params: [118,8,118,13], cuePoint:0},{params: [118,8,118,8], cuePoint:1}]);
+				this.canDo('lineTo', [{params: [118,28], cuePoint:0},{params: [143,8], cuePoint:1}]);
+				this.canDo('quadraticCurveTo', [{params: [118,33,123,33], cuePoint:0},{params: [148,8,148,13], cuePoint:1}]);
+				this.canDo('lineTo', [{params: [143,33], cuePoint:0},{params: [148,33], cuePoint:1}]);
 				this.quadraticCurveTo(148,33, 148,38);
 				this.lineTo(148,124);
-				this.canDo('quadraticCurveTo', [{params: [148,129,143,129], cuePoint:0},{params: [148,129,148,129], cuePoint:1, easing: 'easeInOutQuad'}]);
-				this.canDo('lineTo', [{params: [123,129], cuePoint:0},{params: [148,149], cuePoint:1,  easing: 'easeInOutQuad'}]);
-				this.canDo('quadraticCurveTo', [{params: [118,129,118,134], cuePoint:0},{params: [148,156,143,156], cuePoint:1, easing: 'easeInOutQuad'}]);
-				this.canDo('lineTo', [{params: [118,151], cuePoint:0},{params: [118,156], cuePoint:1,  easing: 'easeInOutQuad'}]);
+				this.canDo('quadraticCurveTo', [{params: [148,129,143,129], cuePoint:0},{params: [148,129,148,129], cuePoint:1}]);
+				this.canDo('lineTo', [{params: [123,129], cuePoint:0},{params: [148,149], cuePoint:1}]);
+				this.canDo('quadraticCurveTo', [{params: [118,129,118,134], cuePoint:0},{params: [148,156,143,156], cuePoint:1}]);
+				this.canDo('lineTo', [{params: [118,151], cuePoint:0},{params: [118,156], cuePoint:1}]);
 				this.quadraticCurveTo(118,156, 113,156);
 				this.lineTo(15,156);
 				this.quadraticCurveTo(10,156, 10,151);

@@ -23,7 +23,8 @@ var canDo = function (el, args) {
 		cuePoints: typeof args.cuePoints === 'undefined' ? {} : args.cuePoints, // Our list of cuepoints
 		mode: typeof args.mode === 'undefined' ? '' : args.mode, // Playback mode ('' = Play 1x, 'loop')
 		wait: typeof args.wait === 'undefined' ? true : args.wait, // wait for images to load?
-		splash: typeof args.splash === 'undefined' ? true : args.splash // Render the first frame before play is called?
+		splash: typeof args.splash === 'undefined' ? true : args.splash, // Render the first frame before play is called?
+		easing: typeof args.easing === 'undefined' ? 'linear' : args.easing // Our time easing function
 	};
 
 	// The calculated value of milliseconds between frames
@@ -32,6 +33,7 @@ var canDo = function (el, args) {
 	// Properties of our playback head
 	ctx.s = { // s=status
 		time: args.setTime || 0, // Setting the playback head position on the timeline (0.0 - 1.0)
+		easedTime: args.setTime || 0, // Setting the playback head position on the timeline (0.0 - 1.0)
 		speed: args.playbackSpeed || 1.0, // For stretching the timeline (still in development)
 		startTime: 0,	 // The start time of the current play event (calculated on play)
 		endTime: 0, // The end time of the current play event (calculated on play)
@@ -114,6 +116,8 @@ var canDo = function (el, args) {
 			ctx.s.time = args.time;
 		}
 
+		ctx.s.easedTime = ctx.easing[ctx.t.easing](0, ctx.s.time, [0], [1], 1)[0];
+
 		if ((ctx.s.time < 1.0  && ctx.s.speed > 0) || (ctx.s.time > 0  && ctx.s.speed < 0)) {  // If the animation is not finished
 
 			ctx.paint(); // Update the canvas and keep on truckin'
@@ -123,13 +127,15 @@ var canDo = function (el, args) {
 			if (ctx.t.mode === '') { // If we are set to play through one time
 				clearInterval(ctx.s.intervalTimer); // Cancel the refresh interval timer
 				ctx.s.time = ctx.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
+				ctx.s.easedTime = ctx.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
 				ctx.paint(); // Update the canvas
 			}
 
 			if (ctx.t.mode === 'loop') { // We are set to loop
 				ctx.s.time = ctx.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
-				ctx.paint(); // Update the canvas
+				ctx.s.easedTime = ctx.paint(); // Update the canvas
 				ctx.s.time = ctx.s.speed > 0 ? 0 : 1.0; // Set time to the beginning of the animation
+				ctx.s.easedTime = ctx.s.speed > 0 ? 0 : 1.0; // Set time to the beginning of the animation
 				ctx.play({time: 0}); // Play from the beginning
 			}
 		}
@@ -144,14 +150,14 @@ var canDo = function (el, args) {
 			if (typeof (keyFrames[i].cuePoint) === "string") { // If they keyframe was passed as a name
 				keyFrames[i].cuePoint = ctx.t.cuePoints[keyFrames[i].cuePoint]; // Get the name value and update the cuepoint so we don't have to do this again
 			}
-			if (keyFrames[i].cuePoint < ctx.s.time) { // If this cuepoint occurs before the current time
+			if (keyFrames[i].cuePoint < ctx.s.easedTime) { // If this cuepoint occurs before the current time
 				result.start = i;
 				result.end = i + 1; // This could be our cuepoint (might be replaced later in our loop)
 			}
 		}
 
 		result.subDuration = keyFrames[result.end].cuePoint - keyFrames[result.start].cuePoint; // Calculate the time between our two keyframes
-		result.subTime = Math.pow(ctx.s.time - keyFrames[result.start].cuePoint, 2) / result.subDuration; // Calculate how far through this transition we are
+		result.subTime = Math.pow(ctx.s.easedTime - keyFrames[result.start].cuePoint, 2) / result.subDuration; // Calculate how far through this transition we are
 		return result;
 	};
 
@@ -163,14 +169,14 @@ var canDo = function (el, args) {
 	// Here's our wrapper
 	ctx.canDo = function (method, keyFrames) {
 		var beg = ctx.getCurrentKeyframe(keyFrames), // Find the start point for the current animation segment
-			state = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration), // Call our easing function passing in our array of parameters and getting an array in return
+			state = ctx.easing[keyFrames[beg.end].easing || 'linear'](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration), // Call our easing function passing in our array of parameters and getting an array in return
 			result = ctx[method].apply(this, state); // Call the proxied function with the computed parameters
 		return result;
 	};
 
 	ctx.canSet = function (property, keyFrames) {
 		var beg = ctx.getCurrentKeyframe(keyFrames), // Find the start point for the current animation segment
-			result = ctx.easing[keyFrames[beg.end].easing](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration); // Call our easing function passing in our array of parameters and getting an array in return
+			result = ctx.easing[keyFrames[beg.end].easing || 'linear'](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration); // Call our easing function passing in our array of parameters and getting an array in return
 		ctx[property] = result[0]; // Call the proxied function with the computed parameters
 	};
 
@@ -180,7 +186,20 @@ var canDo = function (el, args) {
 	 * t: current time, b: begInnIng value, c: change In value, d: duration */
 
 	ctx.easing = {
-
+		linear: function (x, t, b, c, d) {
+			var k, l, result = [];
+			for (k = 0, l = b.length; k < l; k = k + 1) {
+				result.push((t / d) * (c[k] - b[k]) + b[k]);
+			}
+			return result;
+		},
+		swing: function (x, t, b, c, d) {
+			var k, l, result = [], v = ((-Math.cos(t / d * Math.PI) / 2) + 0.5);
+			for (k = 0, l = b.length; k < l; k = k + 1) {
+				result.push(v * (c[k] - b[k]) + b[k]);
+			}
+			return result;
+		},
 		easeInQuad: function (x, t, b, c, d) {
 			var k, l, result = [], v = Math.pow(t / d, 2);
 			for (k = 0, l = b.length; k < l; k = k + 1) {
