@@ -1,6 +1,6 @@
 body { margin:0;font-family:verdana, "trebuchet MS", helvetica, sans-serif;font-size:11px;color:#666666;font-size:14px;}
 h2 {font-weight:normal;margin:6px 0 0 0;padding:0;text-transform:uppercase;font-size:18px;}
-p {width:710px;}
+p {width:680px;}
 
 ul.demoButtons {list-style-type: none;padding: 0;}
 ul.demoButtons li {background-color:#950801;float:left;padding:4px 8px;margin:0 10px 10px 0;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;border-color:#ccc;border-style:ridge;}
