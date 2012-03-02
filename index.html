@@ -9,7 +9,9 @@ title: canDo.js Introduction
 <p>You are still free to use the non-proxied built-in functions when appropriate.</p>
 <h2>Hello <strike>World</strike> JS Logo</h2>
 <p>First you need a canvas element</p>
-<pre>&lt;canvas id="demo" width="400" height="360"&gt;This text is displayed if your browser does not support HTML5 Canvas.&lt;/canvas&gt;</pre>
+<pre>&lt;canvas id="demo" width="400" height="360"&gt;
+	This text is displayed if your browser does not support HTML5 Canvas.&lt;/canvas&gt;
+</pre>
 <p>Next you wrap the element's 2D rendering context with canDo</p>
 <pre>var demo = canDo(document.getElementById('demo'), {
     frameRate: 60,
