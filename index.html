@@ -1,13 +1,45 @@
+<!--<head><link rel="stylesheet" type="text/css" href="css/dtex.css" media="all" /></head>-->
 ---
+
 layout: default
 title: canDo.js Introduction
 ---
-<h3>canDo.js Introduction</h2>
+<h1>canDo.js Introduction</h1>
 <p>canDo.js is a canvas wrapper for lightweight animations. It gives you a timeline, cupoints, tweening, basic events and easing functions. It is ideal for animating simple UI elements (i.e. buttons). In a nutshell, canDo.js proxies the methods of the <a href="http://www.w3.org/TR/2dcontext/">HTML Canvas 2D Context</a> and allows you to add keyframes to the properties you pass in. canDo.JS handles the rest.</p>
 <p>You are still free to use the non-proxied built-in functions when appropriate.</p>
-<h3>Hello <strike>World</strike> JS Logo</h3>
-<p>First you need a canvas element.</p>
-<p>Next you need to create a reference to your canDo wrapped 2D rendering context. When you do that you need to pass in some parameters, not least of witch is your paint () function.</p>
-<p>Finally you call play on your canDo object.</p>
+<h2>Hello <strike>World</strike> JS Logo</h2>
+<p>First you need a canvas element</p>
+<pre>&lt;canvas id="demo" width="400" height="360"&gt;This text is displayed if your browser does not support HTML5 Canvas.&lt;/canvas&gt;</pre>
+<p>Next you wrap the element's 2D rendering context with canDo</p>
+<pre>var demo = canDo(document.getElementById('demo'), {
+    frameRate: 60,
+    duration: 2000,
+    easing: 'easeInOutQuad',
+    events: {
+        mouseover: function () {demo.play({speed:1});},
+        mouseout: function () {demo.play({speed:-1});}
+    }
+});</pre>
+<p>When you do that you need to pass in some parameters, not least of wich is your paint () function. Here we're setting it after the fact</p>
+<pre>demo.paint = function() {
+	this.identity();
+	this.clearRect(0, 0, 400, 360);
+	this.translate(160, 160);
+	
+	this.canDo('rotate', [{params: [0],cuePoint: 0},{params: [24.78],cuePoint: 1}]);
+	this.translate(-105, -105);        
+	this.canDo('scale', [{params: [0.1, 0.1],cuePoint: 0},{params: [1.0, 1.0],cuePoint: 1}]);        
+	this.shadowColor = 'rgba(0, 0, 0, 0.7)';        
+	this.canSet('shadowOffsetX', [{params: [3],cuePoint: 0},{params: [90],cuePoint: 1}]);        
+	this.canSet('shadowOffsetY', [{params: [3],cuePoint: 0},{params: [50],cuePoint: 1}]);        
+	this.canSet('shadowBlur', [{params: [3],cuePoint: 0},{params: [20],cuePoint: 1}]);
+	
+	drawJSBox(this);
+	this.shadowOffsetX = 0;
+	this.shadowOffsetY = 0;
+	this.shadowBlur = 0;
+    drawJ(this);
+	drawS(this);
+};</pre>
 <p>And we end up with something like this:</p>
 <iframe style="width: 710px; height: 620px;clear:both;margin-top:32px;" src="http://jsfiddle.net/dtex/YJP8S/embedded/js,result" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
