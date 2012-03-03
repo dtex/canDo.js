@@ -12,9 +12,10 @@ title: canDo.js Documentation
 <hr/>
 <strong>canvasElement</strong>  An HTMLCanvasElement.
 
-<strong>configuration</strong> A set of key/value pairs that configures the canDo animation.</pre>
+<strong><a href="#configuration">configuration</a></strong> A set of key/value pairs that configures the canDo animation.</pre>
 
 <p>When a canvas element is wrapped in canDo all of the native methods and properties of the 2dRenderingContext are still available.</p>
+<a id="configuration" />
 <h2>configuration</h2>
 <p>A set of key/value pairs that configures the canDo animation.</p>
 <pre class="detail"><strong>duration:</strong> int [ Optional ]
@@ -35,17 +36,45 @@ but may render fewer frames per second if there is to much load on the system.
 Sets the current playback position on the timeline. Valid values are 
 0.0 (the beginning) through 1.0 (the end).
 <hr/>
+<strong>playbackSpeed:</strong> float [ Optional ]
+<span class="grey"></strong>Default:</strong> 1.0</span>
+
+Sets the current playback speed. A value of 1.0 will play at the normal speed 
+based on the duration of the animation. Values less than 0.0 will play the
+animation backwards.
+<hr/>
 <strong>mode:</strong> string [ Optional ]
 <span class="grey"></strong>Default:</strong> ''</span>
 
 The playback mode for the animation. Valid values are:
 
-<strong>'' (empty string):</strong> Play through the animation until an endpoint is reached and stop.
+	<strong>'' (empty string):</strong> Play through the animation until an endpoint is 
+	reached and stop.
 
-<strong>'loop':</strong> When the endpoint is reached, rewind and play again. When the playback 
-speed is a negative value (playing backwards) the animation will loop back to the 
-end when the beginning is reached and continue playing.
+	<strong>'loop':</strong> When the endpoint is reached, rewind and play again. 
+	When the playback speed is a negative value (playing backwards) the 
+	animation will loop back to the end when the beginning is reached and 
+	continue playing.
 <hr/>
+<strong>easing:</strong> string [ Optional ]
+<span class="grey"></strong>Default:</strong> 'linear'</span>
+
+The easing function to use on the timeline. Putting the easing function 
+here eases the playback head of the animation and is effectively the same as 
+putting the same easing function on every call to canDo or canSet, but is much 
+more effecient. Valid values are:
+
+	<strong>'linear':</strong> No easing
+	
+	<strong>'swing':</strong> A popular function that eases both in and out
+	
+	<strong>'easeInQuad':</strong> 
+	
+	<strong>'easeOutQuad':</strong>
+	
+	<strong>'easeInOutQuad':</strong>
+<hr/>
+	
 <strong>wait:</strong> boolean [ Optional ]
 <span class="grey"></strong>Default:</strong> true</span>
 
@@ -59,14 +88,49 @@ state of the images.
 When set to true the first frame of the animation will be rendered wether the 
 animation is playing or not.
 <hr/>
+<strong><a href="#cuePoints">cuePoints</a>:</strong> A set of key/value pairs referencing 
+points on the timeline by name [ Optional ]
+<span class="grey"></strong>Default:</strong> {}</span>
+
+cuePoints are great when working with an art director who
+"knows what they like when they see it". You can move a keyframe
+on multiple elements by changing one value in your configuration file.
+<hr/>
+<strong><a href="#events">events</a>:</strong> A set of key/value pairs defining events 
+that should be bound to the canvas element [ Optional ]
+<span class="grey"></strong>Default:</strong> {}</span>
+
+Basic event handling for you canvas element
+<hr/>
+<strong><a href="#images">images</a>:</strong> A set of key/value pairs declaring images that are used in the 
+animation [ Optional ]
+<span class="grey"></strong>Default:</strong> {}</span>
+
+canDo will automatically ]create image objects and optionally preload all the 
+images used in your animation.
+<hr/>
+<strong><a href="#paint">paint</a>:</strong> The callback function that is used to render a frame of the 
+animation [ Required ]
+
+canDo will automatically create image objects and optionally preload all the 
+images used in your animation.
+</pre>
+
+
+
+
+<a id="cuePoints"/>
+<h2>cuePoints</h2>
+<p>A set of key/value pairs that configures the canDo animation.</p>
+<pre class="detail"><strong>duration:</strong> int [ Optional ]
+<span class="grey"></strong>Default:</strong> 1000</span>
+
+The duration of the timeline in 1/1000 seconds. The actual of duration of the 
+animation can also be changed adjusting the playback speed.
+</pre>
+
+
+<hr/>
 	
-	
-	cuePoints: typeof args.cuePoints === 'undefined' ? {} : args.cuePoints, // Our list of cuepoints
-	
-	easing: typeof args.easing
-time: args.setTime || 0, // Setting the playback head position on the timeline (0.0 - 1.0)
-		easedTime: args.setTime || 0, // Setting the playback head position on the timeline (0.0 - 1.0)
-		speed: args.playbackSpeed || 1.0, // For stretching the timeline (still in development)
-		args.images
-		args.paint
-		args.events
+	args.images
+	args.paint
