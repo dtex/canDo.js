@@ -1,7 +1,8 @@
 body { margin:0;font-family:verdana, "trebuchet MS", helvetica, sans-serif;font-size:11px;color:#666666;font-size:14px;}
 h1, h2, h3, h4, h5, h6 { color:#0d5995;}
-h2 {font-weight:normal;margin:6px 0 0 0;padding:0;text-transform:uppercase;font-size:18px;}
+h2 {font-weight:normal;margin:6px 0 0 0;padding:0;font-size:18px;}
 p {width:680px;}
+.grey {color:#666;}
 
 ul.demoButtons {list-style-type: none;padding: 0;}
 ul.demoButtons li {background-color:#950801;float:left;padding:4px 8px;margin:0 10px 10px 0;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;border-color:#ccc;border-style:ridge;}
@@ -31,3 +32,5 @@ ul.demoButtons li a {color:#fff;text-decoration:none;}
 canvas {margin-top:18px;border:solid 1px #ccc;padding:1px;}
 
 pre {padding: 10px;overflow-x: auto;background-color: #fbf9ea;border: 1px solid #e2e1d5;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;margin: 0px;width:680px;}
+pre.psuedo {background-color:#0d5995;color:#fff;font-family:verdana, "trebuchet MS", helvetica, sans-serif;font-weight:bold;}
+pre.detail { background-color:#ddd;color:#000;border-color:#aaa;}

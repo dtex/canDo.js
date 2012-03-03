@@ -2,50 +2,71 @@
 layout: default
 title: canDo.js Documentation
 ---
-<h3>canDo.js Documentation</h2>
-<p>canDo.js is a canvas wrapper for lightweight animations. It is ideal for animating simple UI elements (i.e. buttons, and little graphical widgets). In a nutshell, canDo.js proxies the methods of the <a href="http://www.w3.org/TR/2dcontext/">HTML Canvas 2D Context</a>, and allows you to add keyframes and easing functions to the properties you pass in. canDo.JS handles the rest.</p>
-<p>It provides some common easing functions, convenience methods and setter proxies for attributes of the rendering context. You are free to use the non-proxied functions when appropriate.</p>
-<h3>Hello <strike>World</strike> Box</h3>
-<p>First you need a canvas element. For example:</p>
-<script type="syntaxhighlighter" class="brush: html; toolbar: false"><![CDATA[
-	<canvas id="sample" width="240" height="240">
-		This text is displayed if your browser does not support HTML5 Canvas.
-	</canvas>]]></script>
-<p>Next you need to create a reference to your canDo wrapped 2D rendering context. When you do that you need to pass in some parameters. For example:</p>
-<script type="syntaxhighlighter" class="brush: js; first-line: 4; toolbar: false "><![CDATA[
-	var test = canDo(document.getElementById('sample'), {
-		mode: 'loop',
-		frameRate:60,
-		paint: function() {
-			this.clearRect(0,0,240,240);
-			this.canDo('fillRect', 
-			[
-				{params: [115, 115, 10, 10], cuePoint:0},
-				{params: [0, 0, 240, 240], cuePoint: .5, easing: 'easeOutQuad'},
-				{params: [115, 115, 10, 10], cuePoint: 1, easing: 'easeInOutQuad'}
-			]);
-		}
-	});]]></script>
-<p>Finally you call play on your canDo object like so:</p>
-<script type="syntaxhighlighter" class="brush: js; toolbar: false; first-line:20;">
-	test.play();</script>
-<p>And we end up with:</p>
-<canvas id="sample" width="240" height="240">
-	This text is displayed if your browser does not support HTML5 Canvas.
-</canvas>
-<p><em>Warning: Looping an animation at a high frame rate like this can use up an inordinate amount of CPU...<br/>I think I hear your fan spinning up now.</em></p>
-<script>
-	var test = canDo(document.getElementById('sample'), {
-		mode: 'loop',
-		frameRate:60,
-		paint: function() {
-			this.clearRect(0,0,240,240);
-			this.canDo('fillRect', [
-				{params: [115, 115, 10, 10], cuePoint:0},
-				{params: [0, 0, 240, 240], cuePoint: .5, easing: 'easeOutQuad'},
-				{params: [115, 115, 10, 10], cuePoint: 1, easing: 'easeInOutQuad'}
-			]);
-		}
-	});
-	test.play();
-</script>
+<head><link rel="stylesheet" type="text/css" href="css/dtex.css" media="all" /></head>
+<h1>canDo()</h1>
+<pre class="psuedo">canDo( canvasElement, canDoConfiguration )
+
+<div style="text-align:right;font-style:italic;">Returns: A canDo wrapped 2d rendering context.</div></pre>
+<p><strong>Description:</strong> Wraps a canvas element and adds methods and properties for building simple animations.</p>
+<pre class="detail">canDo( canvasElement, configuration )
+<hr/>
+<strong>canvasElement</strong>  An HTMLCanvasElement.
+
+<strong>configuration</strong> A set of key/value pairs that configures the canDo animation.</pre>
+
+<p>When a canvas element is wrapped in canDo all of the native methods and properties of the 2dRenderingContext are still available.</p>
+<h2>configuration</h2>
+<p>A set of key/value pairs that configures the canDo animation.</p>
+<pre class="detail"><strong>duration:</strong> int [ Optional ]
+<span class="grey"></strong>Default:</strong> 1000</span>
+
+The duration of the timeline in 1/1000 seconds. The actual of duration of the 
+animation can also be changed adjusting the playback speed.
+<hr/>
+<strong>frameRate:</strong> int [ Optional ]
+<span class="grey"></strong>Default:</strong> 30</span>
+
+The targeted refresh rate in frames per second. canDo will not exceed this rate,
+but may render fewer frames per second if there is to much load on the system.
+<hr/>
+<strong>setTime:</strong> float (min: 0.0, max: 1.0) [ Optional ]
+<span class="grey"></strong>Default:</strong> 0.0</span>
+
+Sets the current playback position on the timeline. Valid values are 
+0.0 (the beginning) through 1.0 (the end).
+<hr/>
+<strong>mode:</strong> string [ Optional ]
+<span class="grey"></strong>Default:</strong> ''</span>
+
+The playback mode for the animation. Valid values are:
+
+<strong>'' (empty string):</strong> Play through the animation until an endpoint is reached and stop.
+
+<strong>'loop':</strong> When the endpoint is reached, rewind and play again. When the playback 
+speed is a negative value (playing backwards) the animation will loop back to the 
+end when the beginning is reached and continue playing.
+<hr/>
+<strong>wait:</strong> boolean [ Optional ]
+<span class="grey"></strong>Default:</strong> true</span>
+
+When set to true the animation will not play until all images passed in have been 
+loaded into memory. When set to false the animation will play regardless of the 
+state of the images.
+<hr/>
+<strong>splash:</strong> boolean [ Optional ]
+<span class="grey"></strong>Default:</strong> true</span>
+
+When set to true the first frame of the animation will be rendered wether the 
+animation is playing or not.
+<hr/>
+	
+	
+	cuePoints: typeof args.cuePoints === 'undefined' ? {} : args.cuePoints, // Our list of cuepoints
+	
+	easing: typeof args.easing
+time: args.setTime || 0, // Setting the playback head position on the timeline (0.0 - 1.0)
+		easedTime: args.setTime || 0, // Setting the playback head position on the timeline (0.0 - 1.0)
+		speed: args.playbackSpeed || 1.0, // For stretching the timeline (still in development)
+		args.images
+		args.paint
+		args.events
