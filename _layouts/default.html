@@ -32,7 +32,7 @@
 						<h3><a href="demos.html">Demos</a></h3>
 						<h3>Initialization</h3>
 						<ul>
-							<li><a href="documentation.html">new CanDo()</a>
+							<li><a href="documentation.html">new CanDo( canvasElement, { canDoConfiguration } )</a>
 								<ul>
 									<li>&lt; canvasElement &gt;</li>
 									<li>{ canDoConfiguration }</li>
@@ -41,27 +41,27 @@
 						</ul>
 						<h3>Methods</h3>
 						<ul>
-							<li>canDo.canDo()
+							<li>canDo.canDo( method, { keyframes } )
 								<ul>
 									<li>method</li>
 									<li>{ keyframes }</li>
 								</ul>
 							</li>
-							<li>canDo.canSet()
+							<li>canDo.canSet( property, { keyframes } )
 								<ul>
-									<li>method</li>
+									<li>proeprty</li>
 									<li>{ keyframes }</li>
 								</ul>
 							</li>
 							<li>canDo.getCurrentKeyFrame()</li>
 							<li>canDo.identity()</li>
 							<li>canDo.paint()</li>
-							<li>canDo.play()
+							<li>canDo.play( { playConfiguration } )
 								<ul>
 									<li>{ playConfiguration }</li>
 								</ul>
 							</li>
-							<li>canDo.update()
+							<li>canDo.update( { updateConfiguration } )
 								<ul>
 									<li>{ updateConfiguration }</li>
 								</ul>
