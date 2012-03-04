@@ -3,6 +3,7 @@ a, h1, h2, h3, h4, h5, h6 { color:#0d5995;}
 h2 {font-weight:normal;margin:24px 0 0 0;padding:0;font-size:18px;}
 p {width:680px;}
 .grey {color:#666;}
+li {margin-bottom:12px;}
 
 ul.demoButtons {list-style-type: none;padding: 0;}
 ul.demoButtons li {background-color:#950801;float:left;padding:4px 8px;margin:0 10px 10px 0;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px;border-color:#ccc;border-style:ridge;}
