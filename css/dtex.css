@@ -20,6 +20,7 @@ ul.demoButtons li a {color:#fff;text-decoration:none;}
 .inlineSidebar h3 {font-size:12px; margin-bottom:2px;padding-top:12px;}
 .inlineSidebar ul {margin:0;padding:0;}
 .inlineSidebar li {padding:2px 0;margin:0;list-style-type:none;}
+.inlineSidebar ul ul {margin:0 0 0 12px;padding:0;}
 
 #copyright {padding: 11px 4px;font-size:10px;color:#beb7ae; }
 #copyright a {color:#beb7ae; }
