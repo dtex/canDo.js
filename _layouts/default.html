@@ -28,29 +28,31 @@
 			<div id="pageRule">
 				<div id="inline">
 					<div class="inlineSidebar">
+						<h3><a href="index.html">Introduction</a></h3>
+						<h3><a href="demos.html">Demos</a></h3>
+						<h3>Documentation</h3>
 						<ul>
-							<li><a href="index.html">Introduction</a></li>
-							<li><a href="documentation.html">Documentation</a></li>
-							<li><a href="demos.html">Demos</a></li>
-						</ul>
-						<h3>canDo.js is:</h3>
-						<ul>
-							<li>Framework agnostic</li>
-							<li>Standalone</li>
-							<li>Tiny </li>
-						</ul>
-						<h3>canDo.js is not:</h3>
-						<ul>
-							<li>A scene graph manager</li>
-							<li>A game engine</li>
-							<li>A drawing tool</li>
-						</ul>
-						<h3>Want more? Use these:</h3>
-						<ul>
-							<li><a href="http://fabricjs.com/">fabric.js</a></li>
-							<li><a href="http://paperjs.org/">paper.js</a></li>
-							<li><a href="http://code.google.com/p/cakejs/">cake.js</a></li>
-							<li><a href="https://github.com/hyperandroid/CAAT">CAAT</a></li>
+							<li><strong>Initialization</strong></li>
+							<li><a href="documentation.html">canDo( &lt; canvasElement &gt;, { canDoConfiguration } )</a>
+								<ul>
+									<li>&lt; canvasElement &gt;</li>
+									<li>{ canDoConfiguration }</li>
+								</ul>
+							</li>
+							<li><strong>Methods</strong></li>
+							<li>canDo.canDo( method, { keyframes } )</li>
+							<li>canDo.canSet( method, { keyframes } )</li>
+							<li>canDo.getCurrentKeyFrame()</li>
+							<li>canDo.identity()</li>
+							<li>canDo.paint()</li>
+							<li>canDo.play( args )</li>
+							<li>canDo.update( args )</li>
+							<li><strong>Properties</strong></li>
+							<li>canDo.ctx</li>
+							<li>canDo.t</li>
+							<li>canDo.s</li>
+							<li>canDo.images</li>
+							<li>canDo.easing</li>
 						</ul>
 					</div>
 					{{ content }}
