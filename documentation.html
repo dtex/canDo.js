@@ -3,12 +3,12 @@ layout: default
 title: canDo.js Documentation
 ---
 <head><link rel="stylesheet" type="text/css" href="css/dtex.css" media="all" /></head>
-<h1>canDo()</h1>
-<pre class="psuedo">canDo( canvasElement, canDoConfiguration )
+<h1>CanDo()</h1>
+<pre class="psuedo">CanDo( canvasElement, canDoConfiguration )
 
 <div style="text-align:right;font-style:italic;">Returns: A canDo wrapped 2d rendering context.</div></pre>
 <p><strong>Description:</strong> Wraps a canvas element and adds methods and properties for building simple animations.</p>
-<pre class="detail">canDo( canvasElement, canDoConfiguration )
+<pre class="detail">CanDo( canvasElement, canDoConfiguration )
 <hr/>
 <strong>canvasElement</strong>  An HTMLCanvasElement.
 
@@ -16,7 +16,7 @@ title: canDo.js Documentation
 
 <p>When a canvas element is wrapped in canDo all of the native methods and properties of the 2dRenderingContext are still available.</p>
 <h2>Example</h2>
-<pre>var translate = canDo(document.getElementById('translate'), {
+<pre>var translate = CanDo(document.getElementById('translate'), {
     frameRate: 60,
     duration: 3000,
     easing: 'easeInOutQuad',
