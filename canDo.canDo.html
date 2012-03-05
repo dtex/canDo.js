@@ -1,0 +1,19 @@
+---
+layout: default
+title: canDo.js Documentation
+---
+<head><link rel="stylesheet" type="text/css" href="css/dtex.css" media="all" /></head>
+<h1>CanDo()</h1>
+<pre class="psuedo">CanDo.canDo( method, { methodKeyframes } )</pre>
+<p><strong>Description:</strong> Wraps methods from the <a href="http://www.w3.org/TR/2dcontext/">HTML Canvas 2D Context. </p>
+<pre class="detail">CanDo.canDo( method, { methodKeyframes } )
+<hr/>
+<strong>method</strong>  A string containing the name of the built in canvas method you wish to call.
+
+<strong>methodKeyframes</strong> A list of keyframes with values to pass to the selected method. These values will be tweened by canDo.</pre>
+
+<h2>Example</h2>
+<pre>this.canDo('translate', [ 
+	{params: [0, 0],cuePoint: 0},
+	{params: [110, 110],cuePoint: 1.0}
+]);</pre>
