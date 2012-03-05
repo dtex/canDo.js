@@ -21,7 +21,7 @@ title: canDo.js Documentation
 	[, images: { } ] 		// Default: {}
 }</pre>
 
-<p>When a canvas element is wrapped in canDo all of the native methods and properties of the 2dRenderingContext are still available.</p>
+<p>It's important to not that the only required key/value pair is the paint: function(). It can be set and modified later, but a canDo animation is no good without it.</p>
 <h2>Example</h2>
 <pre>var translate = CanDo(document.getElementById('translate'), {
     frameRate: 60,

@@ -20,7 +20,7 @@ ul.demoButtons li a {color:#fff;text-decoration:none;}
 .inlineSidebar {float:right;width:220px;margin:47px 0 0 18px;font-size:12px;}
 .inlineSidebar h3 {font-size:12px; margin-bottom:2px;padding-top:12px;}
 .inlineSidebar ul {margin:0;padding:0;}
-.inlineSidebar li {padding:2px 0 12px 0;margin:0;list-style-type:none;}
+.inlineSidebar li {padding:2px 0 8px 0;margin:0;list-style-type:none;}
 .inlineSidebar li li {padding-bottom:0px;}
 .inlineSidebar ul ul {margin:0 0 0 12px;padding:0;}
 
