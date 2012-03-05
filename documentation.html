@@ -14,7 +14,7 @@ title: canDo.js Documentation
 
 <strong><a href="canDoConfiguration.html">canDoConfiguration</a></strong> A set of key/value pairs that configure the canDo animation.</pre>
 
-<p>When a canvas element is wrapped in canDo all of the native methods and properties of the 2dRenderingContext are still available.</p>
+<p>When you create the elements you pass through all the properties you need to configure you animations timeline and paint routines. Take a good look at the <a href="canDoConfiguration.html">canDoConfiguration</a> object as it's an important part of any canDo animation. Also note that a canDo wrapped canvas element still has all of the native methods and properties of the 2dRenderingContext.</p>
 <h2>Example</h2>
 <pre>var translate = CanDo(document.getElementById('translate'), {
     frameRate: 60,
