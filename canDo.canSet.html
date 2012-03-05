@@ -1,0 +1,20 @@
+---
+layout: default
+title: canDo.js Documentation
+---
+<head><link rel="stylesheet" type="text/css" href="css/dtex.css" media="all" /></head>
+<h1>CanDo.canSet()</h1>
+<pre class="psuedo">CanDo.canSet( property, { propertyKeyframes } )</pre>
+<p><strong>Description:</strong> Wraps setters from the <a href="http://www.w3.org/TR/2dcontext/">HTML Canvas 2D Context.</p>
+<pre class="detail">CanDo.canSet( property, { propertyKeyframes } )
+<hr/>
+<strong>property</strong>  A string containing the name of the built in canvas setter you wish to call.
+
+<strong>propertyKeyframes</strong> A list of keyframes with values to pass to the selected setter. These values will be tweened by canDo.</pre>
+
+<h2>Example</h2>
+<pre>this.canSet('shadowBlur', [
+	{ params: [3], cuePoint: 0},
+	{ params: [20], cuePoint: 0.5},
+	{ params: [3], cuePoint: 1.0}
+]);</pre>
