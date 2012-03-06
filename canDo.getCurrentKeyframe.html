@@ -1,0 +1,19 @@
+---
+layout: default
+title: canDo.getCurrentKeyframe()
+---
+<head><link rel="stylesheet" type="text/css" href="css/dtex.css" media="all" /></head>
+<h1>canDo.getCurrentKeyframe()</h1>
+<pre class="psuedo">CanDo.getCurrentKeyframe( [ { keyframes } ] )</pre>
+<p><strong>Description:</strong> Grabs the current from and to keyframes based on the current time in canDo.s.time</p>
+<pre class="detail">CanDo.getCurrentKeyframe( [ { keyframes } ] )
+<hr/>
+<strong>{ Keyframes }</strong>  A keyframe object that consists of parameters, a cue point/time 
+value and optionally an easing function.</pre>
+
+<h2>Example</h2>
+<pre>this.getCurrentKeyframe( [ 
+	{ params: [3], cuePoint: 0},
+	{ params: [20], cuePoint: 0.5},
+	{ params: [3], cuePoint: 1.0}
+] );</pre>
