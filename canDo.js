@@ -4,11 +4,11 @@ var CanDo = function (el, args) {
 	"use strict";
 
 	// Our 2d rendering context
-	var ctx  = el.getContext('2d'), loadCount = 0, imageName, eventName,
-		loadCounter = function () {// When the image is loaded
-			loadCount = loadCount - 1; // Decrement the number of images left to load
+	var ctx  = el.getContext('2d'), imagesLeftToLoad = 0, imageName, eventName,
+		imageLoaded = function () {// Called when an image is loaded
+			imagesLeftToLoad = imagesLeftToLoad - 1; 
 
-			if (loadCount === 0) { // If there are no more images to load
+			if (imagesLeftToLoad === 0) { // If there are no more images to load
 				if (ctx.t.splash) { // If we want a splash screen, render it now
 					ctx.update({time: 0});
 				}
@@ -16,78 +16,70 @@ var CanDo = function (el, args) {
 			}
 		};
 
-	/* Properties of our Canvas timeline with some defaults. They are not specific to any method call */
-	ctx.t = { // t=timeLine
-		duration: typeof args.duration === 'undefined' ? 1000 : args.duration,	 // Timeline duration in 1/1000 seconds
-		frameRate: typeof args.frameRate === 'undefined' ? 30 : args.frameRate, // Our target framerate
-		cuePoints: typeof args.cuePoints === 'undefined' ? {} : args.cuePoints, // Our list of cuepoints
-		mode: typeof args.mode === 'undefined' ? '' : args.mode, // Playback mode ('' = Play 1x, 'loop')
-		wait: typeof args.wait === 'undefined' ? true : args.wait, // wait for images to load?
-		splash: typeof args.splash === 'undefined' ? true : args.splash, // Render the first frame before play is called?
-		easing: typeof args.easing === 'undefined' ? 'linear' : args.easing // Our time easing function
-	};
+	/* Default properties of our Canvas timeline. They are not specific to any method call */
+	ctx.t = { duration: 1000, frameRate: 30, cuePoints: {}, mode: '', wait: true, splash: true, easing: 'linear' };
 
-	// The calculated value of milliseconds between frames
-	ctx.t.frameInterval = Math.floor(1000 / ctx.t.frameRate);
+	// Default properties of our playback head
+	ctx.s = { time: 0, easedTime: 0, speed: 1.0, startTime: 0,	 endTime: 0, intervalTimer: 0, loaded: true };
 
-	// Properties of our playback head
-	ctx.s = { // s=status
-		time: args.setTime || 0, // Setting the playback head position on the timeline (0.0 - 1.0)
-		easedTime: args.setTime || 0, // Setting the playback head position on the timeline (0.0 - 1.0)
-		speed: args.playbackSpeed || 1.0, // For stretching the timeline (still in development)
-		startTime: 0,	 // The start time of the current play event (calculated on play)
-		endTime: 0, // The end time of the current play event (calculated on play)
-		intervalTimer: 0, // The setInterval used for refresh
-		loaded: true
-	};
-
-	// Go through the images and make sure they are loaded before we start drawing
-	if (typeof args.images !== 'undefined') { // If an images object was passed
-		ctx.s.loaded = false; // Indicate that images are not ready
-		ctx.images = args.images; // Copy the images from args to the context
-		for (imageName in ctx.images) { // Loop through each image
-			if (ctx.images.hasOwnProperty(imageName)) {
-				loadCount = loadCount + 1; // We have one more image to load
-				ctx.images[imageName].img = new Image(); // Add an image to the image object
-				ctx.images[imageName].img.onload = loadCounter;
-				ctx.images[imageName].img.src = ctx.images[imageName].url; // Set the src for the image to start loading it
-			}
-		}
-	}
-
-	// Yeah, we're gonna need this
-	ctx.paint = args.paint;
-
-	// Event handlers
-	if (typeof args.events !== 'undefined') { // If an events object was passed
-		for (eventName in	 args.events) { // Loop through each event
-			if (args.events.hasOwnProperty(eventName)) {
-				if (el.addEventListener) {
-					el.addEventListener(eventName, args.events[eventName], false);
-				} else if (el.attachEvent) {
-					el.attachEvent('on' + eventName, args.events[eventName]);
+	// Handle changes passed in via the configuration object
+	ctx.configure = function (args) {
+		
+		// Update timeline properties
+		if (typeof args.duration !== 'undefined') ctx.t.duration = args.duration;
+		if (typeof args.frameRate !== 'undefined') ctx.t.frameRate = args.frameRate;
+		if (typeof args.cuePoints !== 'undefined') ctx.t.cuePoints = args.cuePoints;
+		if (typeof args.mode !== 'undefined') ctx.t.mode = args.mode;
+		if (typeof args.wait !== 'undefined') ctx.t.wait = args.wait;
+		if (typeof args.splash !== 'undefined') ctx.t.splash = args.splash;
+		if (typeof args.easing !== 'undefined') ctx.t.easing = args.easing;
+		
+		// The calculated value of milliseconds between frames
+		ctx.t.frameInterval = Math.floor(1000 / ctx.t.frameRate);
+		
+		// Update playback status properties
+		if (typeof args.setTime !== 'undefined') ctx.s.time = args.setTime;
+		if (typeof args.setTime !== 'undefined') ctx.s.easedTime = args.setTime;
+		if (typeof args.speed !== 'undefined') ctx.s.speed = args.speed;
+		
+		// Go through the images and make sure they are loaded before we start drawing
+		if (typeof args.images !== 'undefined') { // If an images object was passed
+			ctx.s.loaded = false; // Indicate that images are not ready
+			ctx.images = args.images; // Copy the images from args to the context
+			for (imageName in ctx.images) { // Loop through each image
+				if (ctx.images.hasOwnProperty(imageName)) {
+					imagesLeftToLoad = imagesLeftToLoad + 1; // We have one more image to load
+					ctx.images[imageName].img = new Image(); // Add an image to the image object
+					ctx.images[imageName].img.onload = imageLoaded;
+					ctx.images[imageName].img.src = ctx.images[imageName].url; // Set the src for the image to start loading it
 				}
 			}
 		}
-	}
-
+		
+		// Yeah, we're gonna need this
+		if (typeof args.paint !== 'undefined') ctx.paint = args.paint;
+	
+		// Event handlers
+		if (typeof args.events !== 'undefined') { // If an events object was passed
+			for (eventName in	 args.events) { // Loop through each event
+				if (args.events.hasOwnProperty(eventName)) {
+					if (el.addEventListener) {
+						el.addEventListener(eventName, args.events[eventName], false);
+					} else if (el.attachEvent) {
+						el.attachEvent('on' + eventName, args.events[eventName]);
+					}
+				}
+			}
+		}
+	};
+	
 	// Begin the animation
 	ctx.play = function (args) {
 		var preTime; // Used to hold how much time has already passed in the animation
-
-		if (args === undefined) {
-			args = {}; // We can pass in args to our play function as well
+		if (typeof args !== 'undefined') {
+			ctx.configure(args);
 		}
-		if (typeof args.speed !== 'undefined') {
-			ctx.s.speed = args.speed; // Update with new speed if speed property was passed
-		}
-		if (typeof args.time !== 'undefined') {
-			ctx.s.time = args.time; // Update the playback head position if time property was passed
-		}
-		if (typeof args.mode !== 'undefined') {
-			ctx.t.mode = args.mode; // Update the playback head position if time property was passed
-		}
-
+		
 		// Calculate our new time values
 		ctx.t.scaledDuration = Math.abs(ctx.t.duration / ctx.s.speed); // Calculate the total duration of the timeline
 		preTime = ctx.s.speed < 0 ? 1 - ctx.s.time : ctx.s.time; // If we are playing backwards we need to tweak our formula
@@ -101,9 +93,11 @@ var CanDo = function (el, args) {
 
 	// Our refresh function
 	ctx.update = function (args) {
-		if (args === undefined) {
+		if (typeof args === 'undefined') {
 			args = {};
 		}
+		
+		ctx.configure(args);
 
 		// Find where we are on the timeline
 		if (typeof args.time === 'undefined') {
@@ -166,7 +160,7 @@ var CanDo = function (el, args) {
 		this.setTransform(1, 0, 0, 1, 0, 0);
 	};
 
-	// Here's our wrapper
+	// Here's our method wrapper
 	ctx.canDo = function (method, keyFrames) {
 		var beg = ctx.getCurrentKeyframe(keyFrames), // Find the start point for the current animation segment
 			state = ctx.easing[keyFrames[beg.end].easing || 'linear'](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration), // Call our easing function passing in our array of parameters and getting an array in return
@@ -230,7 +224,9 @@ var CanDo = function (el, args) {
 		}
 
 	};
-
+	
+	ctx.configure(args);
+	
 	if (typeof args.images === 'undefined' && ctx.t.splash) {
 		ctx.update({time: 0});
 	}
