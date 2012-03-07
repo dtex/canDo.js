@@ -73,7 +73,7 @@ but may render fewer frames per second if there is too much load on the system.
 Sets the current playback position on the timeline. Valid values are 
 0.0 (the beginning) through 1.0 (the end).
 <hr/>
-<strong>playbackSpeed:</strong> float [ Optional ]
+<strong>speed:</strong> float [ Optional ]
 <span class="grey"></strong>Default:</strong> 1.0</span>
 
 Sets the current playback speed. A value of 1.0 will play at the normal speed 
@@ -125,7 +125,7 @@ state of the images.
 When set to true the first frame of the animation will be rendered wether the 
 animation is playing or not.
 <hr/>
-<strong><a href="#cuePoints">cuePoints</a>:</strong> A set of key/value pairs referencing 
+<strong>cuePoints:</strong> A set of key/value pairs referencing 
 points on the timeline by name [ Optional ]
 <span class="grey"></strong>Default:</strong> {}</span>
 
@@ -133,20 +133,20 @@ cuePoints are great when working with an art director who
 "knows what they like when they see it". You can move a keyframe
 on multiple elements by changing one value in your configuration file.
 <hr/>
-<strong><a href="#events">events</a>:</strong> A set of key/value pairs defining events 
+<strong>events:</strong> A set of key/value pairs defining events 
 that should be bound to the canvas element [ Optional ]
 <span class="grey"></strong>Default:</strong> {}</span>
 
 Basic event handling for you canvas element
 <hr/>
-<strong><a href="#images">images</a>:</strong> A set of key/value pairs declaring images that are used in the 
+<strong>images:</strong> A set of key/value pairs declaring images that are used in the 
 animation [ Optional ]
 <span class="grey"></strong>Default:</strong> {}</span>
 
 canDo will automatically ]create image objects and optionally preload all the 
 images used in your animation.
 <hr/>
-<strong><a href="#paint">paint</a>:</strong> The callback function that is used to render a frame of the 
+<strong>paint:</strong> The callback function that is used to render a frame of the 
 animation [ Required ]
 
 This is the meat in your animation hamburger.
