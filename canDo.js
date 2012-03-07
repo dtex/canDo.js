@@ -24,6 +24,7 @@ var CanDo = function (el, args) {
 
 	// Handle changes passed in via the configuration object
 	ctx.configure = function (args) {
+		var preTime; // Used to hold how much time has already passed in the animation
 		
 		// Update timeline properties
 		if (typeof args.duration !== 'undefined') ctx.t.duration = args.duration;
@@ -41,6 +42,16 @@ var CanDo = function (el, args) {
 		if (typeof args.setTime !== 'undefined') ctx.s.time = args.setTime;
 		if (typeof args.setTime !== 'undefined') ctx.s.easedTime = args.setTime;
 		if (typeof args.speed !== 'undefined') ctx.s.speed = args.speed;
+		
+		// Calculate our new time values
+		ctx.t.scaledDuration = Math.abs(ctx.t.duration / ctx.s.speed); // Calculate the total duration of the timeline
+		preTime = ctx.s.speed < 0 ? 1 - ctx.s.time : ctx.s.time; // If we are playing backwards we need to tweak our formula
+		ctx.s.startTime = ctx.s.time === 0 ? Date.now() : Date.now() - ctx.t.scaledDuration * preTime; // Calculate what our start time is/was on the real clock
+		ctx.s.endTime = ctx.s.startTime + ctx.t.scaledDuration; // Calculate our endtime on the real clock
+
+		// Start our interval timer and render the first frame
+		ctx.s.intervalTimer = setInterval(function () { ctx.update(); }, ctx.t.frameInterval);
+		ctx.update();
 		
 		// Go through the images and make sure they are loaded before we start drawing
 		if (typeof args.images !== 'undefined') { // If an images object was passed
@@ -75,20 +86,9 @@ var CanDo = function (el, args) {
 	
 	// Begin the animation
 	ctx.play = function (args) {
-		var preTime; // Used to hold how much time has already passed in the animation
 		if (typeof args !== 'undefined') {
 			ctx.configure(args);
 		}
-		
-		// Calculate our new time values
-		ctx.t.scaledDuration = Math.abs(ctx.t.duration / ctx.s.speed); // Calculate the total duration of the timeline
-		preTime = ctx.s.speed < 0 ? 1 - ctx.s.time : ctx.s.time; // If we are playing backwards we need to tweak our formula
-		ctx.s.startTime = ctx.s.time === 0 ? Date.now() : Date.now() - ctx.t.scaledDuration * preTime; // Calculate what our start time is/was on the real clock
-		ctx.s.endTime = ctx.s.startTime + ctx.t.scaledDuration; // Calculate our endtime on the real clock
-
-		// Start our interval timer and render the first frame
-		ctx.s.intervalTimer = setInterval(function () { ctx.update(); }, ctx.t.frameInterval);
-		ctx.update();
 	};
 
 	// Our refresh function
