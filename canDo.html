@@ -6,7 +6,16 @@
 	<script src="canDo.js"></script>
 </head>
 <body>
-	<canvas id="sample" width="160" height="165">
+<div id="google_translate_element"></div><script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'af,sq,ar,be,bg,ca',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  }, 'google_translate_element');
+}
+</script><script src="HTTP://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<canvas id="sample" width="160" height="165">
     	This text is displayed if your browser does not support HTML5 Canvas.
 	</canvas>
 	<!--<canvas id="otherSample" width="240" height="240">
@@ -108,5 +117,6 @@
 		});
 		jsctx.play({speed:1.0});*/
 	</script>
+	<P>TRANSLATE ME PLEASE</P>
 </body>
 </html>
