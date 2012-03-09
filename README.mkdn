@@ -1,3 +1,5 @@
+[More info: http://dtex.github.com/canDo.js/](http://dtex.github.com/canDo.js/ "More info").
+
 canDo.js is a canvas wrapper for simple animations. It is ideal for animating UI elements (i.e. buttons with hover states). In a nutshell, canDo.js proxies the methods of the HTML Canvas 2D Context. It allows you to define a timeline, keyframes and easing functions.
 
 "This project is experimental and of course comes without any warranty whatsoever"*
@@ -14,7 +16,5 @@ Issues I need to resolve before v1.0:
 * 0.4 Perfect linting
 * 0.4.1 Build script
 * 0.5 Testing
-
-[More info: http://dtex.github.com/canDo.js/](http://dtex.github.com/canDo.js/ "More info").
 
 *Quoting Tim Berners-Lee, but of course he was talking about something else.
