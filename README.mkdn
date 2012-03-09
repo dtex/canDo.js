@@ -10,7 +10,7 @@ Issues I need to resolve before v1.0:
 * 0.1 New improved easing
 * 0.2 More primitives (circle)
 * 0.2.5 Events on primitives
-* 0.3 Refactor to appropriate pattern (just sandboxed for now)
+* 0.3 Refactor to appropriate pattern (just namespaced for now)
 * 0.3.1 Code optimization (nuke nested ifs and the like)
 * 0.3.2 Minification optimization
 * 0.4 Perfect linting
