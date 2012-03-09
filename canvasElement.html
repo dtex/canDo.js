@@ -1,0 +1,28 @@
+---
+layout: default
+title: &lt;canvasElement&gt;
+---
+<head><link rel="stylesheet" type="text/css" href="css/dtex.css" media="all" /></head>
+<h1>&lt;canvasElement&gt;</h1>
+<pre class="psuedo">canDo( canvasElement, canDoConfiguration )</pre>
+<p><strong>Description:</strong> An HTML Canvas element as found in the <a href="http://www.w3.org/TR/html5/the-canvas-element.html#the-canvas-element">HTML 5 Specification</a>.</p>
+<p>You can learn more about Canvas elements at these web sites:
+	<ul>
+		<li><a href="https://developer.mozilla.org/en/Canvas_tutorial">Mozilla Developer Network</a></li>
+		<li><a href="http://www.html5canvastutorials.com/">HTML5 Canvas Tutorials</a></li>
+	</ul>
+</p>
+<pre class="detail">interface HTMLCanvasElement : HTMLElement {
+	attribute unsigned long width;
+	attribute unsigned long height;
+
+	DOMString toDataURL(in optional DOMString type, in any... args);
+	void toBlob(in FileCallback, in optional DOMString type, in any... args);
+
+	object getContext(in DOMString contextId, in any... args);
+};</pre>
+
+<h2>Example</h2>
+<pre>&lt;canvas id="demo" width="400" height="360"&gt;
+	This text is displayed if your browser does not support HTML5 Canvas.
+&lt;/canvas&gt;</pre>
