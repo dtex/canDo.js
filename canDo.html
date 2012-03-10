@@ -6,21 +6,12 @@
 	<script src="canDo.js"></script>
 </head>
 <body>
-<div id="google_translate_element"></div><script>
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    includedLanguages: 'af,sq,ar,be,bg,ca',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-  }, 'google_translate_element');
-}
-</script><script src="HTTP://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-<canvas id="sample" width="160" height="165">
+	<canvas id="sample" width="160" height="165" style="float:left;margin-right:32px;">
     	This text is displayed if your browser does not support HTML5 Canvas.
 	</canvas>
-	<!--<canvas id="otherSample" width="240" height="240">
+	<canvas id="3dsample" width="160" height="165">
     	This text is displayed if your browser does not support HTML5 Canvas.
-	</canvas>-->
+	</canvas>
 	<script>
 		var test = CanDo(document.getElementById('sample'), {
 			duration: 250,
@@ -71,32 +62,7 @@ function googleTranslateElementInit() {
 				
 			}
 		});
-		//test.play({speed:-0.5, time:.5});
-		/*var test2 = canDo(document.getElementById('otherSample'), {
-			duration: 2000,
-			frameRate: 60,
-			cuePoints: {'start':0.0, 'halfway': 0.5, 'end': 1.0},
-			mode: 'loop',
-			paint: function() {
-				this.fillStyle = "rgb(0,0,0)";
-				this.clearRect(0,0,240,240);
-				this.canSet('globalAlpha', [
-					{params: [1.0], cuePoint: 'start', easing: 'easeOutQuad'},
-					{params: [0.1], cuePoint: 'halfway', easing: 'easeOutQuad'},
-					{params: [1.0], cuePoint: 'end', easing: 'easeOutQuad'},
-				]);
-				this.canDo('fillRect', [
-					{params: [190, 190, 50, 50], cuePoint: 'start'},
-					{params: [0, 0, 240, 240], cuePoint: 0.2, easing: 'easeInQuad'},
-					{params: [0, 0, 50, 50], cuePoint: 'halfway', easing: 'easeOutQuad'},
-					{params: [230, 210, 10, 10], cuePoint: 0.7, easing: 'easeInQuad'},
-					{params: [0, 0, 10, 10], cuePoint: 0.85, easing: 'easeInQuad'},
-					{params: [190, 190, 50, 50], cuePoint: 'end', easing: 'easeInOutQuad'} 
-				]);
-			}
-		});
-		test2.play();*/
-
+	
 		var js = function() {
 			// Clear and draw the square
 			test.clearRect(0,0,210,210);test.fillStyle = "rgb(247,223,30)";test.fillRect(0,0,210,210);
@@ -105,18 +71,6 @@ function googleTranslateElementInit() {
 			// s
 			test.moveTo(125, 173.33);test.lineTo(141, 163.67);test.bezierCurveTo(148.33, 176.33, 157, 176.33, 160, 176.33);test.bezierCurveTo(162.67, 176.33, 173, 176.33, 173.33, 167);test.bezierCurveTo(173.67, 157.67, 166, 156.67, 150, 148.67);test.bezierCurveTo(133.33, 141.33, 130.67, 131.67, 130.67, 120.33);test.bezierCurveTo(131, 109, 139.67, 95, 160, 95);test.bezierCurveTo(180, 95, 187.67, 111.33, 187.67, 111.33);test.lineTo(172.33, 121.33);test.bezierCurveTo(169, 114, 163.33, 112.33, 160, 112.33);test.bezierCurveTo(156.67, 112.67, 150, 114.33, 150, 121);test.bezierCurveTo(150.67, 127.67, 150.67, 127.67, 171.33, 137.33);test.bezierCurveTo(193, 146.67, 193.33, 158.33, 193.33, 167.33);test.bezierCurveTo(193.33, 175, 188.67, 193.33, 160.67, 193.33);test.bezierCurveTo(132.33, 193.33, 125, 173.33, 125, 173.33);test.fill();
 		}
-		
-		/*var jsctx = canDo(document.getElementById('test'), {
-			frameRate: 60,
-			duration: 2000,
-			cuePoints: {halfway: 0.5},
-			mode: 0,
-			paint: function() {
-				js();
-			}
-		});
-		jsctx.play({speed:1.0});*/
 	</script>
-	<P>TRANSLATE ME PLEASE</P>
 </body>
 </html>

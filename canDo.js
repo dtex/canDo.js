@@ -12,14 +12,14 @@ var CanDo = function (el, args) {
 				if (ctx.t.splash) { // If we want a splash screen, render it now
 					ctx.update({time: 0});
 				}
-				ctx.s.loaded = true; // Inidicate that all images are loaded
+				ctx.s.loaded = true;
 			}
 		};
 
 	/* Default properties of our Canvas timeline. They are not specific to any method call */
 	ctx.t = { duration: 1000, frameRate: 30, cuePoints: {}, mode: '', wait: true, splash: true, easing: 'linear' };
 
-	// Default properties of our playback head
+	// Default status of our playback head
 	ctx.s = { time: 0, easedTime: 0, speed: 1.0, startTime: 0,	 endTime: 0, intervalTimer: 0, loaded: true };
 
 	// Handle changes passed in via the configuration object
@@ -46,12 +46,12 @@ var CanDo = function (el, args) {
 		
 		// Go through the images and make sure they are loaded before we start drawing
 		if (typeof args.images !== 'undefined') { // If an images object was passed
-			ctx.s.loaded = false; // Indicate that images are not ready
-			ctx.images = args.images; // Copy the images from args to the context
+			ctx.s.loaded = false; 
+			ctx.images = args.images;
 			for (imageName in ctx.images) { // Loop through each image
 				if (ctx.images.hasOwnProperty(imageName)) {
-					imagesLeftToLoad = imagesLeftToLoad + 1; // We have one more image to load
-					ctx.images[imageName].img = new Image(); // Add an image to the image object
+					imagesLeftToLoad = imagesLeftToLoad + 1; 
+					ctx.images[imageName].img = new Image(); 
 					ctx.images[imageName].img.onload = imageLoaded;
 					ctx.images[imageName].img.src = ctx.images[imageName].url; // Set the src for the image to start loading it
 				}
@@ -86,9 +86,9 @@ var CanDo = function (el, args) {
 		
 		// Calculate our new time values
 		ctx.t.scaledDuration = Math.abs(ctx.t.duration / ctx.s.speed); // Calculate the total duration of the timeline
-		preTime = ctx.s.speed < 0 ? 1 - ctx.s.time : ctx.s.time; // If we are playing backwards we need to tweak our formula
-		ctx.s.startTime = ctx.s.time === 0 ? Date.now() : Date.now() - ctx.t.scaledDuration * preTime; // Calculate what our start time is/was on the real clock
-		ctx.s.endTime = ctx.s.startTime + ctx.t.scaledDuration; // Calculate our endtime on the real clock
+		preTime = ctx.s.speed < 0 ? 1 - ctx.s.time : ctx.s.time; // If we are playing backwards we need to tweak the preTime factor
+		ctx.s.startTime = ctx.s.time === 0 ? Date.now() : Date.now() - ctx.t.scaledDuration * preTime; // Calculate what our start time is/was on the system clock
+		ctx.s.endTime = ctx.s.startTime + ctx.t.scaledDuration; // Calculate our endtime on the system clock
 
 		// Start our interval timer and render the first frame
 		ctx.s.intervalTimer = setInterval(function () { ctx.update(); }, ctx.t.frameInterval);
@@ -98,7 +98,10 @@ var CanDo = function (el, args) {
 
 	// Our refresh function
 	ctx.update = function (args) {
-		if (typeof args === 'undefined') {
+		
+		
+		// The next two blocks can be combined
+		if (typeof args === 'undefined') { // If args were passed then update our timeline/status
 			args = {};
 		}
 		
@@ -124,9 +127,9 @@ var CanDo = function (el, args) {
 		} else { // The animation is finished
 
 			if (ctx.t.mode === '') { // If we are set to play through one time
-				clearInterval(ctx.s.intervalTimer); // Cancel the refresh interval timer
+				clearInterval(ctx.s.intervalTimer);
 				ctx.s.time = ctx.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
-				ctx.s.easedTime = ctx.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
+				ctx.s.easedTime = ctx.s.speed > 0 ? 1.0 : 0; // Set the eased time to end of animation
 				ctx.paint(); // Update the canvas
 			}
 
@@ -134,7 +137,7 @@ var CanDo = function (el, args) {
 				ctx.s.time = ctx.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
 				ctx.s.easedTime = ctx.paint(); // Update the canvas
 				ctx.s.time = ctx.s.speed > 0 ? 0 : 1.0; // Set time to the beginning of the animation
-				ctx.s.easedTime = ctx.s.speed > 0 ? 0 : 1.0; // Set time to the beginning of the animation
+				ctx.s.easedTime = ctx.s.speed > 0 ? 0 : 1.0; // Set eased time to the beginning of the animation
 				ctx.play({time: 0}); // Play from the beginning
 			}
 		}
