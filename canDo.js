@@ -1,12 +1,12 @@
 /*global clearInterval: false, clearTimeout: false, document: false, event: false, frames: false, history: false, Image: false, location: false, name: false, navigator: false, Option: false, parent: false, screen: false, setInterval: false, setTimeout: false, window: false, XMLHttpRequest: false */
 
-var CanDo = function (el, args) {
-	"use strict";
+var CanDo = function (el, args) { // this = Window
 
-	// Our 2d rendering context
-	var ctx  = el.getContext('2d'), imagesLeftToLoad = 0, imageName, eventName,
+	"use strict";
+	// Hoisted variables
+	var ctx, imagesLeftToLoad = 0,
 		imageLoaded = function () {// Called when an image is loaded
-			imagesLeftToLoad = imagesLeftToLoad - 1; 
+			imagesLeftToLoad = imagesLeftToLoad - 1;
 
 			if (imagesLeftToLoad === 0) { // If there are no more images to load
 				if (ctx.t.splash) { // If we want a splash screen, render it now
@@ -16,51 +16,80 @@ var CanDo = function (el, args) {
 			}
 		};
 
+	// Our 2d rendering context
+	if (args.webgl === true) {
+		ctx = el.getContext('experimental-webgl');
+	} else {
+		ctx = el.getContext('2d');
+	}
+
+
 	/* Default properties of our Canvas timeline. They are not specific to any method call */
 	ctx.t = { duration: 1000, frameRate: 30, cuePoints: {}, mode: '', wait: true, splash: true, easing: 'linear' };
 
 	// Default status of our playback head
-	ctx.s = { time: 0, easedTime: 0, speed: 1.0, startTime: 0,	 endTime: 0, intervalTimer: 0, loaded: true };
+	ctx.s = { time: 0, easedTime: 0, speed: 1.0, startTime: 0,	 endTime: 0, intervalTimer: 0, loaded: true, height: el.height, width: el.width };
 
 	// Handle changes passed in via the configuration object
-	ctx.configure = function (args) {
-		
+	ctx.configure = function (args) { // this = ctx
+		var imageName, eventName;
+
 		// Update timeline properties
-		if (typeof args.duration !== 'undefined') ctx.t.duration = args.duration;
-		if (typeof args.frameRate !== 'undefined') ctx.t.frameRate = args.frameRate;
-		if (typeof args.cuePoints !== 'undefined') ctx.t.cuePoints = args.cuePoints;
-		if (typeof args.mode !== 'undefined') ctx.t.mode = args.mode;
-		if (typeof args.wait !== 'undefined') ctx.t.wait = args.wait;
-		if (typeof args.splash !== 'undefined') ctx.t.splash = args.splash;
-		if (typeof args.easing !== 'undefined') ctx.t.easing = args.easing;
-		
+		if (typeof args.duration !== 'undefined') {
+			this.t.duration = args.duration;
+		}
+		if (typeof args.frameRate !== 'undefined') {
+			this.t.frameRate = args.frameRate;
+		}
+		if (typeof args.cuePoints !== 'undefined') {
+			this.t.cuePoints = args.cuePoints;
+		}
+		if (typeof args.mode !== 'undefined') {
+			this.t.mode = args.mode;
+		}
+		if (typeof args.wait !== 'undefined') {
+			this.t.wait = args.wait;
+		}
+		if (typeof args.splash !== 'undefined') {
+			this.t.splash = args.splash;
+		}
+		if (typeof args.easing !== 'undefined') {
+			this.t.easing = args.easing;
+		}
+
 		// The calculated value of milliseconds between frames
-		ctx.t.frameInterval = Math.floor(1000 / ctx.t.frameRate);
-		
+		this.t.frameInterval = Math.floor(1000 / this.t.frameRate);
+
 		// Update playback status properties
-		if (typeof args.setTime !== 'undefined') ctx.s.time = args.setTime;
-		if (typeof args.setTime !== 'undefined') ctx.s.easedTime = args.setTime;
-		if (typeof args.speed !== 'undefined') ctx.s.speed = args.speed;
-		
-		
-		
+		if (typeof args.setTime !== 'undefined') {
+			this.s.time = args.setTime;
+		}
+		if (typeof args.setTime !== 'undefined') {
+			this.s.easedTime = args.setTime;
+		}
+		if (typeof args.speed !== 'undefined') {
+			this.s.speed = args.speed;
+		}
+
 		// Go through the images and make sure they are loaded before we start drawing
 		if (typeof args.images !== 'undefined') { // If an images object was passed
-			ctx.s.loaded = false; 
-			ctx.images = args.images;
-			for (imageName in ctx.images) { // Loop through each image
-				if (ctx.images.hasOwnProperty(imageName)) {
-					imagesLeftToLoad = imagesLeftToLoad + 1; 
-					ctx.images[imageName].img = new Image(); 
-					ctx.images[imageName].img.onload = imageLoaded;
-					ctx.images[imageName].img.src = ctx.images[imageName].url; // Set the src for the image to start loading it
+			this.s.loaded = false;
+			this.images = args.images;
+			for (imageName in this.images) { // Loop through each image
+				if (this.images.hasOwnProperty(imageName)) {
+					imagesLeftToLoad = imagesLeftToLoad + 1;
+					this.images[imageName].img = new Image();
+					this.images[imageName].img.onload = imageLoaded;
+					this.images[imageName].img.src = this.images[imageName].url; // Set the src for the image to start loading it
 				}
 			}
 		}
-		
+
 		// Yeah, we're gonna need this
-		if (typeof args.paint !== 'undefined') ctx.paint = args.paint;
-	
+		if (typeof args.paint !== 'undefined') {
+			this.paint = args.paint;
+		}
+
 		// Event handlers
 		if (typeof args.events !== 'undefined') { // If an events object was passed
 			for (eventName in	 args.events) { // Loop through each event
@@ -74,71 +103,70 @@ var CanDo = function (el, args) {
 			}
 		}
 	};
-	
+
 	// Begin the animation
 	ctx.play = function (args) {
-		
+
 		var preTime; // Used to hold how much time has already passed in the animation
-		
+
 		if (typeof args !== 'undefined') {
-			ctx.configure(args);
+			this.configure(args);
 		}
-		
+
 		// Calculate our new time values
-		ctx.t.scaledDuration = Math.abs(ctx.t.duration / ctx.s.speed); // Calculate the total duration of the timeline
-		preTime = ctx.s.speed < 0 ? 1 - ctx.s.time : ctx.s.time; // If we are playing backwards we need to tweak the preTime factor
-		ctx.s.startTime = ctx.s.time === 0 ? Date.now() : Date.now() - ctx.t.scaledDuration * preTime; // Calculate what our start time is/was on the system clock
-		ctx.s.endTime = ctx.s.startTime + ctx.t.scaledDuration; // Calculate our endtime on the system clock
+		this.t.scaledDuration = Math.abs(this.t.duration / this.s.speed); // Calculate the total duration of the timeline
+		preTime = this.s.speed < 0 ? 1 - this.s.time : this.s.time; // If we are playing backwards we need to tweak the preTime factor
+		this.s.startTime = this.s.time === 0 ? Date.now() : Date.now() - ctx.t.scaledDuration * preTime; // Calculate what our start time is/was on the system clock
+		this.s.endTime = this.s.startTime + this.t.scaledDuration; // Calculate our endtime on the system clock
 
 		// Start our interval timer and render the first frame
-		ctx.s.intervalTimer = setInterval(function () { ctx.update(); }, ctx.t.frameInterval);
-		ctx.update();
-		
+		this.s.intervalTimer = setInterval(function (context) { context.update(); }, this.t.frameInterval, this);
+		this.update();
+
 	};
 
 	// Our refresh function
 	ctx.update = function (args) {
-		
-		
+
 		// The next two blocks can be combined
 		if (typeof args === 'undefined') { // If args were passed then update our timeline/status
 			args = {};
 		}
-		
-		ctx.configure(args);
+
+		this.configure(args);
 
 		// Find where we are on the timeline
 		if (typeof args.time === 'undefined') {
-			if (ctx.s.speed > 0) {
-				ctx.s.time = (Date.now() - ctx.s.startTime) / ctx.t.scaledDuration;
+			if (this.s.speed > 0) {
+				this.s.time = (Date.now() - this.s.startTime) / this.t.scaledDuration;
 			} else {
-				ctx.s.time = (ctx.s.endTime - Date.now()) / ctx.t.scaledDuration;
+				this.s.time = (this.s.endTime - Date.now()) / this.t.scaledDuration;
 			}
 		} else {
-			ctx.s.time = args.time;
+			this.s.time = args.time;
 		}
 
-		ctx.s.easedTime = ctx.easing[ctx.t.easing](0, ctx.s.time, [0], [1], 1)[0];
+		this.s.easedTime = this.easing[this.t.easing](0, this.s.time, [0], [1], 1)[0];
 
-		if ((ctx.s.time < 1.0  && ctx.s.speed > 0) || (ctx.s.time > 0  && ctx.s.speed < 0)) {  // If the animation is not finished
+		if ((this.s.time < 1.0  && this.s.speed > 0) || (this.s.time > 0  && this.s.speed < 0)) {  // If the animation is not finished
 
-			ctx.paint(); // Update the canvas and keep on truckin'
+			this.paint(); // Update the canvas and keep on truckin'
 
 		} else { // The animation is finished
 
-			if (ctx.t.mode === '') { // If we are set to play through one time
-				clearInterval(ctx.s.intervalTimer);
-				ctx.s.time = ctx.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
-				ctx.s.easedTime = ctx.s.speed > 0 ? 1.0 : 0; // Set the eased time to end of animation
-				ctx.paint(); // Update the canvas
+			if (this.t.mode === '') { // If we are set to play through one time
+				clearInterval(this.s.intervalTimer);
+				this.s.time = this.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
+				this.s.easedTime = this.s.speed > 0 ? 1.0 : 0; // Set the eased time to end of animation
+				this.paint(); // Update the canvas
 			}
 
-			if (ctx.t.mode === 'loop') { // We are set to loop
-				ctx.s.time = ctx.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
-				ctx.s.easedTime = ctx.paint(); // Update the canvas
-				ctx.s.time = ctx.s.speed > 0 ? 0 : 1.0; // Set time to the beginning of the animation
-				ctx.s.easedTime = ctx.s.speed > 0 ? 0 : 1.0; // Set eased time to the beginning of the animation
-				ctx.play({time: 0}); // Play from the beginning
+			if (this.t.mode === 'loop') { // We are set to loop
+				this.s.time = this.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
+				this.s.easedTime = this.paint(); // Update the canvas
+				this.s.time = this.s.speed > 0 ? 0 : 1.0; // Set time to the beginning of the animation
+				this.s.easedTime = this.s.speed > 0 ? 0 : 1.0; // Set eased time to the beginning of the animation
+				this.play({time: 0}); // Play from the beginning
 			}
 		}
 	};
@@ -150,16 +178,16 @@ var CanDo = function (el, args) {
 
 		for (i = 0, j = keyFrames.length; i < j; i = i + 1) { //Loop through the keyframes
 			if (typeof (keyFrames[i].cuePoint) === "string") { // If they keyframe was passed as a name
-				keyFrames[i].cuePoint = ctx.t.cuePoints[keyFrames[i].cuePoint]; // Get the name value and update the cuepoint so we don't have to do this again
+				keyFrames[i].cuePoint = this.t.cuePoints[keyFrames[i].cuePoint]; // Get the name value and update the cuepoint so we don't have to do this again
 			}
-			if (keyFrames[i].cuePoint < ctx.s.easedTime) { // If this cuepoint occurs before the current time
+			if (keyFrames[i].cuePoint < this.s.easedTime) { // If this cuepoint occurs before the current time
 				result.start = i;
 				result.end = i + 1; // This could be our cuepoint (might be replaced later in our loop)
 			}
 		}
 
 		result.subDuration = keyFrames[result.end].cuePoint - keyFrames[result.start].cuePoint; // Calculate the time between our two keyframes
-		result.subTime = Math.pow(ctx.s.easedTime - keyFrames[result.start].cuePoint, 2) / result.subDuration; // Calculate how far through this transition we are
+		result.subTime = Math.pow(this.s.easedTime - keyFrames[result.start].cuePoint, 2) / result.subDuration; // Calculate how far through this transition we are
 		return result;
 	};
 
@@ -170,16 +198,16 @@ var CanDo = function (el, args) {
 
 	// Here's our method wrapper
 	ctx.canDo = function (method, keyFrames) {
-		var beg = ctx.getCurrentKeyframe(keyFrames), // Find the start point for the current animation segment
-			state = ctx.easing[keyFrames[beg.end].easing || 'linear'](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration), // Call our easing function passing in our array of parameters and getting an array in return
-			result = ctx[method].apply(this, state); // Call the proxied function with the computed parameters
+		var beg = this.getCurrentKeyframe(keyFrames), // Find the start point for the current animation segment
+			state = this.easing[keyFrames[beg.end].easing || 'linear'](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration), // Call our easing function passing in our array of parameters and getting an array in return
+			result = this[method].apply(this, state); // Call the proxied function with the computed parameters
 		return result;
 	};
 
 	ctx.canSet = function (property, keyFrames) {
-		var beg = ctx.getCurrentKeyframe(keyFrames), // Find the start point for the current animation segment
-			result = ctx.easing[keyFrames[beg.end].easing || 'linear'](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration); // Call our easing function passing in our array of parameters and getting an array in return
-		ctx[property] = result[0]; // Call the proxied function with the computed parameters
+		var beg = this.getCurrentKeyframe(keyFrames), // Find the start point for the current animation segment
+			result = this.easing[keyFrames[beg.end].easing || 'linear'](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration); // Call our easing function passing in our array of parameters and getting an array in return
+		this[property] = result[0]; // Call the proxied function with the computed parameters
 	};
 
 	/* These functions are based on easing equations from jQuery UI
@@ -232,9 +260,13 @@ var CanDo = function (el, args) {
 		}
 
 	};
-	
+
 	ctx.configure(args);
-	
+
+	if (typeof args.init !== 'undefined') {
+		args.init(ctx);
+	}
+
 	if (typeof args.images === 'undefined' && ctx.t.splash) {
 		ctx.update({time: 0});
 	}
