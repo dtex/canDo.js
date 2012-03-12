@@ -39,6 +39,6 @@ pre.psuedo {background-color:#0d5995;color:#fff;font-family:verdana, "trebuchet 
 pre.detail { background-color:#ddd;color:#000;border-color:#aaa;}
 
 th {background-color:#000;color:#fff;text-align:left;}
-td {border-width: 0 1px;border-style: solid;border-color: #ccc;}
+td {border-width: 0 1px;border-style: solid;border-color: #ccc;font-size:12px;}
 tr.group {font-weight:bold;background-color:#0d5995;color:#fff;}
 tr.odd {background-color:#ddd;}
