@@ -37,3 +37,8 @@ canvas {margin-top:18px;border:solid 1px #ccc;padding:1px;}
 pre {padding: 10px;overflow-x: auto;background-color: #fbf9ea;border: 1px solid #e2e1d5;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;margin: 0px;width:680px;}
 pre.psuedo {background-color:#0d5995;color:#fff;font-family:verdana, "trebuchet MS", helvetica, sans-serif;font-weight:bold;}
 pre.detail { background-color:#ddd;color:#000;border-color:#aaa;}
+
+th {background-color:#000;color:#fff;text-align:left;}
+td {border-width: 0 1px;border-style: solid;border-color: #ccc;}
+tr.group {font-weight:bold;background-color:#0d5995;color:#fff;}
+tr.odd {background-color:#ddd;}

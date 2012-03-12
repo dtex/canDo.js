@@ -1,0 +1,129 @@
+---
+layout: default
+title: contextMethods
+---
+<head><link rel="stylesheet" type="text/css" href="css/dtex.css" media="all" /></head>
+<h2>Notes</h2>
+<p>With a  few exceptions you can wrap nearly every 2d and WebGL context method in canDo. Below is a table listing all the methods, their signatures and wether they are wrapable or not. I've also provided links to documentation, tutorials and examples on jsFiddle where I can.</p>
+
+<h2>Methods from HTML Canvas 2D Context</h2>
+<table cellspacing="0" cellpadding="3">
+	<thead>
+		<tr>
+			<th>Method Signature</th>
+			<th>canDo Signature</th>
+			<th>Example</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="group">
+			<td colspan="3">The Canvas State</td>
+		</tr>
+		<tr>
+			<td>context.save()</td>
+			<td>n/a</td>
+			<td>n/a</td>
+		</tr>
+		<tr class="odd">
+			<td>context.restore()</td>
+			<td>n/a</td>
+			<td>n/a</td>
+		</tr>
+		<tr class="group">
+			<td colspan="3">Transformations</td>
+		</tr>
+		<tr>
+			<td><a href="http://dev.w3.org/html5/2dcontext/#dom-context-2d-scale">context.scale(x, y)</a></td>
+			<td>context.canDo ( 'scale', { methodKeyFrames } )</td>
+			<td><a href="http://jsfiddle.net/dtex/WUasU/">dtex/WUasU</a></td>
+		</tr>
+		\<tr class="odd">
+			<td><a href="http://dev.w3.org/html5/2dcontext/#dom-context-2d-scale">path.scale(x, y)</a></td>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td><a href="http://dev.w3.org/html5/2dcontext/#dom-context-2d-rotate">context.rotate(angle)</a></td>
+			<td>context.canDo ( 'rotate', { methodKeyFrames } )</td>
+			<td><a href="http://jsfiddle.net/dtex/LKRxe/">dtex/LKRxe</a></td>
+		</tr>
+		<tr class="odd">
+			<td><a href="http://dev.w3.org/html5/2dcontext/#dom-context-2d-rotate">path.rotate(angle)</a></td>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td><a href="http://dev.w3.org/html5/2dcontext/#dom-context-2d-rotate">context.translate(x, y)</a></td>
+			<td>context.canDo ( 'translate', { args } )</td>
+			<td><a href="http://jsfiddle.net/dtex/ABcvJ/">dtex/ABcvJ</a></td>
+		</tr>
+		<tr class="odd">
+			<td>path.translate(x, y)</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>context.transform(a, b, c, d, e, f)</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr class="odd">
+			<td>path.transform(a, b, c, d, e, f)</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>context.setTransform(a, b, c, d, e, f)</td>
+			<td>context.canDo ( 'setTransform', { args } )</td>
+			<td><a href="http://jsfiddle.net/dtex/cswUL/">dtex/cswUL</a></td>
+		</tr>
+		<tr class="odd">
+			<td>path.setTransform(a, b, c, d, e, f)</td>
+			<td></td>
+			<td></td>
+		</tr>
+		
+	</tbody>
+</table>
+
+<h3>Compositing Demos</h3>
+
+<h4>context.canSet ( 'globalAlpha', { args } )</h4>
+<p>Sets the alpha value that is applied to all shapes and objects before they are composited onto the canvas &mdash; <a href="http://jsfiddle.net/dtex/Tk7cY/">View on jsfiddle.net</a></p></p>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-globalalpha">context.globalAlpha [ = value ]</a></p>
+
+<h3>Color and Style Demos</h3>
+
+<h4>context.canDo ( 'createLinearGradient', { args } )</h4>
+<p>Creates a linear gradient from point (x0,y0) to (x1, y1) &mdash; <a href="http://jsfiddle.net/dtex/6QxsW/">View on jsfiddle.net</a></p></p>
+<p>Returns a gradient object.</p>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-createlineargradient">context.createLinearGradient ( x0, y0, x1, y1 )</a></p>
+<hr/>
+
+<h4>context.canDo ( 'createRadialGradient', { args } )</h4>
+<p>Creates a radial gradient starting at point (x0,y0) with radius (r0) to end point (x1, y1) with radius r1 &mdash; <a href="http://jsfiddle.net/dtex/sKKHa/">View on jsfiddle.net</a></p></p>
+<p>Returns a gradient object.</p>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-createradialgradient">context.createRadialGradient ( x0, y0, r0, x1, y1 r1 )</a></p>
+
+<h3>Line Style Demos</h3>
+
+<h4>context.canSet ( 'lineWidth', { args } )</h4>
+<p>Sets the line width value that is applied to all lines and paths &mdash; <a href="http://jsfiddle.net/dtex/pfL6a/">View on jsfiddle.net</a></p>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-linewidth">context.lineWidth [ = value ]</a></p>
+
+<h3>Shadow Demos</h3>
+
+<h4>context.canSet ( 'shadowOffsetX', { args } ), context.canSet ( 'shadowOffsetY', { args } )</h4>
+<p>Sets the shadow offset on the x and y axis &mdash; <a href="http://jsfiddle.net/dtex/QV2qV/">View on jsfiddle.net</a></p>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-shadowoffsetx">context.shadowOffsetX [ = value ], context.shadowOffsetY [ = value ]</a></p>
+<hr/>
+
+<h4>context.canSet ( 'shadowBlur', { args } )</h4>
+<p>Sets the shadow blur size &mdash; <a href="http://jsfiddle.net/dtex/uzYbC/">View on jsfiddle.net</a></p>
+<p>Wraps <a href="http://www.w3.org/TR/2dcontext/#dom-context-2d-shadowblur">context.shadowBlur [ = value ]</a></p>
+<!--
+<h3>Simple Shape Demos</h3>
+<h3>Complex Shape Demos</h3>
+<h3>Text Demos</h3>
+<h3>Image Demos</h3>
+<h3>Pixel Manipulation Demos</h3>-->
