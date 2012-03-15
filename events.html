@@ -1,0 +1,28 @@
+---
+layout: default
+title: { events }
+---
+<h1>{ events }</h1>
+<pre class="psuedo">canDoConfiguration.events = { [ 'event': callBackFunction ] }</pre>
+<p><strong>Description:</strong> Binds an event to the Canvas element.</p>
+<pre class="detail">{
+	string event: function callBackFunction()
+}</pre>
+
+<p></p>
+<h2>Example</h2>
+<pre>var clickable = CanDo(document.getElementById('translate'), {
+   events: {
+    	click: function() {alert('I\'ve been clicked');}
+    },
+    play: function() { drawMyButton(); }
+});
+</pre>
+<h2>Details</h2>
+<pre class="detail"><strong>event:</strong> string
+
+The name of the event to which this function should be attached. Valid values are:
+	
+	
+	*** NEED TO FINISH THIS PAGE ***
+</pre>

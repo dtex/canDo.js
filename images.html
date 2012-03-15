@@ -1,0 +1,25 @@
+---
+layout: default
+title: { images }
+---
+<head><link rel="stylesheet" type="text/css" href="css/dtex.css" media="all" /></head>
+<h1>{ images }</h1>
+<pre class="psuedo">canDoConfiguration.images = { url: string }</pre>
+<p><strong>Description:</strong> By defining images here you can tell canDo to load those images before starting the animation.</p>
+<pre class="detail">{
+	url: string
+}</pre>
+
+<p></p>
+<h2>Example</h2>
+<pre>var translate = CanDo(document.getElementById('translate'), {
+    images: {
+    	{url: '/images/myImage.png'}
+    }
+});
+</pre>
+<h2>Details</h2>
+<pre class="detail"><strong>url:</strong> string
+
+The path to the image.
+</pre>
