@@ -2,6 +2,8 @@
 
 canDo.js is a canvas wrapper for simple animations. It is ideal for animating UI elements (i.e. buttons with hover states). In a nutshell, canDo.js proxies the methods of the HTML Canvas 2D Context. It allows you to define a timeline, keyframes and easing functions.
 
+canDo.js is distributed under the MIT License.
+
 "This project is experimental and of course comes without any warranty whatsoever"*
 
 Issues I need to resolve before v1.0:
