@@ -155,7 +155,7 @@ var CanDo = function (el, args) { // this = Window
 		}
 
 		this.configure(args);
-
+		
 		// Find where we are on the timeline
 		if (typeof args.time === 'undefined') {
 			if (this.s.speed > 0) {
@@ -166,7 +166,7 @@ var CanDo = function (el, args) { // this = Window
 		} else {
 			this.s.time = args.time;
 		}
-
+		
 		this.s.easedTime = this.easing[this.t.easing](0, this.s.time, [0], [1], 1)[0];
 
 		if ((this.s.time < 1.0  && this.s.speed > 0) || (this.s.time > 0  && this.s.speed < 0)) {  // If the animation is not finished
@@ -184,7 +184,9 @@ var CanDo = function (el, args) { // this = Window
 
 			if (this.t.mode === 'loop') { // We are set to loop
 				this.s.time = this.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
-				this.s.easedTime = this.paint(); // Update the canvas
+				this.s.easedTime = this.s.speed > 0 ? 1.0 : 0; // Set the eased time to end of animation
+				//console.log('a'+this.s.time+":"+this.s.easedTime);
+				this.paint(); // Update the canvas
 				this.s.time = this.s.speed > 0 ? 0 : 1.0; // Set time to the beginning of the animation
 				this.s.easedTime = this.s.speed > 0 ? 0 : 1.0; // Set eased time to the beginning of the animation
 				this.play({time: 0}); // Play from the beginning
@@ -201,10 +203,14 @@ var CanDo = function (el, args) { // this = Window
 			if (typeof (keyFrames[i].cuePoint) === "string") { // If they keyframe was passed as a name
 				keyFrames[i].cuePoint = this.t.cuePoints[keyFrames[i].cuePoint]; // Get the name value and update the cuepoint so we don't have to do this again
 			}
-			if (keyFrames[i].cuePoint < this.s.easedTime) { // If this cuepoint occurs before the current time
+			if (keyFrames[i].cuePoint <= this.s.easedTime) { // If this cuepoint occurs before the current time
 				result.start = i;
 				result.end = i + 1; // This could be our cuepoint (might be replaced later in our loop)
 			}
+		}
+		if (result.end == keyFrames.length) {
+			result.end = keyFrames.length - 1;
+			result.start = result.end - 1;
 		}
 
 		result.subDuration = keyFrames[result.end].cuePoint - keyFrames[result.start].cuePoint; // Calculate the time between our two keyframes
