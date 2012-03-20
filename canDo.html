@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<title>canDo.js dev page</title>
 	<script src="canDo.js"></script>
-	<script src="glMatrix-0.9.5.min.js"></script>
+	<script src="http://dtex.github.com/canDo.js/js/jsLogo.js"></script>
 </head>
 <body>
 	<canvas id="sample" width="160" height="165" style="float:left;margin-right:32px;">
@@ -13,7 +13,7 @@
 	<canvas id="sample3d" width="160" height="165">
     	This text is displayed if your browser does not support HTML5 Canvas with the WebGL context.
 	</canvas>
-	
+	<canvas id="scale" width="320" height="320">This text is displayed if your browser does not support HTML5 Canvas.</canvas>​
 	<script>
 		var test = CanDo(document.getElementById('sample'), {
 			duration: 250,
@@ -75,146 +75,33 @@
 			test.fillStyle = "rgb(0,0,0)";test.moveTo(94.66,164.33);test.lineTo(94.66,96.66);test.lineTo(114,96.66);test.lineTo(114,164.33);test.bezierCurveTo(114,179.33,106.66,193.33,84.66,193.33);test.bezierCurveTo(62.66,193.33,55.33,176,55.33,176);test.lineTo(71.33,166);test.bezierCurveTo(71.33,166,74.66,176.33,84.33,176.33);test.bezierCurveTo(95.66, 176.33, 94.66, 164.33, 94.66, 164.33);
 			// s
 			test.moveTo(125, 173.33);test.lineTo(141, 163.67);test.bezierCurveTo(148.33, 176.33, 157, 176.33, 160, 176.33);test.bezierCurveTo(162.67, 176.33, 173, 176.33, 173.33, 167);test.bezierCurveTo(173.67, 157.67, 166, 156.67, 150, 148.67);test.bezierCurveTo(133.33, 141.33, 130.67, 131.67, 130.67, 120.33);test.bezierCurveTo(131, 109, 139.67, 95, 160, 95);test.bezierCurveTo(180, 95, 187.67, 111.33, 187.67, 111.33);test.lineTo(172.33, 121.33);test.bezierCurveTo(169, 114, 163.33, 112.33, 160, 112.33);test.bezierCurveTo(156.67, 112.67, 150, 114.33, 150, 121);test.bezierCurveTo(150.67, 127.67, 150.67, 127.67, 171.33, 137.33);test.bezierCurveTo(193, 146.67, 193.33, 158.33, 193.33, 167.33);test.bezierCurveTo(193.33, 175, 188.67, 193.33, 160.67, 193.33);test.bezierCurveTo(132.33, 193.33, 125, 173.33, 125, 173.33);test.fill();
-		}
-	</script>
-	
-	<script id="shader-fs" type="x-shader/x-fragment">
-		precision mediump float;
-
-		void main(void) {
-			gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-		}
-	</script>
-	
-	<script id="shader-vs" type="x-shader/x-vertex">
-		attribute vec3 aVertexPosition;
-
-		uniform mat4 uMVMatrix;
-		uniform mat4 uPMatrix;
-
-		void main(void) {
-			gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-		}
-	</script>
-	
-	<script>
-		function getShader(gl, id) {
-			
-			var shaderScript = document.getElementById(id);
-			if (!shaderScript) {
-				return null;
-			}
-
-			var str = "";
-			var k = shaderScript.firstChild;
-			while (k) {
-				if (k.nodeType == 3) str += k.textContent;
-				k = k.nextSibling;
-			}
-
-			var shader;
-			if (shaderScript.type == "x-shader/x-fragment") {
-				shader = gl.createShader(gl.FRAGMENT_SHADER);
-			} else if (shaderScript.type == "x-shader/x-vertex") {
-				shader = gl.createShader(gl.VERTEX_SHADER);
-			} else {
-				return null;
-			}
-
-			gl.shaderSource(shader, str);
-			gl.compileShader(shader);
-
-			if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-				alert(gl.getShaderInfoLog(shader));
-				return null;
-			}
-
-			return shader;
-		}
+		};
 		
-		function setMatrixUniforms(gl) {
-    		gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, gl.pMatrix);
-    		gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, gl.mvMatrix);
-    	}
-  
-	</script>
-	
-	<script>
-		var shaderProgram, triangleVertexPositionBuffer, squareVertexPositionBuffer;
-		var webGlTest = CanDo(document.getElementById( 'sample3d'), {
-			webgl: true,
-			duration: 250,
+		var scale = CanDo(document.getElementById('scale'), {
 			frameRate: 60,
-			easing: 'easeInOutQuad',
-			init: function(context) {
-				
-				// int shaders
-				var fragmentShader = getShader(context, "shader-fs");
-				var vertexShader = getShader(context, "shader-vs");
-				shaderProgram = context.createProgram();
-				
-				context.attachShader(shaderProgram, vertexShader);
-    			context.attachShader(shaderProgram, fragmentShader);
-    			context.linkProgram(shaderProgram);
-
-				if (!context.getProgramParameter(shaderProgram, context.LINK_STATUS)) {
-					alert("Could not initialise shaders");
-				}
-
-    			context.useProgram(shaderProgram);
-    			
-    			shaderProgram.vertexPositionAttribute = context.getAttribLocation(shaderProgram, "aVertexPosition");
-				context.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-				
-				shaderProgram.pMatrixUniform = context.getUniformLocation(shaderProgram, "uPMatrix");
-				shaderProgram.mvMatrixUniform = context.getUniformLocation(shaderProgram, "uMVMatrix");
-				
-				// init buffers
-				squareVertexPositionBuffer = context.createBuffer();
-				context.bindBuffer(context.ARRAY_BUFFER, squareVertexPositionBuffer);
-				vertices = [
-					1.0,  1.0,  0.0,
-					-1.0,  1.0,  0.0,
-					1.0, -1.0,  0.0,
-					-1.0, -1.0,  0.0
-				];
-				context.bufferData(context.ARRAY_BUFFER, new Float32Array(vertices), context.STATIC_DRAW);
-				squareVertexPositionBuffer.itemSize = 3;
-				squareVertexPositionBuffer.numItems = 4;
-				context.clearColor(0.0, 0.0, 0.0, 1);
-				context.enable(context.DEPTH_TEST);
-				
-				context.mvMatrix = mat4.create();
-				context.pMatrix = mat4.create();
-				
-			},
-			images: {
-				requestMoreInfo: {url: 'http://173.203.65.217:9999/images/homeButtons/requestMoreInfo.jpg'}
-			},
-			events: {
-				//click: function() { alert('clicked'); },
-				//mouseover: function() { test.play({speed:1}); },
-				//mouseout: function () { test.play({speed:-1}); }
-			},
+			mode: 'loop',
+			duration: 4000,
 			paint: function() {
-				console.log(this);
-				this.viewport(0, 0, this.s.height, this.s.width);
-				this.clear(this.COLOR_BUFFER_BIT | this.DEPTH_BUFFER_BIT);
-
-				mat4.perspective(45, this.s.width / this.s.height, 0.1, 100.0, this.pMatrix);
-				mat4.identity(this.mvMatrix);
-				
-				mat4.translate(this.mvMatrix, [0.0, 0.0, -7.0]);
-				
-				this.bindBuffer(this.ARRAY_BUFFER, squareVertexPositionBuffer);
-				this.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, this.FLOAT, false, 0, 0);
-				
-				setMatrixUniforms(this);
-				
-				this.drawArrays(this.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
-				
+				this.identity();
+				this.clearRect(0, 0, 320, 320);
+				this.canDo('scale', [
+					{
+					params: [0.5, 0.5],
+					cuePoint: 0},
+				{
+					params: [1.5, 1.5],
+					cuePoint: 0.5,
+					easing: 'easeInOutQuad'},
+				{
+					params: [0.5, 0.5],
+					cuePoint: 1.0,
+					easing: 'easeInOutQuad'}
+				]);
+				drawJSLogo(this);
 			}
 		});
+		scale.play();
 	</script>
+	
 </body>
 </html>
