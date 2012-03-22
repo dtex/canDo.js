@@ -2,7 +2,7 @@
 
 <script src="http://dtex.github.com/canDo.js/js/canDo.min.js"></script>
 <script src="http://dtex.github.com/canDo.js/js/jsLogo.js"></script>
-
+<strong>XXX</strong>
 <canvas id="canDoDemo" width="588" height="360">This text is displayed if your browser does not support HTML5 Canvas.</canvas>
 <script>
 jQuery(function() { var demo = CanDo(document.getElementById('canDoDemo'), {
