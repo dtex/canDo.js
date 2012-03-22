@@ -1,38 +1,5 @@
 [More info: http://dtex.github.com/canDo.js/](http://dtex.github.com/canDo.js/ "More info").
 
-<script src="http://dtex.github.com/canDo.js/js/canDo.min.js"></script>
-<script src="http://dtex.github.com/canDo.js/js/jsLogo.js"></script>
-<strong>XXX</strong>
-<canvas id="canDoDemo" width="588" height="360">This text is displayed if your browser does not support HTML5 Canvas.</canvas>
-<script>
-jQuery(function() { var demo = CanDo(document.getElementById('canDoDemo'), {
-    frameRate: 60,
-    duration: 2000,
-    easing: 'easeInOutQuad',
-    events: {
-        mouseover: function () {demo.play({speed:1});},
-        mouseout: function () {demo.play({speed:-1});}
-    },       
-    paint: function() {
-        this.identity();
-        this.clearRect(0, 0, 588, 360);
-        this.canDo('translate', [{params: [160, 160], cuePoint: 0},{params: [360, 160], cuePoint: 1}]);
-        this.canDo('rotate', [{params: [0],cuePoint: 0},{params: [31.5],cuePoint: 1}]);
-        this.translate(-105, -105);
-        this.canDo('scale', [{params: [0.1, 0.1],cuePoint: 0},{params: [1.0, 1.0],cuePoint: 1}]);
-        this.shadowColor = 'rgba(0, 0, 0, 0.7)';
-        this.canSet('shadowOffsetX', [{params: [3],cuePoint: 0},{params: [90],cuePoint: 1}]);
-        this.canSet('shadowOffsetY', [{params: [3],cuePoint: 0},{params: [50],cuePoint: 1}]);
-        this.canSet('shadowBlur', [{params: [3],cuePoint: 0},{params: [20],cuePoint: 1}]);
-        drawJSBox(this);
-        this.shadowOffsetX = 0;
-        this.shadowOffsetY = 0;
-        this.shadowBlur = 0;
-        drawJ(this);
-        drawS(this);
-    }
-});});
-</script>
 canDo.js is a canvas wrapper for simple animations. It is ideal for animating UI elements (i.e. buttons with hover states). In a nutshell, canDo.js proxies the methods of the HTML Canvas 2D Context. It allows you to define a timeline, keyframes and easing functions.
 
 canDo.js is distributed under the MIT License.
