@@ -8,19 +8,17 @@ canDo.js is distributed under the MIT License.
 
 Issues I need to resolve before v1.0:
 
-* 0.0.5 Tweening handles colors
-* 0.0.6 Tweening handles strings
-* 0.0.7 Allow cuepoint be endpoints for an object's existence, or final state.
-* 0.0.8 Assume start/end when just canDo keyFrames are passed w/o cuePoints.
-* 0.0.9 Easing on timeline, segment or canDo call. 
-* 0.1 New improved easing
-* 0.2 More primitives (circle)
-* 0.2.5 Events on primitives
-* 0.3 Refactor to appropriate pattern (just namespaced for now)
-* 0.3.1 Code optimization (nuke nested ifs and the like)
-* 0.3.2 Minification optimization
-* 0.4 Perfect linting
-* 0.4.1 Build script
-* 0.5 Testing
+* 0.1 Tweening handles colors
+* 0.2 Allow cuepoint be endpoints for an object's existence, or final state.
+* 0.2.1 Assume start/end when just canDo keyFrames are passed w/o cuePoints.
+* 0.3 Easing on timeline, segment or canDo call. 
+* 0.4 More primitives (circle)
+* 0.5 Events on primitives
+* 0.6 Refactor to appropriate pattern (just namespaced for now)
+* 0.7 Code optimization (nuke nested ifs and the like)
+* 0.7.1 Minification optimization
+* 0.7.2 Perfect linting
+* 0.7.3 Build script
+* 0.7.4 Testing
 
 *Quoting Tim Berners-Lee, but of course he was talking about something else.
