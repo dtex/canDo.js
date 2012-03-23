@@ -25,7 +25,7 @@ var CanDo = function (el, args) { // this = Window
 
 	"use strict";
 	// Hoisted variables
-	var ctx, imagesLeftToLoad = 0,
+	var ctx, baseEasings, imagesLeftToLoad = 0,
 		imageLoaded = function () {// Called when an image is loaded
 			imagesLeftToLoad = imagesLeftToLoad - 1;
 
@@ -38,11 +38,11 @@ var CanDo = function (el, args) { // this = Window
 		};
 
 	// Our 2d rendering context
-	if (args.webgl === true) {
-		ctx = el.getContext('experimental-webgl');
-	} else {
-		ctx = el.getContext('2d');
-	}
+	//if (args.webgl === true) {
+	//	ctx = el.getContext('experimental-webgl');
+	//} else {
+	ctx = el.getContext('2d');
+	//}
 
 
 	/* Default properties of our Canvas timeline. They are not specific to any method call */
@@ -155,7 +155,7 @@ var CanDo = function (el, args) { // this = Window
 		}
 
 		this.configure(args);
-		
+
 		// Find where we are on the timeline
 		if (typeof args.time === 'undefined') {
 			if (this.s.speed > 0) {
@@ -166,9 +166,8 @@ var CanDo = function (el, args) { // this = Window
 		} else {
 			this.s.time = args.time;
 		}
-		
-		this.s.easedTime = this.easing[this.t.easing](0, this.s.time, [0], [1], 1)[0];
 
+		this.s.easedTime = this.easing[this.t.easing](this.s.time);
 		if ((this.s.time < 1.0  && this.s.speed > 0) || (this.s.time > 0  && this.s.speed < 0)) {  // If the animation is not finished
 
 			this.paint(); // Update the canvas and keep on truckin'
@@ -185,7 +184,6 @@ var CanDo = function (el, args) { // this = Window
 			if (this.t.mode === 'loop') { // We are set to loop
 				this.s.time = this.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
 				this.s.easedTime = this.s.speed > 0 ? 1.0 : 0; // Set the eased time to end of animation
-				//console.log('a'+this.s.time+":"+this.s.easedTime);
 				this.paint(); // Update the canvas
 				this.s.time = this.s.speed > 0 ? 0 : 1.0; // Set time to the beginning of the animation
 				this.s.easedTime = this.s.speed > 0 ? 0 : 1.0; // Set eased time to the beginning of the animation
@@ -208,13 +206,13 @@ var CanDo = function (el, args) { // this = Window
 				result.end = i + 1; // This could be our cuepoint (might be replaced later in our loop)
 			}
 		}
-		if (result.end == keyFrames.length) {
+		if (result.end === keyFrames.length) {
 			result.end = keyFrames.length - 1;
 			result.start = result.end - 1;
 		}
 
 		result.subDuration = keyFrames[result.end].cuePoint - keyFrames[result.start].cuePoint; // Calculate the time between our two keyframes
-		result.subTime = Math.pow(this.s.easedTime - keyFrames[result.start].cuePoint, 2) / result.subDuration; // Calculate how far through this transition we are
+		result.subTime = (this.s.easedTime - keyFrames[result.start].cuePoint) / result.subDuration; // Calculate how far through this transition we are
 		return result;
 	};
 
@@ -226,76 +224,120 @@ var CanDo = function (el, args) { // this = Window
 	// Here's our method wrapper
 	ctx.canDo = function (method, keyFrames) {
 		var beg = this.getCurrentKeyframe(keyFrames), // Find the start point for the current animation segment
-			state = this.easing[keyFrames[beg.end].easing || 'linear'](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration), // Call our easing function passing in our array of parameters and getting an array in return
+			state = ctx.easeThis(keyFrames[beg.end].easing || 'linear', beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params), // Eases all the properties in the array
 			result = this[method].apply(this, state); // Call the proxied function with the computed parameters
 		return result;
 	};
 
+	// Here's our setter wrapper
 	ctx.canSet = function (property, keyFrames) {
 		var beg = this.getCurrentKeyframe(keyFrames), // Find the start point for the current animation segment
-			result = this.easing[keyFrames[beg.end].easing || 'linear'](beg.bounces, beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params, beg.subDuration); // Call our easing function passing in our array of parameters and getting an array in return
-		this[property] = result[0]; // Call the proxied function with the computed parameters
+			state = ctx.easeThis(keyFrames[beg.end].easing || 'linear', beg.subTime, keyFrames[beg.start].params, keyFrames[beg.end].params); // Eases all the properties in the array
+		this[property] = state[0]; // Call the proxied function with the computed parameters
 	};
 
-	/* These functions are based on easing equations from jQuery UI
-	 * Copyright 2001 Robert Penner
-	 * They've been modified to accept beginning and change values in arrays and return an array result
-	 * t: current time, b: begInnIng value, c: change In value, d: duration */
+	// This is our easing wrapper
+	ctx.easeThis = function (easing, time, startParams, endParams) {
+		var i,  j = startParams.length, result = [], state;
+		for (i = 0; i < j; i = i + 1) { // Loop through all the parameters in the keyFrames
+			if (!isNaN(parseFloat(startParams[i])) && isFinite(startParams[i])) { // This is a number so use normal easing
+				state = ctx.easing[easing](time); // Get the eased subTime
+				result.push((endParams[i] - startParams[i]) * state + startParams[i]); // Add the eased value to the results array
+			} else if ('this' === 'aColor') { // This is a color
+				// Handle tweening of colors here
+			} else { // This must be a string
+				result.push(startParams[i]); // Pass in the value from the start keyframe
+			}
+		}
+		return result;
+	};
 
-	ctx.easing = {
-		linear: function (x, t, b, c, d) {
-			var k, l, result = [];
-			for (k = 0, l = b.length; k < l; k = k + 1) {
-				result.push((t / d) * (c[k] - b[k]) + b[k]);
-			}
-			return result;
-		},
-		swing: function (x, t, b, c, d) {
-			var k, l, result = [], v = ((-Math.cos(t / d * Math.PI) / 2) + 0.5);
-			for (k = 0, l = b.length; k < l; k = k + 1) {
-				result.push(v * (c[k] - b[k]) + b[k]);
-			}
-			return result;
-		},
-		easeInQuad: function (x, t, b, c, d) {
-			var k, l, result = [], v = Math.pow(t / d, 2);
-			for (k = 0, l = b.length; k < l; k = k + 1) {
-				result.push((c[k] - b[k]) * v + b[k]);
-			}
-			return result;
-		},
+	// Stripped down each from jQuery. Does not test for functions
+	ctx.each = function (object, callback) {
+		var name, i,
+			length = object.length,
+			isObj = length === undefined;
 
-		easeOutQuad: function (x, t, b, c, d) {
-			var k, l, result = [], v = (t / d) * (t / d - 2);
-			for (k = 0, l = b.length; k < l; k = k + 1) {
-				result.push(-(c[k] - b[k]) * v + b[k]);
-			}
-			return result;
-		},
-
-		easeInOutQuad: function (x, t, b, c, d) {
-			var w, k, l, result = [], v = t / (d / 2);
-			for (k = 0, l = b.length; k < l; k = k + 1) {
-				w = (c[k] - b[k]) / 2;
-				if (v < 1) {
-					result.push(w * v * v + b[k]);
-				} else {
-					result.push(-1 *  w * ((v - 1) * (v - 3) - 1) + b[k]);
+		if (isObj) { // if an object was passed in
+			for (name in object) {
+				if (object.hasOwnProperty(name)) {
+					if (callback.call(object[name], name, object[name]) === false) {
+						break;
+					}
 				}
 			}
-			return result;
+		} else { // an array was passed in
+			for (i = 0; i < length; i = i + 1) {
+				if (callback.call(object[i], i, object[i]) === false) {
+					break;
+				}
+			}
 		}
-
 	};
 
+	/******************************************************************************/
+	/*********************************** EASING ***********************************/
+	/******************************************************************************/
+
+	// based on easing equations from Robert Penner (http://www.robertpenner.com/easing)
+	// Blatantly lifted from jQuery UI
+	ctx.easing = {
+		linear: function (p) {
+			return p;
+		},
+		swing: function (p) {
+			return (-Math.cos(p * Math.PI) / 2) + 0.5;
+		}
+	};
+
+	baseEasings = {
+		Sine: function (p) {
+			return 1 - Math.cos(p * Math.PI / 2);
+		},
+		Circ: function (p) {
+			return 1 - Math.sqrt(1 - p * p);
+		},
+		Elastic: function (p) {
+			return p === 0 || p === 1 ? p : -Math.pow(2, 8 * (p - 1)) * Math.sin(((p - 1) * 80 - 7.5) * Math.PI / 15);
+		},
+		Back: function (p) {
+			return p * p * (3 * p - 2);
+		},
+		Bounce: function (p) {
+			var pow2,
+				bounce = 4;
+
+			while (p < ((pow2 = Math.pow(2, --bounce)) - 1) / 11) {}
+			return 1 / Math.pow(4, 3 - bounce) - 7.5625 * Math.pow((pow2 * 3 - 2) / 22 - p, 2);
+		}
+	};
+
+	ctx.each([ "Quad", "Cubic", "Quart", "Quint", "Expo" ], function (i, name) {
+		baseEasings[name] = function (p) {
+			return Math.pow(p, i + 2);
+		};
+	});
+
+	ctx.each(baseEasings, function (name, easeIn) {
+		ctx.easing["easeIn" + name] = easeIn;
+		ctx.easing["easeOut" + name] = function (p) {
+			return 1 - easeIn(1 - p);
+		};
+		ctx.easing["easeInOut" + name] = function (p) {
+			return p < 0.5 ? easeIn(p * 2) / 2 : easeIn(p * -2 + 2) / -2 + 1;
+		};
+	});
+
+	// Initialize are misc properties
 	ctx.configure(args);
 
 	if (typeof args.init !== 'undefined') {
 		args.init(ctx);
 	}
 
+	// If we are notloading any images and we want a splash screen
 	if (typeof args.images === 'undefined' && ctx.t.splash) {
-		ctx.update({time: 0});
+		ctx.update({time: 0}); // Render at time 0
 	}
 
 	return ctx;
