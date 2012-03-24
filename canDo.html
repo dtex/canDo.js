@@ -5,7 +5,6 @@
 	<title>canDo.js dev page</title>
 	<script src="canDo.js"></script>
 	<script src="http://dtex.github.com/canDo.js/js/jsLogo.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 </head>
 <body>
 	<canvas id="sample" width="160" height="165" style="float:left;margin-right:32px;">
@@ -30,7 +29,7 @@
 			},
 			init: function (context) {
 				// Our shadowOffset
-				context.shadowColor   = 'rgba(0, 0, 0, 0.7)';
+				
 				context.shadowBlur   = 10;
 				context.shadowOffsetX = 3;
 				context.shadowOffsetY = 3;	
@@ -44,6 +43,7 @@
 				this.moveTo(10,13);
 				this.quadraticCurveTo(10,8, 15,8);
 				this.lineTo(113,8);
+				this.canSet('shadowColor', [{params:['rgba(0, 0, 0, 0.7)'], cuePoint:0},{params:['rgba(255, 0, 0, 0.7)'], cuePoint:0.5},{params:['rgba(0, 255, 0, 0.7)'], cuePoint:1}]);
 				this.canDo('quadraticCurveTo', [{params: [118,8,118,13], cuePoint:0},{params: [118,8,118,8], cuePoint:1}]);
 				this.canDo('lineTo', [{params: [118,28], cuePoint:0},{params: [143,8], cuePoint:1}]);
 				this.canDo('quadraticCurveTo', [{params: [118,33,123,33], cuePoint:0},{params: [148,8,148,13], cuePoint:1}]);
@@ -101,7 +101,7 @@
 				drawJSLogo(this);
 			}
 		});
-		scale.play();
+		//scale.play();
 	</script>
 	
 </body>
