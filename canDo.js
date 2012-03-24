@@ -248,7 +248,6 @@ var CanDo = function (el, args) { // this = Window
 				result.push((endParams[i] - startParams[i]) * state + startParams[i]); // Add the eased value to the results array
 			
 			} else if (typeof startParams[i] === 'string' && startParams[i].substring(0,3) == 'rgb') {  // This is a color
-				
 				var startColor = getRGB(startParams[i]),
 					endColor = getRGB(endParams[i]),
 					stateColor = ctx.easeThis(easing, time, startColor, endColor);
@@ -362,7 +361,7 @@ var CanDo = function (el, args) { // this = Window
 
 		// Look for rgba(num,num,num)
 		if (result = /rgba\(\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9.]{1,3})\s*\)/.exec(color))
-				return [parseInt(result[1],10), parseInt(result[2],10), parseInt(result[3],10), result[4]];
+				return [parseInt(result[1],10), parseInt(result[2],10), parseInt(result[3],10), Number(result[4])];
 				
 	// Look for rgba(0, 0, 0, 0) == transparent in Safari 3
 		if (result = /rgba\(0, 0, 0, 0\)/.exec(color))

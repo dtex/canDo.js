@@ -13,9 +13,9 @@
 	<canvas id="sample3d" width="160" height="165">
     	This text is displayed if your browser does not support HTML5 Canvas with the WebGL context.
 	</canvas>
-	<canvas id="scale" width="320" height="320">This text is displayed if your browser does not support HTML5 Canvas.</canvas>​
+	<canvas id="scale" width="600" height="320">This text is displayed if your browser does not support HTML5 Canvas.</canvas>​
 	<script>
-		var test = CanDo(document.getElementById('sample'), {
+	/*	var test = CanDo(document.getElementById('sample'), {
 			duration: 250,
 			frameRate: 60,
 			easing: 'easeInOutQuad',
@@ -67,7 +67,7 @@
 				this.restore();
 				
 			}
-		});
+		});*/
 	
 		var js = function() {
 			// Clear and draw the square
@@ -79,28 +79,35 @@
 		};
 		
 		var scale = CanDo(document.getElementById('scale'), {
-			frameRate: 120,
-			mode: 'loop',
+			frameRate: 60,
 			duration: 2000,
+			easing: 'easeInOutQuad',
+			events: {
+				mouseover: function () {scale.play({speed:1});},
+				mouseout: function () {scale.play({speed:-1});}
+			},       
 			paint: function() {
 				this.identity();
-				this.clearRect(0, 0, 320, 320);
-				this.canDo('scale', [
-					{
-					params: [0.5, 0.5],
-					cuePoint: 0},
-				{
-					params: [1.5, 1.5],
-					cuePoint: 0.9,
-					easing: 'easeInOutExpo'},
-				{
-					params: [0.5, 0.5],
-					cuePoint: 1.0,
-					easing: 'easeOutBounce'}
-				]);
-				drawJSLogo(this);
+				this.clearRect(0, 0, 600, 360);
+				this.canDo('translate', [{params: [160, 160], cuePoint: 0},{params: [360, 160], cuePoint: 1}]);
+				
+				this.canDo('rotate', [{params: [0],cuePoint: 0},{params: [31.5],cuePoint: 1}]);
+				this.translate(-105, -105);
+				this.canDo('scale', [{params: [0.1, 0.1],cuePoint: 0},{params: [1.0, 1.0],cuePoint: 1}]);
+				this.canSet('shadowColor', [{params: ['rgba(0, 0, 0, 0.7)'], cuePoint: 0}, {params: ['rgba(0, 0, 0, 0.2)'], cuePoint: 1.0}]);
+				this.canSet('shadowOffsetX', [{params: [3],cuePoint: 0},{params: [90],cuePoint: 1}]);
+				this.canSet('shadowOffsetY', [{params: [3],cuePoint: 0},{params: [50],cuePoint: 1}]);
+				this.canSet('shadowBlur', [{params: [3],cuePoint: 0},{params: [20],cuePoint: 1}]);
+				
+				drawJSBox(this);
+				this.shadowOffsetX = 0;
+				this.shadowOffsetY = 0;
+				this.shadowBlur = 0;
+				drawJ(this);
+				drawS(this);
 			}
-		});
+		
+});
 		//scale.play();
 	</script>
 	
