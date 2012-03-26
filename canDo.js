@@ -21,11 +21,11 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 /*global clearInterval: false, clearTimeout: false, document: false, event: false, frames: false, history: false, Image: false, location: false, name: false, navigator: false, Option: false, parent: false, screen: false, setInterval: false, setTimeout: false, window: false, XMLHttpRequest: false */
 
-var CanDo = function (el, args) { // this = Window
+var CanDo = function (elid, args) { // this = Window
 
 	"use strict";
 	// Hoisted variables
-	var ctx, baseEasings, imagesLeftToLoad = 0,
+	var el = document.getElementById(elid), ctx, baseEasings, imagesLeftToLoad = 0,
 		imageLoaded = function () {// Called when an image is loaded
 			imagesLeftToLoad = imagesLeftToLoad - 1;
 
