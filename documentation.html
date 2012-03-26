@@ -4,19 +4,19 @@ title: CanDo()
 ---
 <head><link rel="stylesheet" type="text/css" href="css/dtex.css" media="all" /></head>
 <h1>CanDo()</h1>
-<pre class="psuedo">CanDo( canvasElement, canDoConfiguration )
+<pre class="psuedo">CanDo( canvasElementID, canDoConfiguration )
 
 <div style="text-align:right;font-style:italic;">Returns: A canDo wrapped 2d rendering context.</div></pre>
 <p><strong>Description:</strong> Wraps a canvas element and adds methods and properties for building simple animations.</p>
 <pre class="detail">CanDo( canvasElement, canDoConfiguration )
 <hr/>
-<strong><a href="canvasElement.html">canvasElement</a></strong>  An HTMLCanvasElement.
+<strong><a href="canvasElement.html">canvasElement</a></strong>  The id of your target HTMLCanvasElement.
 
 <strong><a href="canDoConfiguration.html">canDoConfiguration</a></strong> A set of key/value pairs that configure the canDo animation.</pre>
 
 <p>When you create the elements you pass through all the properties you need to configure you animations timeline and paint routines. Take a good look at the <a href="canDoConfiguration.html">canDoConfiguration</a> object as it's an important part of any canDo animation. Also note that a canDo wrapped canvas element still has all of the native methods and properties of the 2dRenderingContext.</p>
 <h2>Example</h2>
-<pre>var translate = CanDo(document.getElementById('translate'), {
+<pre>var translate = CanDo('translate', {
     frameRate: 60,
     duration: 3000,
     easing: 'easeInOutQuad',

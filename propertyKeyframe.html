@@ -17,7 +17,7 @@ title: [ { propertyKeyframe } ]
 <p>Keyframes define the status of your chosen contect property or method at a point in time. This status is passed in through the params array. Regardless of your animation's actual or scaled duration, canDo considers the beginning time to have a value of 0.0 and the end time to have a value of 1.0. This allows you to stretch your timeline, either through the canDoConfiguration's duration or speed parameters without breaking your cuepoints.</p>
 <p>So in the following example we can see that we will start with our canvas at the identity matrix. When we reach the cuepoint 'slower' our canvas will translated 100 pixels on the x and y axis. When we reach the end of the animation our tranlation will be 110 on the x and y axis. All other frames of the animation will have their translation values tweened based on the bounding cuepoints.</p> 
 <h2>Example</h2>
-<pre>var translate = CanDo(document.getElementById('translate'), {
+<pre>var translate = CanDo('translate', {
     cuePoints: {
     	slower: 0.5
     },
@@ -53,7 +53,7 @@ Determines the easing function to be used for tweening from the previous (by
 time) keyframe. This easing function will only be applied to this function call, 
 and again it will only apply between this keyframe and its preceding sibling. 
 Use any one of the easing functions defined in our <a href="easing.html">easing object</a>. 
-Valid values are:
+<!--Valid values are:
 
 	<strong>'linear':</strong> No easing
 	
@@ -66,5 +66,5 @@ Valid values are:
 	<strong>'easeInOutQuad':</strong><hr/>
 <strong>bounces:</strong> int [ Optional ]
 <span class="grey"></strong>Default:</strong> 0</span>
-Some easing functions include a bounce effect. This controls the number of bounces.
+Some easing functions include a bounce effect. This controls the number of bounces.-->
 </pre>
