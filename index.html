@@ -6,6 +6,7 @@ title: canDo.js Introduction
 <!--<head><link rel="stylesheet" type="text/css" href="css/dtex.css" media="all" /></head>-->
 <h1>canDo.js</h1>
 <p>canDo.js is a javascript library used for building simple UI elements such as buttons. It's meant to allow developers the luxury of adding Canvas based UI elements without adding a ton of overhead.</p>
+<h2>Hello <strike>World</strike> JS Logo</h2>
 <iframe style="width: 700px; height: 400px;clear:both;margin-top:32px;" src="http://jsfiddle.net/dtex/YJP8S/embedded/result,js" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 <p>canDo.js proxies the methods of the <a href="http://www.w3.org/TR/2dcontext/">HTML Canvas 2D Context</a> and allows you to add keyframes to the properties you pass in. canDo also gives you easing functions, playback control, image management and even some basic event handling.</p>
 <p>You are still free to use the non-proxied built-in canvas functions when appropriate.</p>
@@ -18,7 +19,7 @@ title: canDo.js Introduction
 	<li><a href="http://code.google.com/p/cakejs/">cake.js (~100kb compressed)</a> - "CAKE is a JavaScript scene graph library for the HTML5 canvas tag. You could think of it as SVG sans the XML and not be too far off."</li>
 	<li><a href="https://github.com/hyperandroid/CAAT">CAAT (&gt; 200kb compressed)</a> - "CAAT is a director-based Scene graph manager. It is able to render using Canvas, WebGL and CSS w/o making changes to the developments that sit on top of it."</li>
 </ul>
-<h2>Hello <strike>World</strike> JS Logo</h2>
+<h2>Building a canDo.js animation</h2>
 <p>First you need a canvas element</p>
 <pre>&lt;canvas id="demo" width="400" height="360"&gt;
 	This text is displayed if your browser does not support HTML5 Canvas.
@@ -36,22 +37,23 @@ title: canDo.js Introduction
 });</pre>
 <p>When you do that you need to pass in some parameters, not least of which is your paint () function. Here we're setting it after the fact</p>
 <pre>demo.paint = function() {
-        this.identity();
-        this.clearRect(0, 0, 400, 360);
-        this.translate(160, 160);
-        
-        this.canDo('rotate', [{params: [0],cuePoint: 0},{params: [44],cuePoint: 1}]);
-        this.translate(-105, -105);
-        this.canDo('scale', [{params: [0.1, 0.1],cuePoint: 0},{params: [1.0, 1.0],cuePoint: 1}]);
-        this.canSet('shadowColor', [{params: ['rgba(0, 0, 0, 0.7)'], cuePoint:0},{params:['rgba(0,0,0,0.1)'], cuePoint: 1}]);
-        this.canSet('shadowOffsetX', [{params: [3],cuePoint: 0},{params: [90],cuePoint: 1}]);
-        this.canSet('shadowOffsetY', [{params: [3],cuePoint: 0},{params: [50],cuePoint: 1}]);
-        this.canSet('shadowBlur', [{params: [3],cuePoint: 0},{params: [20],cuePoint: 1}]);
-        
-        drawJSBox(this);
-        this.shadowOffsetX = 0;
-        this.shadowOffsetY = 0;
-        this.shadowBlur = 0;
-        drawJ(this);
-        drawS(this);
-    }</pre>
+	this.identity();
+	this.clearRect(0, 0, 400, 360);
+	this.translate(160, 160);
+	
+	this.canDo('rotate', [{params: [0],cuePoint: 0},{params: [44],cuePoint: 1}]);
+	this.translate(-105, -105);
+	this.canDo('scale', [{params: [0.1, 0.1],cuePoint: 0},{params: [1.0, 1.0],cuePoint: 1}]);
+	this.canSet('shadowColor', [{params: ['rgba(0, 0, 0, 0.7)'], cuePoint:0},{params:['rgba(0,0,0,0.1)'], cuePoint: 1}]);
+	this.canSet('shadowOffsetX', [{params: [3],cuePoint: 0},{params: [90],cuePoint: 1}]);
+	this.canSet('shadowOffsetY', [{params: [3],cuePoint: 0},{params: [50],cuePoint: 1}]);
+	this.canSet('shadowBlur', [{params: [3],cuePoint: 0},{params: [20],cuePoint: 1}]);
+	
+	drawJSBox(this);
+	this.shadowOffsetX = 0;
+	this.shadowOffsetY = 0;
+	this.shadowBlur = 0;
+	drawJ(this);
+	drawS(this);
+}</pre>
+<p>And there you have it. You can see many more samples on the from the list of <a href="contextMethods.html">methods</a> and <a href="contextProperties.html">properties</a> that can be wrapped.

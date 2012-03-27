@@ -39,8 +39,8 @@ pre {padding: 10px;overflow-x: auto;background-color: #fbf9ea;border: 1px solid 
 pre.psuedo {background-color:#0d5995;color:#fff;font-family:verdana, "trebuchet MS", helvetica, sans-serif;font-weight:bold;}
 pre.detail { background-color:#ddd;color:#000;border-color:#aaa;}
 
-table {width:680px;}
+table {width:680px;border-width: 0 0 1px 0;border-style: solid;border-color: #0d5995;}
 th {background-color:#000;color:#fff;text-align:left;}
-td {border-width: 0 1px;border-style: solid;border-color: #ccc;font-size:12px;}
+td {border-width: 0 1px;border-style: solid;border-color: #0d5995;font-size:12px;}
 tr.group {font-weight:bold;background-color:#0d5995;color:#fff;}
 tr.odd {background-color:#ddd;}
