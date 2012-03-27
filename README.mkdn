@@ -3,22 +3,3 @@
 canDo.js is a canvas wrapper for simple animations. It is ideal for animating UI elements (i.e. buttons with hover states). In a nutshell, canDo.js proxies the methods of the HTML Canvas 2D Context. It allows you to define a timeline, keyframes and easing functions.
 
 canDo.js is distributed under the MIT License.
-
-"This project is experimental and of course comes without any warranty whatsoever"*
-
-Issues I need to resolve before v1.0:
-
-* 0.2 Allow cuepoint be endpoints for an object's existence, or final state.
-* 0.2.1 Assume start/end when just canDo keyFrames are passed w/o cuePoints.
-* 0.3 Easing on timeline, segment or canDo call. 
-* 0.4 Events on cuePoints
-* 0.5 More primitives (circle, oval)
-* 0.6 Events on primitives
-* 0.7 Refactor to appropriate pattern (just namespaced for now)
-* 0.8 Code optimization (nuke nested ifs and the like)
-* 0.8.1 Minification optimization
-* 0.8.2 Perfect linting
-* 0.8.3 Build script
-* 0.8.4 Testing
-
-*Quoting Tim Berners-Lee, but of course he was talking about something else.
