@@ -17,13 +17,17 @@ PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIG
 HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Color Conversion functions from highlightFade
+By Blair Mitchelmore
+http://jquery.offput.ca/highlightFade/
+
+Easing equations from Robert Penner (http://www.robertpenner.com/easing)
+Blatantly lifted from jQuery UI
 */
 
-// Color Conversion functions from highlightFade
-// By Blair Mitchelmore
-// http://jquery.offput.ca/highlightFade/
-
 /*global clearInterval: false, clearTimeout: false, document: false, event: false, frames: false, history: false, Image: false, location: false, name: false, navigator: false, Option: false, parent: false, screen: false, setInterval: false, setTimeout: false, window: false, XMLHttpRequest: false */
+
 /**
  * @constructor
  */
@@ -31,52 +35,8 @@ var CanDo = function (elid, args) { // this = Window
 
 	"use strict";
 	// Hoisted variables
-	var el = document.getElementById(elid), ctx, baseEasings, imagesLeftToLoad = 0, colors = {
-		//aqua: [0, 255, 255, 1],
-		//azure: [240, 255, 255, 1],
-		//beige: [245, 245, 220, 1],
-		black: [0, 0, 0, 1],
-		blue: [0, 0, 255, 1],
-		//brown: [165, 42, 42, 1],
-		//cyan: [0, 255, 255, 1],
-		//darkblue: [0, 0, 139, 1],
-		//darkcyan: [0, 139, 139, 1],
-		//darkgrey: [169, 169, 169, 1],
-		//darkgreen: [0, 100, 0, 1],
-		//darkkhaki: [189, 183, 107, 1],
-		//darkmagenta: [139, 0, 139, 1],
-		//darkolivegreen: [85, 107, 47, 1],
-		//darkorange: [255, 140, 0, 1],
-		//darkorchid: [153, 50, 204, 1],
-		//darkred: [139, 0, 0, 1],
-		//darksalmon: [233, 150, 122, 1],
-		//darkviolet: [148, 0, 211, 1],
-		//fuchsia: [255, 0, 255, 1],
-		//gold: [255, 215, 0, 1],
-		green: [0, 128, 0, 1],
-		//indigo: [75, 0, 130, 1],
-		//khaki: [240, 230, 140, 1],
-		//lightblue: [173, 216, 230, 1],
-		//lightcyan: [224, 255, 255, 1],
-		//lightgreen: [144, 238, 144, 1],
-		//lightgrey: [211, 211, 211, 1],
-		//lightpink: [255, 182, 193, 1],
-		//lightyellow: [255, 255, 224, 1],
-		//lime: [0, 255, 0, 1],
-		//magenta: [255, 0, 255, 1],
-		//maroon: [128, 0, 0, 1],
-		//navy: [0, 0, 128, 1],
-		//olive: [128, 128, 0, 1],
-		//orange: [255, 165, 0, 1],
-		//pink: [255, 192, 203, 1],
-		//purple: [128, 0, 128, 1],
-		//violet: [128, 0, 128, 1],
-		red: [255, 0, 0, 1],
-		//silver: [192, 192, 192, 1],
-		white: [255, 255, 255, 1],
-		//yellow: [255, 255, 0, 1],
-		transparent: [0, 0, 0, 0]
-	},
+	var el = document.getElementById(elid), ctx, baseEasings, imagesLeftToLoad = 0, colors = { black: [0, 0, 0, 1], blue: [0, 0, 255, 1], green: [0, 128, 0, 1], red: [255, 0, 0, 1], white: [255, 255, 255, 1], transparent: [0, 0, 0, 0]},
+		/*aqua: [0, 255, 255, 1], azure: [240, 255, 255, 1], beige: [245, 245, 220, 1], brown: [165, 42, 42, 1], cyan: [0, 255, 255, 1], darkblue: [0, 0, 139, 1], darkcyan: [0, 139, 139, 1], darkgrey: [169, 169, 169, 1], darkgreen: [0, 100, 0, 1], darkkhaki: [189, 183, 107, 1], darkmagenta: [139, 0, 139, 1], darkolivegreen: [85, 107, 47, 1], darkorange: [255, 140, 0, 1], darkorchid: [153, 50, 204, 1], darkred: [139, 0, 0, 1], darksalmon: [233, 150, 122, 1], darkviolet: [148, 0, 211, 1], fuchsia: [255, 0, 255, 1], gold: [255, 215, 0, 1], indigo: [75, 0, 130, 1], khaki: [240, 230, 140, 1], lightblue: [173, 216, 230, 1], lightcyan: [224, 255, 255, 1], lightgreen: [144, 238, 144, 1], lightgrey: [211, 211, 211, 1], lightpink: [255, 182, 193, 1], lightyellow: [255, 255, 224, 1], lime: [0, 255, 0, 1], magenta: [255, 0, 255, 1], maroon: [128, 0, 0, 1], navy: [0, 0, 128, 1], olive: [128, 128, 0, 1], orange: [255, 165, 0, 1], pink: [255, 192, 203, 1], purple: [128, 0, 128, 1], violet: [128, 0, 128, 1], silver: [192, 192, 192, 1], yellow: [255, 255, 0, 1],*/
 		imageLoaded = function () {// Called when an image is loaded
 			imagesLeftToLoad = imagesLeftToLoad - 1;
 
@@ -95,8 +55,7 @@ var CanDo = function (elid, args) { // this = Window
 	ctx = el.getContext('2d');
 	//}
 
-
-	/* Default properties of our Canvas timeline. They are not specific to any method call */
+	/* Default properties of our Canvas timeline */
 	ctx.t = { duration: 1000, frameRate: 30, cuePoints: {}, mode: '', wait: true, splash: true, easing: 'linear' };
 
 	// Default status of our playback head
@@ -246,9 +205,17 @@ var CanDo = function (elid, args) { // this = Window
 	// Find out which keyframes we are using (definitely room for improvement here)
 	ctx.getCurrentKeyframe = function (keyFrames) {
 
-		var i, j, result = { start: 0, end: 1}; // Our result object
+		var i, j = keyFrames.length, result = { start: 0, end: 1}; // Our result object
 
-		for (i = 0, j = keyFrames.length; i < j; i = i + 1) { //Loop through the keyframes
+		if (typeof keyFrames[0].cuePoint === 'undefined') {
+			keyFrames[0].cuePoint = 0.0;
+		}
+		
+		if (typeof keyFrames[j-1].cuePoint === 'undefined') {
+			keyFrames[j-1].cuePoint = 1.0;
+		}
+		
+		for (i = 0; i < j; i = i + 1) { //Loop through the keyframes
 			if (typeof (keyFrames[i].cuePoint) === "string") { // If they keyframe was passed as a name
 				keyFrames[i].cuePoint = this.t.cuePoints[keyFrames[i].cuePoint]; // Get the name value and update the cuepoint so we don't have to do this again
 			}
@@ -396,8 +363,6 @@ var CanDo = function (elid, args) { // this = Window
 	/*********************************** EASING ***********************************/
 	/******************************************************************************/
 
-	// based on easing equations from Robert Penner (http://www.robertpenner.com/easing)
-	// Blatantly lifted from jQuery UI
 	ctx.easing = {
 		linear: function (p) {
 			return p;
@@ -445,7 +410,7 @@ var CanDo = function (elid, args) { // this = Window
 		};
 	});
 
-	// Initialize are misc properties
+	// Initialize our misc properties
 	ctx.configure(args);
 
 	if (typeof args.init !== 'undefined') {
