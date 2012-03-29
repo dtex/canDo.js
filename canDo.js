@@ -417,7 +417,7 @@ var CanDo = function (elid, args) { // this = Window
 		args.init(ctx);
 	}
 
-	// If we are notloading any images and we want a splash screen
+	// If we are not loading any images and we want a splash screen
 	if (typeof args.images === 'undefined' && ctx.t.splash) {
 		ctx.update({time: 0}); // Render at time 0
 	}
