@@ -4,16 +4,16 @@
 	<meta charset="utf-8" />
 	<title>canDo.js dev page</title>
 	<script src="canDo.js"></script>
-	<script src="http://dtex.github.com/canDo.js/js/jsLogo.js"></script>
+	<script src="jsLogo.js"></script>
 </head>
 <body>
-	<canvas id="sample" width="160" height="165" style="float:left;margin-right:32px;">
+	<!--<canvas id="sample" width="160" height="165" style="float:left;margin-right:32px;">
     	This text is displayed if your browser does not support HTML5 Canvas.
 	</canvas>
 	<canvas id="sample3d" width="160" height="165">
     	This text is displayed if your browser does not support HTML5 Canvas with the WebGL context.
-	</canvas>
-	<canvas id="scale" width="600" height="320">This text is displayed if your browser does not support HTML5 Canvas.</canvas>​
+	</canvas>-->
+	<canvas id="scale" width="600" height="400">This text is displayed if your browser does not support HTML5 Canvas.</canvas>​
 	<script>
 	/*	var test = CanDo('sample', {
 			duration: 250,
@@ -88,7 +88,7 @@
 			},       
 			paint: function() {
 				this.identity();
-				this.clearRect(0, 0, 600, 360);
+				this.clearRect(0, 0, 600, 400);
 				this.canDo('translate', [{params: [160, 160], cuePoint: 0},{params: [360, 160], cuePoint: 1}]);
 				
 				this.canDo('rotate', [{params: [0],cuePoint: 0},{params: [31.5],cuePoint: 1}]);
@@ -105,6 +105,8 @@
 				this.shadowBlur = 0;
 				drawJ(this);
 				drawS(this);
+				this.identity();
+				this.canDo('fillRect', [{params:[0,390,40,10],cuePoint:0},{params:[160,390,40,10],cuePoint:0.5,persist:true}]);
 			}
 		
 });
