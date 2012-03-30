@@ -59,7 +59,10 @@ var CanDo = function (elid, args) { // this = Window
 	ctx.t = { duration: 1000, frameRate: 30, cuePoints: {}, mode: '', wait: true, splash: true, easing: 'linear' };
 
 	// Default status of our playback head
-	ctx.s = { time: 0, easedTime: 0, speed: 1.0, startTime: 0,	 endTime: 0, intervalTimer: 0, loaded: true, height: el.height, width: el.width };
+	ctx.s = { time: 0, easedTime: 0, speed: 1.0, startTime: 0, endTime: 0, intervalTimer: 0, loaded: true, height: el.height, width: el.width };
+	
+	// Default path status
+	ctx.p = {};
 
 	// Handle changes passed in via the configuration object
 	ctx.configure = function (args) { // this = ctx
@@ -311,6 +314,21 @@ var CanDo = function (elid, args) { // this = Window
 			this[property] = state[0]; // Call the proxied function with the computed parameters
 		}
 	};
+	
+	// Here's our path wrapper
+	ctx.canBeginPath = function (pathConfig) {
+		if (typeof pathConfig !== 'undefined') {
+			if (typeof pathConfig.easing !== 'undefined') {
+				ctx.p.easing = pathConfig.easing;
+			}
+		}
+		this.beginPath();
+	};
+	
+	ctx.canClosePath = function () {
+		ctx.p = {};
+		this.closePath();
+	}
 
 	// This is our easing wrapper
 	ctx.easeThis = function (easing, time, startParams, endParams) {
@@ -321,6 +339,9 @@ var CanDo = function (elid, args) { // this = Window
 			if (!isNaN(parseFloat(startParams[i])) && isFinite(startParams[i])) { // This is a number so use normal easing
 
 				state = ctx.easing[easing](time); // Get the eased subTime
+				if (typeof ctx.p.easing !== 'undefined') { // If the path is eased
+					state = ctx.easing[ctx.p.easing](state);
+				}
 				result.push((endParams[i] - startParams[i]) * state + startParams[i]); // Add the eased value to the results array
 
 			} else if (typeof startParams[i] === 'string' && (startParams[i].substring(0, 3) === 'rgb' ||  startParams[i].substring(0, 1) === '#')) {  // This is a color
