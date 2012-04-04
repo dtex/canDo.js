@@ -56,14 +56,15 @@ var CanDo = function (elid, args) { // this = Window
 	//if (args.webgl === true) {
 	//	ctx = el.getContext('experimental-webgl');
 	//} else {
-	ctx = el.getContext('2d');
+	el.ctx = ctx = el.getContext('2d');
+	
 	//}
 
 	/* Default properties of our Canvas timeline */
 	ctx.t = { duration: 1000, frameRate: 30, cuePoints: {}, mode: '', wait: true, splash: true, easing: 'linear' };
 
 	// Default status of our playback head
-	ctx.s = { time: 0, easedTime: 0, speed: 1.0, startTime: 0, endTime: 0, intervalTimer: 0, loaded: true, height: el.height, width: el.width };
+	ctx.s = { time: 0, easedTime: 0, speed: 0, startTime: 0, endTime: 0, intervalTimer: 0, loaded: true, height: el.height, width: el.width, canvasEvents: {}, eventsCue: {}, currentEvents:{} };
 	
 	// Default path status
 	ctx.p = {};
@@ -130,15 +131,7 @@ var CanDo = function (elid, args) { // this = Window
 
 		// Event handlers
 		if (typeof args.events !== 'undefined') { // If an events object was passed
-			for (eventName in args.events) { // Loop through each event
-				if (args.events.hasOwnProperty(eventName)) {
-					if (el.addEventListener) {
-						el.addEventListener(eventName, args.events[eventName], false);
-					} else if (el.attachEvent) {
-						el.attachEvent('on' + eventName, args.events[eventName]);
-					}
-				}
-			}
+			ctx.s.canvasEvents = args.events;
 		}
 	};
 
@@ -146,11 +139,12 @@ var CanDo = function (elid, args) { // this = Window
 	ctx.play = function (args) {
 
 		var preTime; // Used to hold how much time has already passed in the animation
-
+		clearInterval(this.s.intervalTimer); // If we have an interval in place, cancel it
+		
 		if (typeof args !== 'undefined') {
 			this.configure(args);
 		}
-
+		
 		// Calculate our new time values
 		this.t.scaledDuration = Math.abs(this.t.duration / this.s.speed); // Calculate the total duration of the timeline
 		preTime = this.s.speed < 0 ? 1 - this.s.time : this.s.time; // If we are playing backwards we need to tweak the preTime factor
@@ -165,7 +159,6 @@ var CanDo = function (elid, args) { // this = Window
 
 	// Our refresh function
 	ctx.update = function (args) {
-
 		// The next two blocks can be combined
 		if (typeof args === 'undefined') { // If args were passed then update our timeline/status
 			args = {};
@@ -177,7 +170,7 @@ var CanDo = function (elid, args) { // this = Window
 		if (typeof args.time === 'undefined') {
 			if (this.s.speed > 0) {
 				this.s.time = (Date.now() - this.s.startTime) / this.t.scaledDuration;
-			} else {
+			} else if (this.s.speed < 0) {
 				this.s.time = (this.s.endTime - Date.now()) / this.t.scaledDuration;
 			}
 		} else {
@@ -185,7 +178,17 @@ var CanDo = function (elid, args) { // this = Window
 		}
 
 		this.s.easedTime = this.easing[this.t.easing](this.s.time);
-		if ((this.s.time < 1.0  && this.s.speed > 0) || (this.s.time > 0  && this.s.speed < 0)) {  // If the animation is not finished
+
+		// Check to see if a cuePoint trigger was passed
+		
+		// Move events from eventsCue to currentEvents
+		ctx.s.currentEvents = ctx.s.eventsCue;
+		ctx.s.eventsCue = {};
+		
+		//Handle Canvas events
+		this.doCanvasEvents();
+		
+		if (typeof args.still !== 'undefined' || (this.s.time < 1.0  && this.s.speed > 0) || (this.s.time > 0  && this.s.speed < 0)) {  // If the animation is not finished
 
 			this.paint(); // Update the canvas and keep on truckin'
 
@@ -196,6 +199,7 @@ var CanDo = function (elid, args) { // this = Window
 				this.s.time = this.s.speed > 0 ? 1.0 : 0; // Set time to end of animation
 				this.s.easedTime = this.s.speed > 0 ? 1.0 : 0; // Set the eased time to end of animation
 				this.paint(); // Update the canvas
+				this.s.speed = 0;
 			}
 
 			if (this.t.mode === 'loop') { // We are set to loop
@@ -203,12 +207,19 @@ var CanDo = function (elid, args) { // this = Window
 				this.s.easedTime = this.s.speed > 0 ? 1.0 : 0; // Set the eased time to end of animation
 				this.paint(); // Update the canvas
 				this.s.time = this.s.speed > 0 ? 0 : 1.0; // Set time to the beginning of the animation
-				this.s.easedTime = this.s.speed > 0 ? 0 : 1.0; // Set eased time to the beginning of the animation
+				//this.s.easedTime = this.s.speed > 0 ? 0 : 1.0; // Set eased time to the beginning of the animation
 				this.play({time: 0}); // Play from the beginning
 			}
 		}
 	};
 
+	//
+	ctx.doCanvasEvents = function() {
+		ctx.each(ctx.s.currentEvents, function (name, func) {
+			ctx.s.canvasEvents[name].apply( this );
+		});
+	}
+	
 	// Find out which keyframes we are using (definitely room for improvement here)
 	ctx.getCurrentKeyframe = function (keyFrames) {
 
@@ -325,11 +336,21 @@ var CanDo = function (elid, args) { // this = Window
 			if (typeof pathConfig.easing !== 'undefined') {
 				ctx.p.easing = pathConfig.easing;
 			}
+			if (typeof pathConfig.events !== 'undefined') {
+				ctx.p.events = pathConfig.events;
+			}
 		}
 		this.beginPath();
 	};
 	
 	ctx.canClosePath = function () {
+		if(typeof ctx.p.events !== 'undefined') {
+			ctx.each(ctx.p.events, function (name, func) {
+				if (typeof ctx.s.currentEvents[name] !== 'undefined' && ctx.isPointInPath(ctx.s.currentEvents[name].x, ctx.s.currentEvents[name].y)) {
+					ctx.p.events[name].apply( this );
+				}
+			});
+		}
 		ctx.p = {};
 		this.closePath();
 	}
@@ -437,6 +458,22 @@ var CanDo = function (elid, args) { // this = Window
 
 	// Initialize our misc properties
 	ctx.configure(args);
+	
+	// Add event watchers to Canvas element
+	ctx.each(['click', 'mouseover', 'mouseout'], function(i, name) {
+		if (el.addEventListener) {
+			el.addEventListener(name, function(e) {
+				this.ctx.s.eventsCue[name] = {x:e.offsetX, y:e.offsetY};
+				if (el.ctx.s.speed === 0) {
+				 	this.ctx.update({still:true});
+				}
+			}, false);
+		} else {
+			el.addEventListener('on'+name, function(e) {
+				this.ctx.s.eventsCue.name = {x:e.offsetX, y:e.offsetY};
+			}, false);
+		}
+	});
 
 	if (typeof args.init !== 'undefined') {
 		args.init(ctx);
