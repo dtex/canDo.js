@@ -1,4 +1,6 @@
-/*The MIT License (MIT)
+/*
+
+The MIT License (MIT)
 Copyright (c) 2012 Donovan Buck
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this 
@@ -18,6 +20,8 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTIO
 CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
 OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+------------ end license --------------
+
 Color Conversion functions from highlightFade
 By Blair Mitchelmore
 http://jquery.offput.ca/highlightFade/
@@ -27,9 +31,7 @@ Blatantly lifted from jQuery UI
 
 Stripped down implementation of each from jQuery
 
-*/
-
-/*global clearInterval: false, clearTimeout: false, document: false, event: false, frames: false, history: false, Image: false, location: false, name: false, navigator: false, Option: false, parent: false, screen: false, setInterval: false, setTimeout: false, window: false, XMLHttpRequest: false */
+global clearInterval: false, clearTimeout: false, document: false, event: false, frames: false, history: false, Image: false, location: false, name: false, navigator: false, Option: false, parent: false, screen: false, setInterval: false, setTimeout: false, window: false, XMLHttpRequest: false */
 
 /**
  * @constructor
@@ -210,7 +212,7 @@ var CanDo = function (elid, args) {
 		}
 	};
 
-	//
+	// Fire events that have been applied to the canvas
 	ctx.doCanvasEvents = function() {
 		ctx.each(ctx.s.currentEvents, function (name, func) {
 			ctx.s.canvasEvents[name].apply( this );
@@ -473,6 +475,7 @@ var CanDo = function (elid, args) {
 		}
 	});
 
+	// If an init function was passed in, execute it here (only happens once)
 	if (typeof args.init !== 'undefined') {
 		args.init(ctx);
 	}
