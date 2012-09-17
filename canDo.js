@@ -67,26 +67,28 @@ var CanDo = function (elid, args) {
 
 	// Default status of our animation
 	ctx.s = { 
-		duration: 1000, 	// Duration of the animation
-		frameRate: 60, 		// Frame rate (aren't you glad I added this comment?)
-		cuePoints: {}, 		// A list of user defined cuepoints on the timeline
-		mode: '', 			// ['' || 'loop'] '' will play through one time, 'loop' will loop
-		wait: true, 		// wait for images to load
-		splash: true, 		// Will render the first frame if animations is not playing
-		easing: 'linear', 	// Lots of easing functions available. See the docs
-		time: 0, 			// Linear clock time
-		easedTime: 0, 		// Eased clock time
-		speed: 0, 			// Important, real duration = duration * abs(speed)
-		startTime: 0, 		// Real or calculated startTime on the clock
-		endTime: 0, 		// Calculated end time
-		intervalTimer: 0, 	// The duration of a frame
-		loaded: true, 		// Are all bitmap images loaded
-//		height: el.height, 	// The canvas height
-//		width: el.width, 	// The canvas width
-		canvasEvents: {}, 	// Events that are bound to the canvas element
-		eventsQueue: {}, 	// Queues events gathered from Canvas element
-		currentEvents:{}, 	// Canvas events to actively monitor
-		currentCuePoints:{} // The current cuepoints to the left and right of our playback head
+		duration: 1000, 		// Duration of the animation
+		frameRate: 60, 			// Frame rate (aren't you glad I added this comment?)
+		cuePoints: {}, 			// A list of user defined cuepoints on the timeline
+		mode: '', 				// ['' || 'loop'] '' will play through one time, 'loop' will loop
+		wait: true, 			// wait for images to load
+		splash: true, 			// Will render the first frame if animations is not playing
+		easing: 'linear', 		// Lots of easing functions available. See the docs
+		time: 0, 				// Linear clock time
+		easedTime: 0, 			// Eased clock time
+		speed: 0, 				// Important, real duration = duration * abs(speed)
+		startTime: 0, 			// Real or calculated startTime on the clock
+		endTime: 0, 			// Calculated end time
+		intervalTimer: 0, 		// The duration of a frame
+		loaded: true, 			// Are all bitmap images loaded
+//		height: el.height, 		// The canvas height
+//		width: el.width, 		// The canvas width
+		canvasEvents: {}, 		// Events that are bound to the canvas element
+		eventsQueue: {}, 		// Queues events gathered from Canvas element
+		eventHandlerQueue: [], 	// Handlers that were triggered this frame
+		currentEvents:{}, 		// Canvas events to actively monitor
+		eventProp: 'all',		// Even propogation style ('all'|'first'|'last')
+		currentCuePoints:{} 	// The current cuepoints to the left and right of our playback head
 	};
 
 	// Default path status
@@ -127,12 +129,13 @@ var CanDo = function (elid, args) {
 			if (typeof args.events !== 'undefined') { // If an events object was passed
 				ctx.s.canvasEvents = args.events;
 			}
+			
+			this.s.frameInterval = Math.floor(1000/ctx.s.frameRate);
 		}
 	};
 
 	// Begin the animation
 	ctx.play = function (args) {
-
 		// Used to hold how much time has already passed in the animation
 		var preTime; 
 		clearInterval(this.s.intervalTimer);
@@ -193,9 +196,6 @@ var CanDo = function (elid, args) {
 		ctx.s.currentEvents = ctx.s.eventsQueue;
 		ctx.s.eventsQueue = {};
 
-		//Handle Canvas events
-		this.doCanvasEvents();
-
 		// If the animation is not finished
 		if (typeof args.still !== 'undefined' || (this.s.time < 1.0  && this.s.speed > 0) || (this.s.time > 0  && this.s.speed < 0)) {  
 
@@ -221,6 +221,11 @@ var CanDo = function (elid, args) {
 				this.play({time: 0});
 			}
 		}
+		
+		//Handle Canvas events
+		this.doCanvasEvents();
+		this.doEventHandlerQueue();
+
 	};
 
 	// Fire events that have been applied to the canvas
@@ -228,6 +233,21 @@ var CanDo = function (elid, args) {
 		ctx.each(ctx.s.currentEvents, function (func, name) {
 			if (typeof ctx.s.canvasEvents[name] !== 'undefined') ctx.s.canvasEvents[name].apply( this );
 		});
+	}
+	
+	ctx.doEventHandlerQueue = function() {
+		if (ctx.s.eventHandlerQueue.length > 0) {
+			if (ctx.s.eventProp === 'first') {
+				ctx.s.eventHandlerQueue[0].apply( this );
+			} else if (ctx.s.eventProp === 'last') {
+				ctx.s.eventHandlerQueue.pop().apply( this );
+			} else {
+				ctx.each(ctx.s.eventHandlerQueue, function ( func, iterator) {
+					func.apply( this );
+				});
+			}
+		}
+		ctx.s.eventHandlerQueue = [];
 	}
 
 	// Find out which keyframes we are using (definitely room for improvement here)
@@ -318,6 +338,7 @@ var CanDo = function (elid, args) {
 	// Convenience method for resetting the transformation matrix to the identity transform
 	ctx.identity = function () {
 		this.setTransform(1, 0, 0, 1, 0, 0);
+		return ctx;
 	};
 
 	// Here's our method wrapper
@@ -364,37 +385,13 @@ var CanDo = function (elid, args) {
 		this.beginPath();
 		return ctx;
 	};
-	
-	/*ctx.canFill = function ( fill ) {
-		if (typeof fill === 'undefined') {
-			ctx.fill();
-		} else {
-			ctx.fill();
-			ctx.fillStyle = fill;
-		}
-		return ctx;
-	}
-
-	ctx.canCurveTo = function () {
-		ctx.quadraticCurveTo( arguments[0], arguments[1], arguments[2], arguments[3] );
-		return ctx;	
-	}
-	
-	ctx.canLineTo = function () {
-		ctx.lineTo( arguments[0], arguments[1] );
-		return ctx;	
-	}
-	
-	ctx.canMoveTo = function () {
-		ctx.moveTo( arguments[0], arguments[1] );
-		return ctx;	
-	}*/
-	
+		
 	ctx.canClosePath = function () {
 		if(typeof ctx.p.events !== 'undefined') {
 			ctx.each(ctx.p.events, function (func, name) {
-				if (typeof ctx.s.currentEvents[name] !== 'undefined' && ctx.isPointInPath(ctx.s.currentEvents[name].x, ctx.s.currentEvents[name].y)) {
-					ctx.p.events[name].apply( this );
+				if (typeof ctx.s.currentEvents[name] !== 'undefined' && ctx.isPointInPath(ctx.s.currentEvents[name].x, ctx.s.currentEvents[name].y) === true) {
+					ctx.s.eventHandlerQueue.push(ctx.p.events[name]);
+					//ctx.p.events[name].apply( this );
 				}
 			});
 		}
