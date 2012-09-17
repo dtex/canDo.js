@@ -29,7 +29,11 @@ http://jquery.offput.ca/highlightFade/
 Easing equations from Robert Penner (http://www.robertpenner.com/easing)
 Blatantly lifted from jQuery UI
 
-Stripped down implementation of each from jQuery
+Stripped down implementation of each and has from underscore
+
+Stripped down implementation of extend from jQuery
+
+Tip o' the hat to @p01 and @Nosredna for chainable Canvas methods trick
 
 global clearInterval: false, clearTimeout: false, document: false, event: false, frames: false, history: false, Image: false, location: false, name: false, navigator: false, Option: false, parent: false, screen: false, setInterval: false, setTimeout: false, window: false, XMLHttpRequest: false */
 
@@ -181,7 +185,7 @@ var CanDo = function (elid, args) {
 		this.s.easedTime = this.easing[this.s.easing](this.s.time);
 
 		// Update the current cuePoints
-//		getCurrentCuePoints();
+		// 	getCurrentCuePoints();
 
 		// Check to see if a cuePoint trigger was passed
 
@@ -221,7 +225,7 @@ var CanDo = function (elid, args) {
 
 	// Fire events that have been applied to the canvas
 	ctx.doCanvasEvents = function() {
-		ctx.each(ctx.s.currentEvents, function (name, func) {
+		ctx.each(ctx.s.currentEvents, function (func, name) {
 			if (typeof ctx.s.canvasEvents[name] !== 'undefined') ctx.s.canvasEvents[name].apply( this );
 		});
 	}
@@ -344,6 +348,8 @@ var CanDo = function (elid, args) {
 		}
 		return ctx;
 	};
+	
+
 
 	// Here's our path wrapper
 	ctx.canBeginPath = function (pathConfig) {
@@ -359,7 +365,7 @@ var CanDo = function (elid, args) {
 		return ctx;
 	};
 	
-	ctx.canFill = function ( fill ) {
+	/*ctx.canFill = function ( fill ) {
 		if (typeof fill === 'undefined') {
 			ctx.fill();
 		} else {
@@ -382,11 +388,11 @@ var CanDo = function (elid, args) {
 	ctx.canMoveTo = function () {
 		ctx.moveTo( arguments[0], arguments[1] );
 		return ctx;	
-	}
+	}*/
 	
 	ctx.canClosePath = function () {
 		if(typeof ctx.p.events !== 'undefined') {
-			ctx.each(ctx.p.events, function (name, func) {
+			ctx.each(ctx.p.events, function (func, name) {
 				if (typeof ctx.s.currentEvents[name] !== 'undefined' && ctx.isPointInPath(ctx.s.currentEvents[name].x, ctx.s.currentEvents[name].y)) {
 					ctx.p.events[name].apply( this );
 				}
@@ -432,29 +438,29 @@ var CanDo = function (elid, args) {
 		return result;
 	};
 
-	// Stripped down each from jQuery
-	ctx.each = function (object, callback) {
-		var name, i,
-			length = object.length,
-			isObj = length === undefined;
-
-		if (isObj) { // if an object was passed in
-			for (name in object) {
-				if (object.hasOwnProperty(name)) {
-					if (callback.call(object[name], name, object[name]) === false) {
-						break;
-					}
-				}
+	// each from underscore.js
+	ctx.each = function(obj, iterator, context) {
+		if (obj == null) return;
+		if (Array.prototype.forEach && obj.forEach) {
+			obj.forEach(iterator, context);
+		} else if (obj.length === +obj.length) {
+			for (var i = 0, l = obj.length; i < l; i++) {
+				if (i in obj && iterator.call(context, obj[i], i, obj) === {}) return;
 			}
-		} else { // an array was passed in
-			for (i = 0; i < length; i = i + 1) {
-				if (callback.call(object[i], i, object[i]) === false) {
-					break;
+		} else {
+			for (var key in obj) {
+				if (ctx.has(obj, key)) {
+					if (iterator.call(context, obj[key], key, obj) === {}) return;
 				}
 			}
 		}
 	};
 	
+	// From underscore.js
+	ctx.has = function(obj, key) {
+		return hasOwnProperty.call(obj, key);
+	};
+  
 	// Stripped down extend from jQuery
 	ctx.extend = function() {
 		var options, name, src, copy,
@@ -512,13 +518,13 @@ var CanDo = function (elid, args) {
 		}
 	};
 
-	ctx.each([ "Quad", "Cubic", "Quart", "Quint", "Expo" ], function (i, name) {
+	ctx.each([ "Quad", "Cubic", "Quart", "Quint", "Expo" ], function (name, i) {
 		baseEasings[name] = function (p) {
 			return Math.pow(p, i + 2);
 		};
 	});
 
-	ctx.each(baseEasings, function (name, easeIn) {
+	ctx.each(baseEasings, function (easeIn, name) {
 		ctx.easing["easeIn" + name] = easeIn;
 		ctx.easing["easeOut" + name] = function (p) {
 			return 1 - easeIn(1 - p);
@@ -527,12 +533,17 @@ var CanDo = function (elid, args) {
 			return p < 0.5 ? easeIn(p * 2) / 2 : easeIn(p * -2 + 2) / -2 + 1;
 		};
 	});
+	
+	// Make our canvas methods chainable
+	ctx.each(ctx.__proto__, function(item, key) {
+		ctx[key] = function() { return item.apply(this, arguments) || this};
+	});
 
 	// Initialize our misc properties
 	ctx.configure(args);
 
 	// Add event watchers to Canvas element
-	ctx.each(['click', 'mouseover', 'mouseout'], function(i, name) {
+	ctx.each(['click', 'mouseover', 'mouseout'], function(name, i) {
 		if (el.addEventListener) {
 			el.addEventListener(name, function(e) {
 				this.ctx.s.eventsQueue[name] = {x:e.offsetX, y:e.offsetY};
