@@ -44,41 +44,41 @@
 		</ul>
 		<h2>Building a canDo.js animation</h2>
 		<p>First you need a canvas element</p>
-		<pre>&lt;canvas id="demo" width="400" height="360"&gt;
-			This text is displayed if your browser does not support HTML5 Canvas.
-		&lt;/canvas&gt;
-		</pre>
+<pre>&lt;canvas id="demo" width="400" height="360"&gt;
+	This text is displayed if your browser does not support HTML5 Canvas.
+&lt;/canvas&gt;
+</pre>
 		<p>Next you wrap the element's 2D rendering context with canDo</p>
-		<pre>var demo = CanDo('demo', {
-		    frameRate: 60,
-		    duration: 2000,
-		    easing: 'easeInOutQuad',
-		    events: {
-		        mouseover: function () {demo.play({speed:1});},
-		        mouseout: function () {demo.play({speed:-1});}
-		    }
-		});</pre>
+<pre>var demo = CanDo('demo', {
+    frameRate: 60,
+    duration: 2000,
+    easing: 'easeInOutQuad',
+    events: {
+        mouseover: function () {demo.play({speed:1});},
+        mouseout: function () {demo.play({speed:-1});}
+    }
+});</pre>
 		<p>When you do that you need to pass in some parameters, not least of which is your paint () function. Here we're setting it after the fact</p>
-		<pre>demo.paint = function() {
-			this.identity();
-			this.clearRect(0, 0, 400, 360);
-			this.translate(160, 160);
-			
-			this.canDo('rotate', [{params: [0],cuePoint: 0},{params: [44],cuePoint: 1}]);
-			this.translate(-105, -105);
-			this.canDo('scale', [{params: [0.1, 0.1],cuePoint: 0},{params: [1.0, 1.0],cuePoint: 1}]);
-			this.canSet('shadowColor', [{params: ['rgba(0, 0, 0, 0.7)'], cuePoint:0},{params:['rgba(0,0,0,0.1)'], cuePoint: 1}]);
-			this.canSet('shadowOffsetX', [{params: [3],cuePoint: 0},{params: [90],cuePoint: 1}]);
-			this.canSet('shadowOffsetY', [{params: [3],cuePoint: 0},{params: [50],cuePoint: 1}]);
-			this.canSet('shadowBlur', [{params: [3],cuePoint: 0},{params: [20],cuePoint: 1}]);
-			
-			drawJSBox(this);
-			this.shadowOffsetX = 0;
-			this.shadowOffsetY = 0;
-			this.shadowBlur = 0;
-			drawJ(this);
-			drawS(this);
-		}</pre>
+<pre>demo.paint = function() {
+	this.identity();
+	this.clearRect(0, 0, 400, 360);
+	this.translate(160, 160);
+	
+	this.canDo('rotate', [{params: [0],cuePoint: 0},{params: [44],cuePoint: 1}]);
+	this.translate(-105, -105);
+	this.canDo('scale', [{params: [0.1, 0.1],cuePoint: 0},{params: [1.0, 1.0],cuePoint: 1}]);
+	this.canSet('shadowColor', [{params: ['rgba(0, 0, 0, 0.7)'], cuePoint:0},{params:['rgba(0,0,0,0.1)'], cuePoint: 1}]);
+	this.canSet('shadowOffsetX', [{params: [3],cuePoint: 0},{params: [90],cuePoint: 1}]);
+	this.canSet('shadowOffsetY', [{params: [3],cuePoint: 0},{params: [50],cuePoint: 1}]);
+	this.canSet('shadowBlur', [{params: [3],cuePoint: 0},{params: [20],cuePoint: 1}]);
+	
+	drawJSBox(this);
+	this.shadowOffsetX = 0;
+	this.shadowOffsetY = 0;
+	this.shadowBlur = 0;
+	drawJ(this);
+	drawS(this);
+}</pre>
 		<p>And there you have it. You can see many more samples on the from the list of <a href="contextMethods.html">methods</a> and <a href="contextProperties.html">properties</a> that can be wrapped.
 		
 		<p>canDo.js is distributed under the MIT License.</p>
