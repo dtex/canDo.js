@@ -2,14 +2,31 @@ module.exports = function(grunt) {
 
 	// Project configuration
 	grunt.initConfig({
-		
-		min: {
-			default: {
-				src: ['../canDo.js'],
-				dest: '../canDo.min.js'
+		lint: {
+			files: [
+				'../src/license.js',
+				'../src/canDo.js',
+				'../src/utilities.js',
+				'../src/easing.js',
+				'../src/getRGB.js'
+			]
+		},
+  		concat: {
+			canDo: {
+				src: [
+					'../src/license.js',
+					'../src/canDo.js',
+					'../src/utilities.js',
+					'../src/easing.js',
+					'../src/getRGB.js',
+				],
+				dest: '../canDo.js'
 			}
 		},
-		
+		min: {
+			src: ['../canDo.js'],
+			dest: '../canDo.min.js'
+		},
 		docco: {
 			src: ["../canDo.js"],
 			dest: ["../docs/"]
@@ -18,5 +35,5 @@ module.exports = function(grunt) {
 	});
 	
 	grunt.loadNpmTasks('grunt-docco');
-	grunt.registerTask('default', 'docco min');
+	grunt.registerTask('default', 'lint concat docco min');
 };
